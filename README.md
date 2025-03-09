@@ -119,7 +119,7 @@ Contributions bienvenues ! Suivez ces étapes :
 
 ---
 
-## 🗂 Structure du Projet
+## Structure du Projet
 
 ```plaintext
 urban-odyssey/
