@@ -99,5 +99,58 @@ php artisan serve
 npm run dev
 ```
 
+## Documentation
 
+🔍 **Ressources complémentaires** :  
+- **[Cahier des charges complet]([docs/cahier-des-charges.pdf](https://docs.google.com/document/d/1pDD_dAX0NW8Ipb_lTiWq43P0G5wSof6lR3UGJA577UA/edit?tab=t.0))**  
+- **[Maquettes Figma]([https://www.figma.com/file/XXXXXX](https://www.figma.com/design/9zs02S9SRT88MzvS4TvERW/URBAN-ODYSSEY?node-id=0-1&t=FZ8pL7NUNG8keWL0-1))** (Design responsive)  
+- **[Planification Jira]([https://urban-odyssey.atlassian.net](https://wassimelmorabit.atlassian.net/jira/software/projects/UD/boards/18))** (Suivi des tâches)  
 
+---
+
+## Contribution
+
+Contributions bienvenues ! Suivez ces étapes :  
+1. Forker le projet  
+2. Créer une branche : `git checkout -b feature/YourFeature`  
+3. Commiter : `git commit -m 'Ajout : [fonctionnalité]'`  
+4. Pusher : `git push origin feature/YourFeature`  
+5. Ouvrir une Pull Request  
+
+---
+
+## 🗂 Structure du Projet
+
+```plaintext
+urban-odyssey/
+├── docs/               # Documentation complète (cahier des charges, UML)
+├── public/             # Assets publics (CSS, JS, images)
+├── resources/          # Vues Blade et fichiers de langue
+├── routes/             # Définition des routes API et web
+├── app/                # Logique métier (Controllers, Models, Services)
+│   ├── Http/Controllers    # Contrôleurs Laravel
+│   ├── Models              # Modèles Eloquent
+│   └── Providers           # Service providers
+├── database/           # Migrations et seeders
+│   ├── migrations/         # Schémas de base de données
+│   └── seeders/            # Données de test
+├── storage/            # Fichiers uploads et cache
+├── tests/              # Tests automatisés (PHPUnit)
+├── config/             # Configuration de l'application
+├── design/             # Ressources de design (Figma exports)
+└── presentation/       # Matériaux de présentation (Canva)
+```
+
+---
+
+## Sécurité
+
+⚠️ **Vulnérabilités** :  
+Signalez toute faille de sécurité à [contact@urbanodyssey.com](mailto:contact@urbanodyssey.com) (ne pas créer de ticket public).
+
+---
+
+## Licence
+
+MIT License - Voir [LICENSE.md](LICENSE.md) pour les détails.  
+Créé avec ❤️ par Wassim El Mourabit - [Site Officiel](https://urbanodyssey.com)
