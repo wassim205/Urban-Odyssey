@@ -14,9 +14,10 @@ Urban Odyssey est une application web innovante qui va au-delà des attractions 
 - [Fonctionnalités](#fonctionnalités)
 - [Tech Stack](#tech-stack)
 - [Installation et configuration](#installation-et-configuration)
-- [Utilisation](#utilisation)
+- [Documentation](#documentation)
+- [Contribution](#contribution)
 - [Structure du projet](#structure-du-projet)
-- [Contribuer](#contribuer)
+- [Sécurité](#sécurité)
 - [Licence](#licence)
 
 ---
@@ -102,9 +103,9 @@ npm run dev
 ## Documentation
 
 🔍 **Ressources complémentaires** :  
-- **[Cahier des charges complet]([docs/cahier-des-charges.pdf](https://docs.google.com/document/d/1pDD_dAX0NW8Ipb_lTiWq43P0G5wSof6lR3UGJA577UA/edit?tab=t.0))**  
-- **[Maquettes Figma]([https://www.figma.com/file/XXXXXX](https://www.figma.com/design/9zs02S9SRT88MzvS4TvERW/URBAN-ODYSSEY?node-id=0-1&t=FZ8pL7NUNG8keWL0-1))**
-- **[Planification Jira]([https://urban-odyssey.atlassian.net](https://wassimelmorabit.atlassian.net/jira/software/projects/UD/boards/18))**
+- **[Cahier des charges complet](https://docs.google.com/document/d/1pDD_dAX0NW8Ipb_lTiWq43P0G5wSof6lR3UGJA577UA/edit?tab=t.0)**  
+- **[Maquettes Figma](https://www.figma.com/design/9zs02S9SRT88MzvS4TvERW/URBAN-ODYSSEY?node-id=0-1&t=FZ8pL7NUNG8keWL0-1)**  
+- **[Planification Jira](https://wassimelmorabit.atlassian.net/jira/software/projects/UD/boards/18)**
 
 ---
 
