@@ -60,3 +60,44 @@ Urban Odyssey est conçu pour encourager l'exploration urbaine en fournissant de
 ```bash
 git clone https://github.com/votreutilisateur/urban-odyssey.git
 cd urban-odyssey
+```
+###  Étape 2 : Installer les dépendances PHP
+
+```bash
+composer install
+```
+
+###  Étape 3 : Configurer l'environnement
+
+Copier le fichier d’exemple et le renommer en .env :
+```bash
+cp .env.example .env
+```
+Modifier le fichier .env pour configurer la connexion à PostgreSQL :
+```bash
+DB_CONNECTION=pgsql
+DB_HOST=127.0.0.1
+DB_PORT=5432
+DB_DATABASE=nom_de_votre_base
+DB_USERNAME=votre_utilisateur
+DB_PASSWORD=votre_mot_de_passe
+```
+
+###  Étape 4 : Générer la clé de l’application
+```bash
+php artisan key:generate
+```
+
+###  Étape 5 : Exécuter les migrations
+```bash
+php artisan migrate --seed
+```
+
+###  Étape 6 : Démarrer le serveur de développement
+```bash
+php artisan serve
+npm run dev
+```
+
+
+
