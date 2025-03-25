@@ -6,6 +6,8 @@ use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
+use function PHPUnit\Framework\callback;
+
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -15,9 +17,16 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::factory()->create([
-            'name' => 'Test User',
+       $this->call(RoleSeeder::class);
+        User::create([
+            'username' => 'testuser',
+            'firstname' => 'Test',
+            'lastname' => 'User',
             'email' => 'test@example.com',
+            'email_verified_at' => now(),
+            'password' => bcrypt('password'),
+            'role_id' => 1,
+            'preferred_categories' => json_encode(['Tech', 'Gaming']),
         ]);
     }
 }
