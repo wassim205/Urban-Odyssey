@@ -1,157 +1,66 @@
-# Urban Odyssey
+<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
 <p align="center">
-  <!-- Remplacez l'URL par votre logo si nécessaire -->
-  <img src="https://via.placeholder.com/400x150?text=Urban+Odyssey+Logo" width="400" alt="Urban Odyssey Logo">
+<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-Urban Odyssey est une application web innovante qui va au-delà des attractions touristiques classiques en proposant des recommandations personnalisées pour découvrir les trésors cachés d'une ville. Que vous soyez touriste, résident local ou voyageur, Urban Odyssey enrichit votre expérience urbaine grâce à des informations en temps réel sur les transports, des suggestions de lieux atypiques, et bien plus encore.
+## About Laravel
 
----
+Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
-## Table des Matières
-- [À propos du projet](#à-propos-du-projet)
-- [Fonctionnalités](#fonctionnalités)
-- [Tech Stack](#tech-stack)
-- [Installation et configuration](#installation-et-configuration)
-- [Documentation](#documentation)
-- [Contribution](#contribution)
-- [Structure du projet](#structure-du-projet)
-- [Sécurité](#sécurité)
-- [Licence](#licence)
+- [Simple, fast routing engine](https://laravel.com/docs/routing).
+- [Powerful dependency injection container](https://laravel.com/docs/container).
+- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
+- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
+- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
+- [Robust background job processing](https://laravel.com/docs/queues).
+- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
 
----
+Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
-## À propos du projet
+## Learning Laravel
 
-Urban Odyssey est conçu pour encourager l'exploration urbaine en fournissant des recommandations de lieux moins connus mais tout aussi intéressants, avec des informations pratiques sur les options de transport et les services à proximité (cafés, mosquées, magasins, etc.). Le but est de rendre la découverte d'une ville plus accessible et enrichissante pour chaque utilisateur.
+Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
 
----
+You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
 
-## Fonctionnalités
+If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
 
-- **Recommandations Personnalisées** : Suggestions de lieux à visiter en fonction des intérêts et préférences de l’utilisateur.
-- **Informations de Transport en Temps Réel** : Détails sur les itinéraires, coûts et temps de trajet pour diverses options de transport.
-- **Intégration de Services Locaux** : Présentation des établissements à proximité (cafés, mosquées, magasins, etc.).
-- **Avis et Notes des Utilisateurs** : Possibilité de consulter et de soumettre des avis sur les lieux visités.
-- **Cartes Interactives** : Intégration d'une API de cartographie pour la localisation et le routage.
-- **Accessibilité Hors Ligne (Bientôt Disponible)** : Téléchargement de cartes pour naviguer sans connexion Internet.
+## Laravel Sponsors
 
----
+We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
 
-## Tech Stack
+### Premium Partners
 
-- **Backend** : Laravel (PHP) avec PostgreSQL pour la base de données.
-- **Frontend** : React (via CDN) intégré aux vues Blade.
-- **APIs** : Intégration avec des services tiers pour obtenir des données en temps réel sur les transports et les cartes.
+- **[Vehikl](https://vehikl.com/)**
+- **[Tighten Co.](https://tighten.co)**
+- **[WebReinvent](https://webreinvent.com/)**
+- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
+- **[64 Robots](https://64robots.com)**
+- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
+- **[Cyber-Duck](https://cyber-duck.co.uk)**
+- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
+- **[Jump24](https://jump24.co.uk)**
+- **[Redberry](https://redberry.international/laravel/)**
+- **[Active Logic](https://activelogic.com)**
+- **[byte5](https://byte5.de)**
+- **[OP.GG](https://op.gg)**
 
----
+## Contributing
 
-## Installation et configuration
+Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
 
-### Prérequis
+## Code of Conduct
 
-- PHP 7.4 ou supérieur
-- Composer ([getcomposer.org](https://getcomposer.org))
-- PostgreSQL installé et configuré
-- Un éditeur de code (ex. VSCode)
+In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
 
-### Étape 1 : Cloner le dépôt
+## Security Vulnerabilities
 
-```bash
-git clone https://github.com/votreutilisateur/urban-odyssey.git
-cd urban-odyssey
-```
-###  Étape 2 : Installer les dépendances PHP
+If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
 
-```bash
-composer install
-```
+## License
 
-###  Étape 3 : Configurer l'environnement
-
-Copier le fichier d’exemple et le renommer en .env :
-```bash
-cp .env.example .env
-```
-Modifier le fichier .env pour configurer la connexion à PostgreSQL :
-```bash
-DB_CONNECTION=pgsql
-DB_HOST=127.0.0.1
-DB_PORT=5432
-DB_DATABASE=nom_de_votre_base
-DB_USERNAME=votre_utilisateur
-DB_PASSWORD=votre_mot_de_passe
-```
-
-###  Étape 4 : Générer la clé de l’application
-```bash
-php artisan key:generate
-```
-
-###  Étape 5 : Exécuter les migrations
-```bash
-php artisan migrate --seed
-```
-
-###  Étape 6 : Démarrer le serveur de développement
-```bash
-php artisan serve
-npm run dev
-```
-
-## Documentation
-
-🔍 **Ressources complémentaires** :  
-- **[Cahier des charges complet](https://docs.google.com/document/d/1pDD_dAX0NW8Ipb_lTiWq43P0G5wSof6lR3UGJA577UA/edit?tab=t.0)**  
-- **[Maquettes Figma](https://www.figma.com/design/9zs02S9SRT88MzvS4TvERW/URBAN-ODYSSEY?node-id=0-1&t=FZ8pL7NUNG8keWL0-1)**  
-- **[Planification Jira](https://wassimelmorabit.atlassian.net/jira/software/projects/UD/boards/18)**
-
----
-
-## Contribution
-
-Contributions bienvenues ! Suivez ces étapes :  
-1. Forker le projet  
-2. Créer une branche : `git checkout -b feature/YourFeature`  
-3. Commiter : `git commit -m 'Ajout : [fonctionnalité]'`  
-4. Pusher : `git push origin feature/YourFeature`  
-5. Ouvrir une Pull Request  
-
----
-
-## Structure du Projet
-
-```plaintext
-urban-odyssey/
-├── docs/               # Documentation complète (cahier des charges, UML)
-├── public/             # Assets publics (CSS, JS, images)
-├── resources/          # Vues Blade et fichiers de langue
-├── routes/             # Définition des routes API et web
-├── app/                # Logique métier (Controllers, Models, Services)
-│   ├── Http/Controllers    # Contrôleurs Laravel
-│   ├── Models              # Modèles Eloquent
-│   └── Providers           # Service providers
-├── database/           # Migrations et seeders
-│   ├── migrations/         # Schémas de base de données
-│   └── seeders/            # Données de test
-├── storage/            # Fichiers uploads et cache
-├── tests/              # Tests automatisés (PHPUnit)
-├── config/             # Configuration de l'application
-├── design/             # Ressources de design (Figma exports)
-└── presentation/       # Matériaux de présentation (Canva)
-```
-
----
-
-## Sécurité
-
-⚠️ **Vulnérabilités** :  
-Signalez toute faille de sécurité à [contact@urbanodyssey.com](mailto:contact@urbanodyssey.com) (ne pas créer de ticket public).
-
----
-
-## Licence
-
-MIT License - Voir [LICENSE.md](LICENSE.md) pour les détails.  
-Créé avec ❤️ par Wassim El Mourabit - [Site Officiel](https://urbanodyssey.com)
+The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
