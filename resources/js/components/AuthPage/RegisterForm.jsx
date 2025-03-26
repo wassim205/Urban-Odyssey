@@ -1,105 +1,234 @@
 import React, { useState } from "react";
+import planetEarth from "../../../../public/images/planet-earth.png";
 
-const RegisterForm = () => {
+export default function RegisterForm() {
     const [formData, setFormData] = useState({
-        username: "",
-        firstname: "",
-        lastname: "",
+        fullName: "",
         email: "",
         password: "",
+        confirmPassword: "",
+        city: "",
+        phoneNumber: "",
+        heardAbout: "From a friend",
     });
 
-    const [message, setMessage] = useState("");
+    const [agreedToTerms, setAgreedToTerms] = useState(false);
 
     const handleChange = (e) => {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value,
-        });
+        const { name, value } = e.target;
+        setFormData((prevState) => ({
+            ...prevState,
+            [name]: value,
+        }));
     };
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
-
-        const response = await fetch("http://localhost:8000/api/register", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(formData),
-        });
-console.log(response);
-        const data = await response.json();
-
-        if (response.ok) {
-            setMessage("Registration successful!");
-        } else {
-            setMessage(data.message || "Registration failed");
-        }
     };
 
     return (
-        <div className="flex justify-center mt-10">
-            <form onSubmit={handleSubmit} className="w-full max-w-sm">
-                <input
-                    type="text"
-                    name="username"
-                    placeholder="Username"
-                    value={formData.username}
-                    onChange={handleChange}
-                    required
-                    className="border p-2 mb-4 w-full"
-                />
-                <input
-                    type="text"
-                    name="firstname"
-                    placeholder="First Name"
-                    value={formData.firstname}
-                    onChange={handleChange}
-                    required
-                    className="border p-2 mb-4 w-full"
-                />
-                <input
-                    type="text"
-                    name="lastname"
-                    placeholder="Last Name"
-                    value={formData.lastname}
-                    onChange={handleChange}
-                    required
-                    className="border p-2 mb-4 w-full"
-                />
-                <input
-                    type="email"
-                    name="email"
-                    placeholder="Email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    required
-                    className="border p-2 mb-4 w-full"
-                />
-                <input
-                    type="password"
-                    name="password"
-                    placeholder="Password"
-                    value={formData.password}
-                    onChange={handleChange}
-                    required
-                    className="border p-2 mb-4 w-full"
-                />
-                <button
-                    type="submit"
-                    className="bg-blue-500 text-white py-2 px-4 rounded"
-                >
-                    Register
-                </button>
-                <button className="bg-blue-500 text-white py-2 px-4 rounded ml-4">
-                    <a href="/login">Login</a>
-                </button>
-                <button className="bg-blue-500 text-white py-2 px-4 rounded ml-4">
-                    <a href="/">cancel</a>
-                </button>
-            </form>
-            {message && <p className="mt-4 text-center">{message}</p>}
+        <div className="relative">
+            <h1 className="flex justify-center my-8 font-bebas text-[2.5rem] text-[#D8C292]">
+                URBAN ODYSSEY
+            </h1>
+            <div className="flex justify-center flex-col items-center">
+                {/* Colored bar with SIGN UP text */}
+                <div className="bg-[#A6936A] w-[99rem] h-[4.875rem] relative z-50 flex items-center justify-center rounded-t-[2.5rem]">
+                    <div className="flex items-center">
+                        <img
+                            src={planetEarth}
+                            alt=""
+                            width="50"
+                            className="mr-5"
+                        />
+                        <h2 className="text-5xl font-bebas text-white drop-shadow-lg">
+                            SIGN UP
+                        </h2>
+                    </div>
+                </div>
+
+                {/* Main form container */}
+                <div className="flex items-start justify-center bg-cover bg-center">
+                    <div className="bg-[#D8C292] w-[99rem] rounded-b-[1.438rem] drop-shadow-lg">
+                        <form
+                            onSubmit={handleSubmit}
+                            className="grid grid-cols-[0.6fr_0.07fr_1fr] gap-4 p-8"
+                        >
+                            {/* First Column */}
+                            <div className="space-y-4 font-Belgrano text-[#A45A3D] text-2xl">
+                                <div>
+                                    <label className="block text-lg mb-2">
+                                        Full Name :
+                                    </label>
+                                    <input
+                                        type="text"
+                                        name="fullName"
+                                        value={formData.fullName}
+                                        onChange={handleChange}
+                                        className="w-[31.75rem] h-[3.875rem] bg-[#FDEDCA] rounded-md border border-[#A45A3D]"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-lg mb-2">
+                                        Email :
+                                    </label>
+                                    <input
+                                        type="email"
+                                        name="email"
+                                        value={formData.email}
+                                        onChange={handleChange}
+                                        className="w-[31.75rem] h-[3.875rem] bg-[#FDEDCA] rounded-md border border-[#A45A3D]"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-lg mb-2">
+                                        Password :
+                                    </label>
+                                    <input
+                                        type="password"
+                                        name="password"
+                                        value={formData.password}
+                                        onChange={handleChange}
+                                        className="w-[31.75rem] h-[3.875rem] bg-[#FDEDCA] rounded-md border border-[#A45A3D]"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-lg mb-2">
+                                        Confirm password :
+                                    </label>
+                                    <input
+                                        type="password"
+                                        name="confirmPassword"
+                                        value={formData.confirmPassword}
+                                        onChange={handleChange}
+                                        className="w-[31.75rem] h-[3.875rem] bg-[#FDEDCA] rounded-md border border-[#A45A3D]"
+                                    />
+                                </div>
+                            </div>
+
+                            {/* Vertical Separator */}
+                            <div className="bg-[#CF8562] w-[2px] drop-shadow-2xl"></div>
+
+                            {/* Second Column */}
+                            <div className="space-y-4 font-Belgrano text-[#A45A3D] text-2xl">
+                                <div className="grid grid-cols-2 w-[46.1875rem] space-x-12">
+                                    <div className="w-[20.94rem] ">
+                                        <label className="block text-lg mb-2">
+                                            City :
+                                        </label>
+                                        <input
+                                            type="text"
+                                            name="city"
+                                            value={formData.city}
+                                            onChange={handleChange}
+                                            className="h-[3.875rem] bg-[#FDEDCA] rounded-md border border-[#A45A3D]"
+                                        />
+                                    </div>
+                                    <div className="w-[20.94rem] ">
+                                        <label className="block text-lg mb-2">
+                                            Phone Number :
+                                        </label>
+                                        <input
+                                            type="tel"
+                                            name="phoneNumber"
+                                            value={formData.phoneNumber}
+                                            onChange={handleChange}
+                                            className="h-[3.875rem] bg-[#FDEDCA] rounded-md border border-[#A45A3D]"
+                                        />
+                                    </div>
+                                </div>
+                                <div>
+                                    <label className="block text-lg mb-2">
+                                        Where you heard about us :
+                                    </label>
+                                    <select
+                                        name="heardAbout"
+                                        value={formData.heardAbout}
+                                        onChange={handleChange}
+                                        className="w-[46.1875rem] h-[3.875rem] pl-4 bg-[#FDEDCA] rounded-md border border-[#A45A3D] text-lg"
+                                    >
+                                        <option>From a friend</option>
+                                        <option>Social Media</option>
+                                        <option>Advertisement</option>
+                                        <option>Other</option>
+                                    </select>
+                                </div>
+                                <div className="flex items-center mt-4 text-lg text-[#542F2F]">
+                                    <input
+                                        type="checkbox"
+                                        checked={agreedToTerms}
+                                        onChange={() =>
+                                            setAgreedToTerms(!agreedToTerms)
+                                        }
+                                        className="mr-2 w-6 h-6 border-2 border-[#542F2F] bg-[#F5ECD2] rounded-sm appearance-none checked:bg-[#542F2F] checked:bg-opacity-70 relative 
+    after:content-['✓'] 
+    after:absolute 
+    after:top-1/2 
+    after:left-1/2 
+    after:-translate-x-1/2 
+    after:-translate-y-1/2 
+    after:text-white 
+    after:text-lg 
+    after:opacity-0 
+    checked:after:opacity-100 
+    cursor-pointer 
+    transition-all 
+    duration-300 
+    focus:ring-2 
+    focus:ring-[#542F2F]"
+                                    />
+
+                                    <label>I agree to the terms & policy</label>
+                                </div>
+                                <button
+                                    type="submit"
+                                    disabled={!agreedToTerms}
+                                    className="w-[12.313rem] bg-[#A0522D] text-white py-2 rounded-md hover:bg-[#85442B] transition duration-300 mt-4 text-lg"
+                                >
+                                    SIGN UP
+                                </button>
+                                <div className="text-center my-4">
+                                    <span>or</span>
+                                </div>
+                                <button
+                                    type="button"
+                                    className="w-full bg-white text-gray-700 py-2 rounded-md border border-[#A45A3D] flex items-center justify-center"
+                                >
+                                    <img
+                                        src="/path/to/google-icon.svg"
+                                        alt="Google"
+                                        className="mr-2 w-6 h-6"
+                                    />
+                                    Sign up with Google
+                                </button>
+                                <div className="text-center mt-4">
+                                    <span>Have an account? </span>
+                                    <a
+                                        href="/signin"
+                                        className="text-[#A0522D] hover:underline"
+                                    >
+                                        Sign in
+                                    </a>
+                                </div>
+                            </div>
+                        </form>
+                        <div className="text-center mt-6 text-sm italic px-8">
+                            <p>
+                                "Urban. Together." Every hidden alley and
+                                vibrant avenue holds a story waiting to be
+                                told—an urban heartbeat whispering secrets of
+                                untold journeys. Let's explore together and
+                                uncover the magic of every step.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div className="text-center mt-4 text-2xl text-yellow-400 font-bebas">
+                    🚨 THE DATA COLLECTED IS USED SOLELY TO ENHANCE YOUR
+                    EXPERIENCE AND IS NEITHER STORED INDEFINITELY NOR USED FOR
+                    ANY OTHER PURPOSE.
+                </div>
+            </div>
         </div>
     );
-};
-
-export default RegisterForm;
+}

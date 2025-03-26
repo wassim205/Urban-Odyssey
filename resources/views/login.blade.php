@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Urban Odyssey</title>
 
-
     @viteReactRefresh
     @vite(['resources/css/app.css', 'resources/js/app.jsx'])
     <style>
@@ -18,7 +17,7 @@
 
 <body style="background-image: url('{{ asset('images/City.png') }}');">
     <div class="absolute inset-0 bg-[#293D36] bg-opacity-[64%]"></div>
-    <div id="register" class="relative z-10"></div>
+    <div id="login" class="relative z-10"></div>
 </body>
 
 </html>

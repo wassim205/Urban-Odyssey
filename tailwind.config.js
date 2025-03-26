@@ -17,7 +17,7 @@ export default {
                 righteous: ['Righteous', ...defaultTheme.fontFamily.sans],
                 bebas: ['Bebas Neue', ...defaultTheme.fontFamily.sans],
                 montserrat: ['Montserrat', ...defaultTheme.fontFamily.sans],
-            },
+                Belgrano: ['Belgrano', ...defaultTheme.fontFamily.sans],          },
             
         },
     },
