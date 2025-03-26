@@ -14,7 +14,11 @@ export default {
         extend: {
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+                righteous: ['Righteous', ...defaultTheme.fontFamily.sans],
+                bebas: ['Bebas Neue', ...defaultTheme.fontFamily.sans],
+                montserrat: ['Montserrat', ...defaultTheme.fontFamily.sans],
             },
+            
         },
     },
     plugins: [],
