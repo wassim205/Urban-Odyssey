@@ -1,12 +1,10 @@
-import "./bootstrap";
-import "./components/HomePage/Home";
-
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { BrowserRouter } from "react-router-dom"; // Import BrowserRouter
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./components/HomePage/Home";
 import Register from "./components/AuthPage/Register";
 import Login from "./components/AuthPage/Login";
+import Dashboard from "./components/Dashboard/dashboard";
 import axios from "axios";
 
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
@@ -25,35 +23,21 @@ axios.interceptors.response.use(
     }
 );
 
-// Wrap your root components inside BrowserRouter
-const register = document.getElementById("register");
-if (register) {
-    const root = ReactDOM.createRoot(register);
-    root.render(
+const App = () => {
+    return (
         <BrowserRouter>
-            <Register />
+            <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/register" element={<Register />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/dashboard" element={<Dashboard />} />
+            </Routes>
         </BrowserRouter>
     );
-}
+};
 
-// for Home page
 const container = document.getElementById("root");
 if (container) {
     const root = ReactDOM.createRoot(container);
-    root.render(
-        <BrowserRouter>
-            <Home />
-        </BrowserRouter>
-    );
-}
-
-// for Login page
-const login = document.getElementById("login");
-if (login) {
-    const root = ReactDOM.createRoot(login);
-    root.render(
-        <BrowserRouter>
-            <Login />
-        </BrowserRouter>
-    );
+    root.render(<App />);
 }

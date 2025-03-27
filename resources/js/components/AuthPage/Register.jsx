@@ -117,7 +117,7 @@ export default function Register() {
             setTimeout(() => {
                 navigate("/dashboard");
             }, 3000);
-            
+
         } catch (err) {
             if (err.response && err.response.status === 422) {
                 const backendErrors = err.response.data.errors;

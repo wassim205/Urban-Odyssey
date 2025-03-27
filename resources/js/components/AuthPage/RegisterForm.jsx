@@ -180,10 +180,10 @@ const RegisterForm = ({
                     <div className="text-center text-[#313131] font-Poppins text-xl font-medium mt-4">
                         <span>Have an account? </span>
                         <a
-                            href="/signin"
+                            href="/login"
                             className="text-[#0F3DDE] hover:underline"
                         >
-                            Sign in
+                            Log In
                         </a>
                     </div>
                 </div>
