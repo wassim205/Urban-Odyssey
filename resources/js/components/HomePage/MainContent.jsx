@@ -56,12 +56,12 @@ export default function MainContent({ data }) {
                             </div>
                         </div>
                         <div className="grid grid-cols-2 gap-4 mt-4">
-                            <button className="bg-[#A45A3D] text-white font-bebas text-[30px] rounded-[10px] w-[265px] h-[45px] ml-12">
-                                <a href="/register">Sign Up</a>
-                            </button>
-                            <button className="bg-[#CF8562] text-white font-bebas text-[30px] rounded-[10px] w-[265px] h-[45px]">
-                            <a href="/login">Log in</a>
-                            </button>
+                            <a href="/register" className="bg-[#A45A3D] text-center text-white font-bebas text-[30px] rounded-[10px] w-[265px] h-[45px] ml-12">
+                                Sign Up
+                            </a>
+                            <a href="/login" className="bg-[#CF8562] text-center text-white font-bebas text-[30px] rounded-[10px] w-[265px] h-[45px]">
+                            Log in
+                            </a>
                             <button className="bg-[#A45A3D] text-white font-bebas text-[30px] rounded-[10px] w-[550px] h-[59.26px] ml-12 col-span-2">
                             <a href="/UrbanOdyssey">Or visit us before having an account</a>
                             </button>
