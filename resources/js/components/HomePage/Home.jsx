@@ -3,9 +3,18 @@ import NavBar from "./NavBar";
 import MainContent from "./MainContent";
 
 const Home = () => (
-    <div>
-        <NavBar />
-        <MainContent data='' />
+    <div 
+        className="relative min-h-screen bg-cover bg-center overflow-hidden w-full"
+        style={{ backgroundImage: `url('/images/City.png')` }}
+    >
+        {/* Overlay */}
+        <div className="absolute inset-0 bg-[#293D36] bg-opacity-60"></div>
+
+        {/* Content (Ensure it's on top of overlay) */}
+        <div className="relative z-10">
+            <NavBar />
+            <MainContent />
+        </div>
     </div>
 );
 
