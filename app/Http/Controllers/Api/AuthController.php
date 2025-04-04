@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -9,9 +10,36 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    /**
-     * Login function
-     */
+    public function register(Request $request)
+    {
+        $validated = $request->validate([
+            'username'  => 'required|string|unique:users',
+            'firstname' => 'required|string',
+            'lastname'  => 'required|string',
+            'email'     => 'required|email|unique:users',
+            'password'  => 'required|min:6',
+        ]);
+    
+        // Check if there are no users yet
+        $role_id = (User::count() === 0) ? 1 : 2;
+    
+        $user = User::create([
+            'username'  => $validated['username'],
+            'firstname' => $validated['firstname'],
+            'lastname'  => $validated['lastname'],
+            'email'     => $validated['email'],
+            'password'  => bcrypt($validated['password']),
+            'role_id'   => $role_id,
+        ]);
+    
+        $token = $user->createToken('auth_token')->plainTextToken;
+    
+        return response()->json([
+            'user'         => $user,
+            'access_token' => $token,
+            'token_type'   => 'Bearer',
+        ], 201);
+    }
     public function login(Request $request)
     {
         $credentials = $request->validate([
@@ -35,39 +63,6 @@ class AuthController extends Controller
         ]);
     }
 
-    /**
-     * Register function
-     */
-    public function register(Request $request)
-    {
-        $request->validate([
-            'username' => 'required|string|unique:users',
-            'firstname' => 'required|string',
-            'lastname' => 'required|string',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|min:6'
-        ]);
-
-        $user = User::create([
-            'username' => $request->username,
-            'firstname' => $request->firstname,
-            'lastname' => $request->lastname,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
-
-        $token = $user->createToken('auth_token')->plainTextToken;
-
-        return response()->json([
-            'user' => $user,
-            'access_token' => $token,
-            'token_type' => 'Bearer'
-        ], 201);
-    }
-
-    /**
-     * Logout function
-     */
     public function logout(Request $request)
     {
         $request->user()->tokens()->delete();
