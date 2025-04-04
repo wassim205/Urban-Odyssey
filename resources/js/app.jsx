@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+// import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./components/HomePage/Home";
 import Register from "./components/AuthPage/Register";
 import Login from "./components/AuthPage/Login";
@@ -23,21 +23,19 @@ axios.interceptors.response.use(
     }
 );
 
-const App = () => {
-    return (
-        <BrowserRouter>
-            <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/register" element={<Register />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/dashboard" element={<Dashboard />} />
-            </Routes>
-        </BrowserRouter>
-    );
-};
-
 const container = document.getElementById("root");
 if (container) {
     const root = ReactDOM.createRoot(container);
-    root.render(<App />);
+    root.render(<Home />);
+}
+
+const LoginContainer = document.getElementById("login");
+if (LoginContainer) {
+    const root = ReactDOM.createRoot(LoginContainer);
+    root.render(<Login />);
+}
+const RegisterContainer = document.getElementById("register");
+if (RegisterContainer) {
+    const root = ReactDOM.createRoot(RegisterContainer);
+    root.render(<Register />);
 }

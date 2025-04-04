@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Toaster, toast } from "sonner";
-import { useNavigate } from "react-router-dom"; 
+// import { useNavigate } from "react-router-dom"; 
 import axios from "axios";
 import planetEarth from "../../../../public/images/planet-earth.png";
 import RegisterForm from "./RegisterForm";
 
 export default function Register() {
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
     const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
     axios.defaults.headers.common["X-CSRF-TOKEN"] = csrfToken;
     const [formData, setFormData] = useState({
@@ -115,7 +115,7 @@ export default function Register() {
             console.log("Success response:", response.data);
 
             setTimeout(() => {
-                navigate("/dashboard");
+                window.location.href = "/dashboard";
             }, 3000);
 
         } catch (err) {
