@@ -9,6 +9,8 @@ export default {
         './resources/**/*.js',
         './resources/**/*.jsx',
         './resources/**/*.vue',
+        './frontend/src/**/*.{js,jsx,ts,tsx}', 
+
     ],
     theme: {
         extend: {
