@@ -1,16 +1,9 @@
-
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import './App.css'
-import Home from './components/Home';
+import { RouterProvider } from "react-router-dom";
+import { router } from "./Routes/Router";
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        {/* <Route path="/about" element={<About />} /> */}
-      </Routes>
-    </Router>
+    <RouterProvider router={router} />
   );
-}
-export default App
+};
+export default App;
