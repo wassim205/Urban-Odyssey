@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { Toaster, toast } from "sonner";
 import { useNavigate } from "react-router-dom"; 
 import axios from "axios";
-import planetEarth from "../../../../public/images/planet-earth.png";
+import planetEarth from "../../../public/images/planet-earth.png";
 import RegisterForm from "./RegisterForm";
 
 export default function Register() {

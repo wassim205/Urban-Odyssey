@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Eye, EyeOff } from "lucide-react";
 import InputField from "./InputDiv";
-import googleIcon from "../../../../public/images/google.png";
+import googleIcon from "../../../public/images/google.png";
 
 const RegisterForm = ({
     formData,

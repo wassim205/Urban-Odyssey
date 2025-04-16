@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { motion } from "framer-motion";
+// import { motion } from "framer-motion";
 import { Toaster, toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Eye, EyeOff } from "lucide-react";
-import planetEarth from "../../../../public/images/planet-earth.png";
-import googleIcon from "../../../../public/images/google.png";
+import planetEarth from "../../../public/images/planet-earth.png";
+import googleIcon from "../../../public/images/google.png";
 import InputField from "./InputDiv";
 
 export default function Login() {
