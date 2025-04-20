@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-// import { motion } from "framer-motion";
+import { motion } from "framer-motion";
 import { Toaster, toast } from "sonner";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import axios from "./../../config/axiosConfig";
 import { Eye, EyeOff } from "lucide-react";
 import planetEarth from "../../../public/images/planet-earth.png";
 import googleIcon from "../../../public/images/google.png";
@@ -10,8 +10,6 @@ import InputField from "./InputDiv";
 
 export default function Login() {
     const navigate = useNavigate();
-    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
-    axios.defaults.headers.common["X-CSRF-TOKEN"] = csrfToken;
 
     const [formData, setFormData] = useState({
         email: "",
@@ -64,7 +62,7 @@ export default function Login() {
         setLoading(true);
 
         try {
-            const response = await axios.post("/api/login", formData);
+            const response = await axios.post("login", formData);
             toast.success("Login successful!");
             console.log("Success response:", response.data);
 

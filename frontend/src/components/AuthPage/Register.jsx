@@ -2,14 +2,12 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Toaster, toast } from "sonner";
 import { useNavigate } from "react-router-dom"; 
-import axios from "axios";
+import axios from "./../../config/axiosConfig";
 import planetEarth from "../../../public/images/planet-earth.png";
 import RegisterForm from "./RegisterForm";
 
 export default function Register() {
     const navigate = useNavigate();
-    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
-    axios.defaults.headers.common["X-CSRF-TOKEN"] = csrfToken;
     const [formData, setFormData] = useState({
         username: "",
         fullName: "",
@@ -110,7 +108,7 @@ export default function Register() {
         };
 
         try {
-            const response = await axios.post("/api/register", formattedData);
+            const response = await axios.post("register", formattedData);
             toast.success("Registration successful!");
             console.log("Success response:", response.data);
 
