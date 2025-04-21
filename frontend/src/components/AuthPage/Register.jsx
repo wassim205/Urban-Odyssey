@@ -113,7 +113,7 @@ export default function Register() {
             console.log("Success response:", response.data);
 
             setTimeout(() => {
-                navigate("/dashboard");
+                navigate("/urban-odyssey");
             }, 3000);
 
         } catch (err) {

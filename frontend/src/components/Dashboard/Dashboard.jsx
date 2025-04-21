@@ -1,9 +1,13 @@
-import React from 'react'
+import React from "react";
+import Navbar from "./Navbar";
 
 function Dashboard() {
   return (
-    <h1>HElloooooo</h1>
-  )
+    <>
+      <Navbar />
+      {/* <h1>HElloooooo</h1> */}
+    </>
+  );
 }
 
-export default Dashboard
+export default Dashboard;

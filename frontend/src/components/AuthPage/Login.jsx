@@ -67,7 +67,7 @@ export default function Login() {
             console.log("Success response:", response.data);
 
             setTimeout(() => {
-                navigate("/dashboard");
+                navigate("/urban-odyssey");
             }, 3000);
 
         } catch (err) {

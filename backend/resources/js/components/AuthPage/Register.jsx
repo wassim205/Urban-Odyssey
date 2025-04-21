@@ -115,7 +115,7 @@ export default function Register() {
             console.log("Success response:", response.data);
 
             setTimeout(() => {
-                window.location.href = "/dashboard";
+                window.location.href = "/urban-odyssey";
             }, 3000);
 
         } catch (err) {
