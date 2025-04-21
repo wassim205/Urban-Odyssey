@@ -113,7 +113,7 @@ export default function MainContent({ data }) {
                                 whileTap={{ scale: 0.98 }}
                                 className="bg-[#A45A3D] text-white font-bebas text-xl lg:text-[30px] rounded-[10px] w-full py-3"
                             >
-                                <a href="/UrbanOdyssey">
+                                <a href="/urban-odyssey">
                                     Or visit us before having an account
                                 </a>
                             </motion.button>

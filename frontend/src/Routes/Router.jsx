@@ -23,11 +23,11 @@ export const router = createBrowserRouter([
         element: <Login />
     },
     {
-        path: "/dashboard",
-        element: <Dashboard />
-    },
-    {
         path: "/logout",
         element: <Logout />
+    },
+    {
+        path: "/urban-odyssey",
+        element: <Dashboard />
     }
 ]);
