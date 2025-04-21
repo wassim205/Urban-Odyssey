@@ -74,19 +74,23 @@ export default function Map() {
         {/* Only render if marker is non‐null */}
         {marker && (
           <Marker position={[marker.lat, marker.lng]}>
-            <Popup>
-              <div className="flex items-center space-x-2">
-                <div>
-                  {marker.lat.toFixed(5)}, {marker.lng.toFixed(5)}
-                </div>
-                <Trash2
-                  size={16}
-                  className="cursor-pointer hover:text-red-600"
-                  onClick={() => setMarker(null)}
-                  title="Remove marker"
-                />
-              </div>
-            </Popup>
+           <Popup>
+  <div className="flex items-center space-x-2" onClick={(e) => e.stopPropagation()}>
+    <div>
+      {marker.lat.toFixed(5)}, {marker.lng.toFixed(5)}
+    </div>
+    <button
+      onClick={(e) => {
+        e.stopPropagation(); // prevent map click
+        setMarker(null);     // remove marker
+      }}
+      title="Remove marker"
+    >
+      <Trash2 size={16} className="hover:text-red-600" />
+    </button>
+  </div>
+</Popup>
+
           </Marker>
         )}
       </MapContainer>
