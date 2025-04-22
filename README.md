@@ -1,66 +1,89 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Urban Odyssey
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Urban Odyssey est une application web innovante conçue pour explorer une ville au-delà des attractions touristiques classiques. Elle offre des recommandations personnalisées de lieux intéressants, des informations pratiques sur les options de transport, et bien plus encore, pour rendre l'exploration urbaine accessible, enrichissante et personnalisée.
 
-## About Laravel
+## Problématique et Solution
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+De nombreux jeunes, qu'ils soient voyageurs, touristes ou résidents locaux, visitent souvent les mêmes lieux populaires sans vraiment découvrir tout ce qu'une ville peut offrir. Urban Odyssey a été créé pour résoudre ce problème en proposant :
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- Des recommandations de lieux méconnus mais intéressants.
+- Des informations sur les options de transport, leurs coûts approximatifs et les itinéraires adaptés.
+- Une expérience personnalisée basée sur les préférences des utilisateurs.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Avec Urban Odyssey, découvrez une ville d'une manière unique et enrichissante.
 
-## Learning Laravel
+## Aperçu du Projet
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### Titre du Projet
+Urban Odyssey
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### Objectif Principal
+Créer un site web convivial qui consolide les informations sur les attractions touristiques, les options de transport et les services à proximité.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### Fonctionnalités Clés
+- **Recommandations personnalisées** : Suggestions de lieux en fonction des intérêts des utilisateurs.
+- **Recherche par catégorie** : Trouvez des lieux comme des parcs, musées, etc.
+- **Informations sur les transports** : Itinéraires, coûts et options disponibles.
+- **Installations à proximité** : Découvrez les cafés, mosquées et magasins proches.
+- **Avis des utilisateurs** : Laissez des avis et notes sur les lieux visités.
+- **Cartes interactives** : Intégration d'une API pour la localisation et le routage.
 
-## Laravel Sponsors
+## Parties Prenantes
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+- **Équipe de Projet** : Wassim El Mourabit.
+- **Utilisateurs Finaux** : Touristes, résidents locaux, voyageurs.
+- **Entreprises Locales** : Restaurants, cafés, magasins, institutions culturelles.
 
-### Premium Partners
+## Structure du Répertoire
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+### Répertoire Principal
+- **README.md** : Vue d'ensemble du projet.
+- **Cahier des Charges** : Histoires d'utilisateur et exigences.
+- **Design** : Diagrammes UML (cas d'utilisation, classe) et designs Figma.
+- **Source Code** :
+  - **Backend** : PHP, avec ou sans Laravel.
+  - **Frontend** : HTML, CSS, JavaScript (React - CDN).
+- **Présentation** : Matériaux de présentation finale (lien Canva).
 
-## Contributing
+### Pages Nécessaires
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+#### Utilisateurs
+1. Page d’accueil
+2. Page de recherche et liste des lieux
+3. Page des détails d’un lieu
+4. Page d’ajout d’un avis
+5. Page d’inscription
+6. Page de connexion
+7. Page de profil utilisateur
+8. Page des favoris
 
-## Code of Conduct
+#### Administrateurs (Back-office)
+1. Page de connexion administrateur
+2. Tableau de bord (Dashboard)
+3. Gestion des utilisateurs (Voir, bloquer, supprimer)
+4. Gestion des lieux (Ajouter, modifier, supprimer)
+5. Gestion des avis (Modérer ou supprimer un avis)
+6. Statistiques et analyses (Graphiques sur les visites, avis, lieux populaires)
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## Exigences du Projet
 
-## Security Vulnerabilities
+### Fonctionnelles
+- Fournir des recommandations personnalisées.
+- Rechercher des lieux par catégories.
+- Afficher les informations sur les transports.
+- Lister les installations à proximité.
+- Intégrer une API de carte interactive.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### Non Fonctionnelles
+- **Performance** : Chargement rapide et mises à jour en temps réel.
+- **Utilisabilité** : Interface intuitive et accessible sur tous les appareils.
+- **Sécurité** : Authentification des utilisateurs pour sauvegarder les favoris et les avis.
 
-## License
+## Chronologie du Projet
+1. **Phase 1** : Recherche, collecte des exigences et documentation (3 semaines).
+2. **Phase 2** : Design et prototypage (2 semaines).
+3. **Phase 3** : Développement du backend et du frontend (7 semaines).
+4. **Phase 4** : Tests, corrections et améliorations (4 semaines).
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## Auteur
+Wassim El Mourabit
