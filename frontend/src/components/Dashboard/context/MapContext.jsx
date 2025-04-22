@@ -1,11 +1,9 @@
-"use client";
-
 import { createContext, useContext, useState, useEffect } from "react";
 import axios from "axios";
 import { layers } from "../ControlButtons/LayerSelector";
 
 const HERE_API_KEY = "IjZYas33oji9rGIjAPCPcs-HI2AJk9I2r4_KQIgvfqw";
-
+const UNSPLASH_ACCESS_KEY = "EnOe8sLfZHxRDJuFRxbkg1cjL2-oy-9lAk4tHFLItp8";
 // Create the context
 const MapContext = createContext(null);
 
@@ -54,9 +52,20 @@ export const MapProvider = ({ children }) => {
           },
         }
       );
-
+  
       const place = data.items?.[0];
-
+  
+      let image = null;
+      if (place) {
+        const title = place.title;
+        const category = place.categories?.[0]?.name;
+  
+        image =
+          (await fetchUnsplashImage(`${title} ${category}`)) ||
+          (await fetchUnsplashImage(category)) ||
+          (await fetchUnsplashImage("city landscape"));
+      }
+  
       setSelectedPlace({
         lat,
         lng,
@@ -65,6 +74,7 @@ export const MapProvider = ({ children }) => {
               title: place.title,
               address: place.address?.label,
               category: place.categories?.[0]?.name,
+              image,
             }
           : null,
       });
@@ -101,6 +111,29 @@ export const MapProvider = ({ children }) => {
         place: { title: `${lat.toFixed(5)}, ${lng.toFixed(5)}` },
       });
       setSidebarOpen(true);
+    }
+  };
+
+  const fetchUnsplashImage = async (query) => {
+    try {
+      const { data } = await axios.get(
+        "https://api.unsplash.com/search/photos",
+        {
+          params: {
+            query,
+            per_page: 1,
+            orientation: "landscape",
+          },
+          headers: {
+            Authorization: `Client-ID ${UNSPLASH_ACCESS_KEY}`,
+          },
+        }
+      );
+
+      return data.results?.[0]?.urls?.small || null;
+    } catch (err) {
+      console.error("Unsplash fetch error:", err);
+      return null;
     }
   };
 
