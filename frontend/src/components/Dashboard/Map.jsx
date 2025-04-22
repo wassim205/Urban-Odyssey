@@ -1,255 +1,211 @@
-import React, { useEffect, useState } from "react";
-import {
-  MapContainer,
-  TileLayer,
-  Marker,
-  Popup,
-  useMapEvents,
-} from "react-leaflet";
-import "leaflet/dist/leaflet.css";
+import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
 import L from "leaflet";
-import { Trash2 } from "lucide-react";
-import axios from "./../../config/axiosConfig";
-import Controls from "./Controls";
 import "leaflet/dist/leaflet.css";
-import fetchJsonp from "./../../utils/jsonp";
+import Controls from "./Controls";
+import {
+  ArrowLeftCircle,
+  Navigation,
+  MapPin,
+  Info,
+  Building,
+  X,
+  Bookmark,
+} from "lucide-react";
+import { useMapContext } from "./context/MapContext";
 
-// Fix leaflet default icon
-delete L.Icon.Default.prototype._getIconUrl;
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl:
-    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png",
+// Custom marker icon
+const customIcon = new L.Icon({
   iconUrl:
     "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png",
+  iconRetinaUrl:
+    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png",
   shadowUrl:
     "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41],
 });
 
-function ClickHandler({ onClick }) {
-  useMapEvents({
+function ClickHandler() {
+  const { fetchPlaceDetails, isLayerSelectorOpen } = useMapContext();
+
+  const map = useMapEvents({
     click(e) {
-      onClick(e.latlng);
+      // Check if the click target is part of the controls or layer selector
+      const target = e.originalEvent.target;
+      const isControlsClick =
+        target.closest(".bg-black\\/60") ||
+        target.closest(".layer-selector") ||
+        document.getElementById("layer-selector-backdrop");
+
+      // Only process map clicks if not clicking on controls
+      if (!isControlsClick && !isLayerSelectorOpen) {
+        fetchPlaceDetails(e.latlng);
+      }
     },
   });
   return null;
 }
 
-export default function Map() {
-  const [mapHeight, setMapHeight] = useState("calc(100vh - 64px)");
-  const [center] = useState([35.1688, -2.9296]);
-  const [marker, setMarker] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [tileLayer, setTileLayer] = useState({
-    name: "Default",
-    url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-    attribution: "&copy; OpenStreetMap contributors",
-  });
-
-  const [selectedPlace, setSelectedPlace] = useState(null);
-  const [wikipediaData, setWikipediaData] = useState(null);
-  const [flickrPhotos, setFlickrPhotos] = useState([]);
-
-  useEffect(() => {
-    const updateHeight = () => setMapHeight("calc(100vh - 64px)");
-    window.addEventListener("resize", updateHeight);
-    updateHeight();
-    return () => window.removeEventListener("resize", updateHeight);
-  }, []);
-
-  const fetchLabel = async ({ lat, lng }) => {
-    setLoading(true);
-    try {
-      const { data } = await axios.get(
-        "https://nominatim.openstreetmap.org/reverse",
-        {
-          params: {
-            lat,
-            lon: lng,
-            format: "json",
-          },
-          withCredentials: false,
-        }
-      );
-
-      const label = data.display_name || `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
-      setMarker({ lat, lng, label });
-    } catch (err) {
-      console.error("Reverse geocoding error:", err);
-      setMarker({ lat, lng, label: `${lat.toFixed(5)}, ${lng.toFixed(5)}` });
-    } finally {
-      setLoading(false);
-    }
-  };
-  const fetchPlaceDetails = async (latlng) => {
-    try {
-      const lat = latlng.lat;
-      const lng = latlng.lng;
-
-      const formattedCoords = `${lat}|${lng}`;
-
-      // Use JSONP for Wikimedia request
-      const wikiMediaResponse = await fetchJsonp(
-        `https://commons.wikimedia.org/w/api.php?action=query&list=geosearch&gscoord=${formattedCoords}&gsradius=1000&gslimit=5&format=json`
-      );
-      const wikiMediaData = wikiMediaResponse.query?.geosearch || [];
-
-      // Use Overpass API for OSM data
-      const overpassResponse = await axios.post(
-        "https://cors-anywhere.herokuapp.com/https://overpass-api.de/api/interpreter",
-        `[out:json];
-        (
-          node[~"name|amenity|tourism|shop|historic|building"~"."](around:100,${lat},${lng});
-          way[~"name|amenity|tourism|shop|historic|building"~"."](around:100,${lat},${lng});
-        );
-        out body;>;out skel qt;`,
-        {
-          headers: {
-            "Content-Type": "text/plain",
-            "X-Requested-With": "XMLHttpRequest"
-          },
-          withCredentials: false
-        }
-      );
-
-      const wikiMediaImages = processWikiMediaImages(
-        wikiMediaResponse.data?.query?.geosearch || []
-      );
-
-      const osmFeatures = processOSMData(overpassResponse.data.elements || []);
-
-      setSelectedPlace({
-        lat,
-        lng,
-        osmFeatures,
-      });
-    } catch (error) {
-      console.error("Error fetching place details:", error);
-      setSelectedPlace(null);
-    }
-  };
-  const processWikiMediaImages = (items) => {
-    return items.map((item) => ({
-      url: `https://commons.wikimedia.org/wiki/Special:FilePath/${encodeURIComponent(
-        item.title
-      )}`,
-      title: item.title,
-      thumbnail: `https://commons.wikimedia.org/w/thumb.php?f=${encodeURIComponent(
-        item.title
-      )}&w=200`,
-    }));
-  };
-
-  const processOSMData = (elements) => {
-    return elements
-      .filter(
-        (element) =>
-          element.tags?.name || element.tags?.amenity || element.tags?.tourism
-      )
-      .map((element) => ({
-        type:
-          element.tags?.amenity ||
-          element.tags?.tourism ||
-          element.tags?.shop ||
-          element.tags?.historic ||
-          element.tags?.building ||
-          element.type,
-        name: element.tags?.name || element.tags?.brand || "Unnamed Feature",
-        details: element.tags,
-      }));
-  };
-
-  // Update your ClickHandler usage
+export default function EnhancedMap() {
+  const {
+    center,
+    selectedPlace,
+    tileLayer,
+    sidebarOpen,
+    sidebarVisible,
+    handleCloseSidebar,
+    setSidebarOpen,
+    saveToFavorites,
+  } = useMapContext();
 
   return (
-    <div className="relative w-full" style={{ height: mapHeight }}>
-      <MapContainer
-        center={center}
-        zoom={13}
-        style={{ height: "100%", width: "100%" }}
+    <div className="w-full h-full relative flex overflow-hidden">
+      {/* Sidebar */}
+      <div
+        className={`w-80 bg-[#4B4B4D] text-gray-100 shadow-xl h-full z-20 absolute left-0 transition-transform duration-300 ease-in-out transform ${
+          sidebarOpen ? "translate-x-0" : "-translate-x-full"
+        }`}
+        style={{ display: sidebarVisible || sidebarOpen ? "block" : "none" }}
       >
-        <TileLayer attribution={tileLayer.attribution} url={tileLayer.url} />
-        <ClickHandler onClick={fetchLabel} />
-        <Controls onLocate={fetchLabel} onLayerChange={setTileLayer} />
+        <div className="flex flex-col h-full">
+          {/* Header */}
+          <div className="bg-[#3A3A3C] text-[#D8C292] px-6 py-4 flex justify-between items-center border-b border-[#5C5C5E]">
+            <h2 className="font-righteous text-2xl">LOCATION DETAILS</h2>
+            <button
+              onClick={handleCloseSidebar}
+              className="text-[#D8C292] hover:text-white transition p-1"
+              aria-label="Close sidebar"
+            >
+              <X size={24} />
+            </button>
+          </div>
 
-        <ClickHandler
-          onClick={(latlng) => {
-            fetchLabel(latlng);
-            fetchPlaceDetails(latlng);
-          }}
-        />
+          {/* Content */}
+          {selectedPlace && (
+            <div className="flex-grow overflow-y-auto px-6 py-4">
+              <div className="space-y-6">
 
-        {selectedPlace && (
-          <Marker position={[selectedPlace.lat, selectedPlace.lng]}>
-            <Popup className="custom-popup">
-              <div className="max-w-[300px]">
-                <h3 className="font-semibold mb-2">Location Details</h3>
-
-                {selectedPlace.osmFeatures.map((feature, index) => (
-                  <div key={index} className="mb-3">
-                    <p className="font-medium">{feature.name}</p>
-                    <p className="text-sm text-gray-600">{feature.type}</p>
+                {/* Pic Section */}
+                {/* Pics here will be displayed after by checking the database first */}
+                {selectedPlace?.place?.image && (
+                  <img
+                    src={selectedPlace.place.image}
+                    alt={selectedPlace.place.title}
+                    className="w-full h-32 object-cover rounded mb-2"
+                  />
+                )}
+                {/* Title Section */}
+                <div className="animate-fadeIn bg-[#5C5C5E] p-4 rounded-lg shadow-md">
+                  <div className="flex items-center space-x-2 mb-2">
+                    <MapPin size={20} className="text-[#D8C292]" />
+                    <h3 className="font-bebas text-xl text-[#D8C292]">NAME</h3>
                   </div>
-                ))}
+                  <p className="text-white text-lg pl-7">
+                    {selectedPlace.place?.title || "Unknown Location"}
+                  </p>
+                </div>
 
-                {selectedPlace.images?.wikiMediaImages.length > 0 && (
-                  <div className="mt-3">
-                    <h4 className="text-sm font-medium mb-1">
-                      Wikimedia Images
-                    </h4>
-                    <div className="grid grid-cols-2 gap-2">
-                      {selectedPlace.images.wikiMediaImages.map(
-                        (img, index) => (
-                          <a
-                            key={index}
-                            href={img.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="group"
-                          >
-                            <img
-                              src={img.thumbnail}
-                              alt={img.title}
-                              className="w-full h-20 object-cover rounded group-hover:opacity-75"
-                            />
-                          </a>
-                        )
-                      )}
+                {/* Category Section */}
+                {selectedPlace.place?.category && (
+                  <div className="animate-fadeIn animation-delay-100 bg-[#5C5C5E] p-4 rounded-lg shadow-md">
+                    <div className="flex items-center space-x-2 mb-2">
+                      <Building size={20} className="text-[#D8C292]" />
+                      <h3 className="font-bebas text-xl text-[#D8C292]">
+                        CATEGORY
+                      </h3>
                     </div>
+                    <p className="text-white text-lg pl-7">
+                      {selectedPlace.place.category}
+                    </p>
                   </div>
                 )}
 
-                {selectedPlace.osmFeatures.length > 0 && (
-                  <div className="mt-3">
-                    <h4 className="text-sm font-medium mb-1">OSM Features</h4>
-                    <ul className="space-y-2">
-                      {selectedPlace.osmFeatures.map((feature, index) => (
-                        <div key={index} className="mb-3">
-                          {feature.name !== "Unnamed Feature" && (
-                            <p className="font-medium">{feature.name}</p>
-                          )}
-                          <p className="text-sm text-gray-600">
-                            {feature.type.replace(/_/g, " ")}
-                          </p>
-                          {feature.details?.website && (
-                            <a
-                              href={feature.details.website}
-                              className="text-blue-600 text-xs block truncate"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                            >
-                              {feature.details.website}
-                            </a>
-                          )}
-                        </div>
-                      ))}
-                    </ul>
+                {/* Address Section */}
+                {selectedPlace.place?.address && (
+                  <div className="animate-fadeIn animation-delay-200 bg-[#5C5C5E] p-4 rounded-lg shadow-md">
+                    <div className="flex items-center space-x-2 mb-2">
+                      <Info size={20} className="text-[#D8C292]" />
+                      <h3 className="font-bebas text-xl text-[#D8C292]">
+                        ADDRESS
+                      </h3>
+                    </div>
+                    <p className="text-white text-lg pl-7">
+                      {selectedPlace.place.address}
+                    </p>
                   </div>
                 )}
+
+                {/* Coordinates Section */}
+                <div className="animate-fadeIn animation-delay-300 bg-[#5C5C5E] p-4 rounded-lg shadow-md">
+                  <div className="flex items-center space-x-2 mb-2">
+                    <Navigation size={20} className="text-[#D8C292]" />
+                    <h3 className="font-bebas text-xl text-[#D8C292]">
+                      COORDINATES
+                    </h3>
+                  </div>
+                  <p className="text-white text-lg pl-7">
+                    {selectedPlace.lat.toFixed(6)},{" "}
+                    {selectedPlace.lng.toFixed(6)}
+                  </p>
+                </div>
               </div>
-            </Popup>
-          </Marker>
-        )}
-      </MapContainer>
+            </div>
+          )}
+
+          {/* Footer Actions */}
+          <div className="px-6 py-4 bg-[#3A3A3C] border-t border-[#5C5C5E] space-y-3">
+            <button
+              className="w-full bg-[#D8C292] hover:bg-[#E8D2A2] text-[#3A3A3C] font-bebas text-xl py-3 px-4 rounded-lg transition duration-200 flex items-center justify-center shadow-md"
+              onClick={saveToFavorites}
+            >
+              <Bookmark size={20} className="mr-2" />
+              SAVE TO FAVORITES
+            </button>
+
+            <button
+              className="w-full bg-[#5C5C5E] hover:bg-[#6E6E70] text-white font-bebas text-xl py-3 px-4 rounded-lg transition duration-200 flex items-center justify-center shadow-md"
+              onClick={handleCloseSidebar}
+            >
+              <ArrowLeftCircle size={20} className="mr-2" />
+              CLOSE
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Map Container */}
+      <div className="flex-grow h-full transition-all duration-300">
+        <MapContainer
+          center={center}
+          zoom={13}
+          style={{ height: "100%" }}
+          className="z-0"
+        >
+          <TileLayer url={tileLayer.url} attribution={tileLayer.attribution} />
+          <ClickHandler />
+          <Controls />
+
+          {selectedPlace && (
+            <Marker
+              position={[selectedPlace.lat, selectedPlace.lng]}
+              icon={customIcon}
+            />
+          )}
+        </MapContainer>
+      </div>
+
+      {/* Mobile Toggle Button - shows when sidebar is closed */}
+      {selectedPlace && !sidebarOpen && (
+        <button
+          onClick={() => setSidebarOpen(true)}
+          className="absolute bottom-6 left-6 z-10 bg-[#4B4B4D] text-[#D8C292] p-3 rounded-full shadow-lg hover:bg-[#5C5C5E] transition duration-200 animate-fadeIn"
+          aria-label="Show location details"
+        >
+          <Info size={24} />
+        </button>
+      )}
     </div>
   );
 }
