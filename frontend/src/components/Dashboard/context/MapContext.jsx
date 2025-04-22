@@ -35,7 +35,7 @@ export const MapProvider = ({ children }) => {
     } else {
       const timer = setTimeout(() => {
         setSidebarVisible(false);
-      }, 300); // Match this with the CSS transition time
+      }, 300);
       return () => clearTimeout(timer);
     }
   }, [sidebarOpen]);
