@@ -29,7 +29,10 @@ function LocationButton({ onLocate }) {
 
   return (
     <button
-      onClick={handleClick}
+      onClick={(e) => {
+        e.stopPropagation();
+        handleClick();
+      }}
       className="w-full aspect-square rounded-md hover:bg-[#D8C292]/70 transition duration-300 p-1 flex items-center justify-center"
       title="Show My Location"
     >
