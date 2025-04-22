@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   MapContainer,
   TileLayer,
@@ -10,6 +10,7 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import axios from "axios";
 import Controls from "./Controls";
+import { ArrowLeftCircle, Navigation, MapPin, Info, Building, Map, X, Bookmark } from "lucide-react";
 
 // Custom marker icon
 const customIcon = new L.Icon({
@@ -42,6 +43,19 @@ export default function EnhancedMap() {
     attribution: "&copy; OpenStreetMap contributors",
   });
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarVisible, setSidebarVisible] = useState(false);
+
+  // Handle animations
+  useEffect(() => {
+    if (sidebarOpen) {
+      setSidebarVisible(true);
+    } else {
+      const timer = setTimeout(() => {
+        setSidebarVisible(false);
+      }, 300); // Match this with the CSS transition time
+      return () => clearTimeout(timer);
+    }
+  }, [sidebarOpen]);
 
   const fetchPlaceDetails = async ({ lat, lng }) => {
     try {
@@ -106,79 +120,108 @@ export default function EnhancedMap() {
 
   const handleCloseSidebar = () => {
     setSidebarOpen(false);
-    setSelectedPlace(null);
+  };
+
+  const saveToFavorites = () => {
+    // This would be implemented to save the location to favorites
+    console.log("Saving to favorites:", selectedPlace);
+    // Display success message or visual feedback
   };
 
   return (
-    <div className="w-full h-screen relative flex">
+    <div className="w-full h-full relative flex overflow-hidden">
       {/* Sidebar */}
-      {sidebarOpen && selectedPlace && (
-        <div className="w-64 bg-white shadow-lg z-10 h-full overflow-y-auto">
-          <div className="p-4">
-            <div className="flex justify-between items-center border-b pb-2 mb-4">
-              <h3 className="font-bold text-lg text-gray-800">Location Details</h3>
-              <button
-                onClick={handleCloseSidebar}
-                className="text-gray-500 hover:text-red-600 transition-colors"
-                aria-label="Close sidebar"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                  <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
-                </svg>
-              </button>
-            </div>
-            
-            <div>
-              {selectedPlace.place ? (
-                <>
-                  <div className="mb-4">
-                    <h4 className="font-semibold text-base text-gray-700">Name</h4>
-                    <p className="text-gray-900">{selectedPlace.place.title}</p>
+      <div 
+        className={`w-80 bg-[#4B4B4D] text-gray-100 shadow-xl h-full z-20 absolute left-0 transition-transform duration-300 ease-in-out transform ${
+          sidebarOpen ? "translate-x-0" : "-translate-x-full"
+        }`}
+        style={{ display: sidebarVisible || sidebarOpen ? "block" : "none" }}
+      >
+        <div className="flex flex-col h-full">
+          {/* Header */}
+          <div className="bg-[#3A3A3C] text-[#D8C292] px-6 py-4 flex justify-between items-center border-b border-[#5C5C5E]">
+            <h2 className="font-righteous text-2xl">LOCATION DETAILS</h2>
+            <button
+              onClick={handleCloseSidebar}
+              className="text-[#D8C292] hover:text-white transition p-1"
+              aria-label="Close sidebar"
+            >
+              <X size={24} />
+            </button>
+          </div>
+
+          {/* Content */}
+          {selectedPlace && (
+            <div className="flex-grow overflow-y-auto px-6 py-4">
+              <div className="space-y-6">
+                {/* Title Section */}
+                <div className="animate-fadeIn bg-[#5C5C5E] p-4 rounded-lg shadow-md">
+                  <div className="flex items-center space-x-2 mb-2">
+                    <MapPin size={20} className="text-[#D8C292]" />
+                    <h3 className="font-bebas text-xl text-[#D8C292]">NAME</h3>
                   </div>
-                  
-                  {selectedPlace.place.category && (
-                    <div className="mb-4">
-                      <h4 className="font-semibold text-base text-gray-700">Category</h4>
-                      <p className="text-gray-900">{selectedPlace.place.category}</p>
+                  <p className="text-white text-lg pl-7">{selectedPlace.place?.title || "Unknown Location"}</p>
+                </div>
+
+                {/* Category Section */}
+                {selectedPlace.place?.category && (
+                  <div className="animate-fadeIn animation-delay-100 bg-[#5C5C5E] p-4 rounded-lg shadow-md">
+                    <div className="flex items-center space-x-2 mb-2">
+                      <Building size={20} className="text-[#D8C292]" />
+                      <h3 className="font-bebas text-xl text-[#D8C292]">CATEGORY</h3>
                     </div>
-                  )}
-                  
-                  {selectedPlace.place.address && (
-                    <div className="mb-4">
-                      <h4 className="font-semibold text-base text-gray-700">Address</h4>
-                      <p className="text-gray-900">{selectedPlace.place.address}</p>
-                    </div>
-                  )}
-                  
-                  <div className="mb-4">
-                    <h4 className="font-semibold text-base text-gray-700">Coordinates</h4>
-                    <p className="text-gray-900">
-                      {selectedPlace.lat.toFixed(6)}, {selectedPlace.lng.toFixed(6)}
-                    </p>
+                    <p className="text-white text-lg pl-7">{selectedPlace.place.category}</p>
                   </div>
-                </>
-              ) : (
-                <p className="text-gray-500 italic">No place information available for this location.</p>
-              )}
-              
-              <div className="mt-6 pt-4 border-t">
-                <button 
-                  className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded w-full flex items-center justify-center"
-                  onClick={handleCloseSidebar}
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                    <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
-                  </svg>
-                  Remove Location
-                </button>
+                )}
+
+                {/* Address Section */}
+                {selectedPlace.place?.address && (
+                  <div className="animate-fadeIn animation-delay-200 bg-[#5C5C5E] p-4 rounded-lg shadow-md">
+                    <div className="flex items-center space-x-2 mb-2">
+                      <Info size={20} className="text-[#D8C292]" />
+                      <h3 className="font-bebas text-xl text-[#D8C292]">ADDRESS</h3>
+                    </div>
+                    <p className="text-white text-lg pl-7">{selectedPlace.place.address}</p>
+                  </div>
+                )}
+
+                {/* Coordinates Section */}
+                <div className="animate-fadeIn animation-delay-300 bg-[#5C5C5E] p-4 rounded-lg shadow-md">
+                  <div className="flex items-center space-x-2 mb-2">
+                    <Navigation size={20} className="text-[#D8C292]" />
+                    <h3 className="font-bebas text-xl text-[#D8C292]">COORDINATES</h3>
+                  </div>
+                  <p className="text-white text-lg pl-7">
+                    {selectedPlace.lat.toFixed(6)}, {selectedPlace.lng.toFixed(6)}
+                  </p>
+                </div>
               </div>
             </div>
+          )}
+
+          {/* Footer Actions */}
+          <div className="px-6 py-4 bg-[#3A3A3C] border-t border-[#5C5C5E] space-y-3">
+            <button 
+              className="w-full bg-[#D8C292] hover:bg-[#E8D2A2] text-[#3A3A3C] font-bebas text-xl py-3 px-4 rounded-lg transition duration-200 flex items-center justify-center shadow-md"
+              onClick={saveToFavorites}
+            >
+              <Bookmark size={20} className="mr-2" />
+              SAVE TO FAVORITES
+            </button>
+            
+            <button 
+              className="w-full bg-[#5C5C5E] hover:bg-[#6E6E70] text-white font-bebas text-xl py-3 px-4 rounded-lg transition duration-200 flex items-center justify-center shadow-md"
+              onClick={handleCloseSidebar}
+            >
+              <ArrowLeftCircle size={20} className="mr-2" />
+              CLOSE
+            </button>
           </div>
         </div>
-      )}
+      </div>
       
       {/* Map Container */}
-      <div className={`${sidebarOpen ? 'flex-grow' : 'w-full'} h-full`}>
+      <div className="flex-grow h-full transition-all duration-300">
         <MapContainer 
           center={center} 
           zoom={13} 
@@ -199,6 +242,17 @@ export default function EnhancedMap() {
           )}
         </MapContainer>
       </div>
+      
+      {/* Mobile Toggle Button - shows when sidebar is closed */}
+      {selectedPlace && !sidebarOpen && (
+        <button
+          onClick={() => setSidebarOpen(true)}
+          className="absolute bottom-6 left-6 z-10 bg-[#4B4B4D] text-[#D8C292] p-3 rounded-full shadow-lg hover:bg-[#5C5C5E] transition duration-200 animate-fadeIn"
+          aria-label="Show location details"
+        >
+          <Info size={24} />
+        </button>
+      )}
     </div>
   );
 }
