@@ -237,6 +237,7 @@ export default function EnhancedMap() {
               setTileLayer(layer)
             }}
             onLayerSelectorToggle={setIsLayerSelectorOpen}
+            setSidebarOpen={setSidebarOpen}
           />
 
           {selectedPlace && <Marker position={[selectedPlace.lat, selectedPlace.lng]} icon={customIcon} />}

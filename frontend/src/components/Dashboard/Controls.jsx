@@ -3,7 +3,7 @@ import LocationButton from "./ControlButtons/LocationButton"
 import LayerButton from "./ControlButtons/LayerButton"
 import LayerSelector, { layers } from "./ControlButtons/LayerSelector"
 
-function Controls({ onLocate, onLayerChange, onLayerSelectorToggle }) {
+function Controls({ onLocate, onLayerChange, onLayerSelectorToggle, setSidebarOpen }) {
   const [isLayerSelectorOpen, setIsLayerSelectorOpen] = useState(false)
   const [currentLayer, setCurrentLayer] = useState(layers[0])
 
@@ -29,8 +29,10 @@ function Controls({ onLocate, onLayerChange, onLayerSelectorToggle }) {
             const newState = !isLayerSelectorOpen
             setIsLayerSelectorOpen(newState)
             onLayerSelectorToggle(newState)
+            setSidebarOpen(false)
           }}
           isActive={isLayerSelectorOpen}
+
         />
       </div>
 
