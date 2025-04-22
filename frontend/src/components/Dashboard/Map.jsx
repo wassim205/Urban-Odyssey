@@ -1,17 +1,10 @@
-import React, { useState, useEffect } from "react";
-import {
-  MapContainer,
-  TileLayer,
-  Marker,
-  useMapEvents,
-  useMap,
-} from "react-leaflet";
-import L from "leaflet";
-import "leaflet/dist/leaflet.css";
-import axios from "axios";
-import Controls from "./Controls";
-import { ArrowLeftCircle, Navigation, MapPin, Info, Building, Map, X, Bookmark } from "lucide-react";
-import { layers } from "./ControlButtons/LayerSelector";
+
+import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet"
+import L from "leaflet"
+import "leaflet/dist/leaflet.css"
+import Controls from "./Controls"
+import { ArrowLeftCircle, Navigation, MapPin, Info, Building, X, Bookmark } from "lucide-react"
+import { useMapContext } from "./context/MapContext"
 
 // Custom marker icon
 const customIcon = new L.Icon({
@@ -21,22 +14,24 @@ const customIcon = new L.Icon({
   iconSize: [25, 41],
   iconAnchor: [12, 41],
   popupAnchor: [1, -34],
-  shadowSize: [41, 41]
-});
+  shadowSize: [41, 41],
+})
 
-const HERE_API_KEY = "IjZYas33oji9rGIjAPCPcs-HI2AJk9I2r4_KQIgvfqw";
+function ClickHandler() {
+  const { fetchPlaceDetails, isLayerSelectorOpen } = useMapContext()
 
-function ClickHandler({ onMapClick, isLayerSelectorOpen }) {
   const map = useMapEvents({
     click(e) {
+      // Check if the click target is part of the controls or layer selector
       const target = e.originalEvent.target
       const isControlsClick =
         target.closest(".bg-black\\/60") ||
         target.closest(".layer-selector") ||
         document.getElementById("layer-selector-backdrop")
 
+      // Only process map clicks if not clicking on controls
       if (!isControlsClick && !isLayerSelectorOpen) {
-        onMapClick(e.latlng)
+        fetchPlaceDetails(e.latlng)
       }
     },
   })
@@ -44,95 +39,8 @@ function ClickHandler({ onMapClick, isLayerSelectorOpen }) {
 }
 
 export default function EnhancedMap() {
-  const [center] = useState([35.1688, -2.9296]);
-  const [selectedPlace, setSelectedPlace] = useState(null);
-  const [tileLayer, setTileLayer] = useState(layers[0]);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [sidebarVisible, setSidebarVisible] = useState(false);
-  const [isLayerSelectorOpen, setIsLayerSelectorOpen] = useState(false);
-
-  // Handle animations
-  useEffect(() => {
-    if (sidebarOpen) {
-      setSidebarVisible(true);
-    } else {
-      const timer = setTimeout(() => {
-        setSidebarVisible(false);
-      }, 300);
-      return () => clearTimeout(timer);
-    }
-  }, [sidebarOpen]);
-
-  const fetchPlaceDetails = async ({ lat, lng }) => {
-    try {
-      const { data } = await axios.get(
-        "https://revgeocode.search.hereapi.com/v1/revgeocode",
-        {
-          params: {
-            at: `${lat},${lng}`,
-            apiKey: HERE_API_KEY,
-          },
-        }
-      );
-
-      const place = data.items?.[0];
-
-      setSelectedPlace({
-        lat,
-        lng,
-        place: place
-          ? {
-              title: place.title,
-              address: place.address?.label,
-              category: place.categories?.[0]?.name,
-            }
-          : null,
-      });
-      setSidebarOpen(true);
-    } catch (error) {
-      console.error("Reverse geocode error", error);
-      setSelectedPlace({ lat, lng, place: null });
-      setSidebarOpen(true);
-    }
-  };
-
-  const fetchLabel = async ({ lat, lng }) => {
-    try {
-      const { data } = await axios.get(
-        "https://nominatim.openstreetmap.org/reverse",
-        {
-          params: {
-            lat,
-            lon: lng,
-            format: "json",
-          },
-          withCredentials: false,
-        }
-      );
-
-      const label = data.display_name || `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
-      setSelectedPlace({ lat, lng, place: { title: label } });
-      setSidebarOpen(true);
-    } catch (err) {
-      console.error("Reverse geocoding error:", err);
-      setSelectedPlace({
-        lat,
-        lng,
-        place: { title: `${lat.toFixed(5)}, ${lng.toFixed(5)}` },
-      });
-      setSidebarOpen(true);
-    }
-  };
-
-  const handleCloseSidebar = () => {
-    setSidebarOpen(false);
-  };
-
-  const saveToFavorites = () => {
-    // This would be implemented to save the location to favorites
-    console.log("Saving to favorites:", selectedPlace);
-    // Display success message or visual feedback
-  };
+  const { center, selectedPlace, tileLayer, sidebarOpen, sidebarVisible, handleCloseSidebar, setSidebarOpen, saveToFavorites } =
+    useMapContext()
 
   return (
     <div className="w-full h-full relative flex overflow-hidden">
@@ -230,15 +138,8 @@ export default function EnhancedMap() {
       <div className="flex-grow h-full transition-all duration-300">
         <MapContainer center={center} zoom={13} style={{ height: "100%" }} className="z-0">
           <TileLayer url={tileLayer.url} attribution={tileLayer.attribution} />
-          <ClickHandler onMapClick={fetchPlaceDetails} isLayerSelectorOpen={isLayerSelectorOpen} />
-          <Controls
-            onLocate={fetchLabel}
-            onLayerChange={(layer) => {
-              setTileLayer(layer)
-            }}
-            onLayerSelectorToggle={setIsLayerSelectorOpen}
-            setSidebarOpen={setSidebarOpen}
-          />
+          <ClickHandler />
+          <Controls />
 
           {selectedPlace && <Marker position={[selectedPlace.lat, selectedPlace.lng]} icon={customIcon} />}
         </MapContainer>

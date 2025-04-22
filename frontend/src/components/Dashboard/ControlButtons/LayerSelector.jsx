@@ -1,5 +1,6 @@
 
 import { useRef, useEffect } from "react"
+import { useMapContext } from "../context/Mapcontext"
 
 const layers = [
   {
@@ -34,7 +35,8 @@ const layers = [
   },
 ]
 
-function LayerSelector({ isOpen, onLayerChange, onClose, currentLayer }) {
+function LayerSelector() {
+  const { isLayerSelectorOpen, toggleLayerSelector, changeLayer, tileLayer } = useMapContext()
   const scrollContainerRef = useRef(null)
   const selectorRef = useRef(null)
 
@@ -48,16 +50,17 @@ function LayerSelector({ isOpen, onLayerChange, onClose, currentLayer }) {
     }
 
     const container = scrollContainerRef.current
-    if (container && isOpen) {
+    if (container && isLayerSelectorOpen) {
       container.addEventListener("wheel", handleWheel, { passive: false })
     }
+
 
     return () => {
       if (container) {
         container.removeEventListener("wheel", handleWheel)
       }
     }
-  }, [isOpen])
+  }, [isLayerSelectorOpen])
 
   // Prevent map interactions when touching the layer selector
   useEffect(() => {
@@ -66,7 +69,7 @@ function LayerSelector({ isOpen, onLayerChange, onClose, currentLayer }) {
     }
 
     const selector = selectorRef.current
-    if (selector && isOpen) {
+    if (selector && isLayerSelectorOpen) {
       selector.addEventListener("touchstart", preventMapInteraction)
       selector.addEventListener("touchmove", preventMapInteraction)
       selector.addEventListener("touchend", preventMapInteraction)
@@ -79,18 +82,18 @@ function LayerSelector({ isOpen, onLayerChange, onClose, currentLayer }) {
         selector.removeEventListener("touchend", preventMapInteraction)
       }
     }
-  }, [isOpen])
+  }, [isLayerSelectorOpen])
 
   // Add overlay when layer selector is open on mobile
   useEffect(() => {
-    if (isOpen) {
+    if (isLayerSelectorOpen) {
       document.body.classList.add("overflow-hidden")
 
       // Create backdrop overlay on mobile
       const backdrop = document.createElement("div")
       backdrop.id = "layer-selector-backdrop"
       backdrop.className = "fixed inset-0 z-[999] bg-black/40 md:hidden"
-      backdrop.addEventListener("click", onClose)
+      backdrop.addEventListener("click", () => toggleLayerSelector(false))
       document.body.appendChild(backdrop)
     } else {
       document.body.classList.remove("overflow-hidden")
@@ -98,7 +101,7 @@ function LayerSelector({ isOpen, onLayerChange, onClose, currentLayer }) {
       // Remove backdrop
       const backdrop = document.getElementById("layer-selector-backdrop")
       if (backdrop) {
-        backdrop.removeEventListener("click", onClose)
+        backdrop.removeEventListener("click", () => toggleLayerSelector(false))
         backdrop.remove()
       }
     }
@@ -107,22 +110,22 @@ function LayerSelector({ isOpen, onLayerChange, onClose, currentLayer }) {
       document.body.classList.remove("overflow-hidden")
       const backdrop = document.getElementById("layer-selector-backdrop")
       if (backdrop) {
-        backdrop.removeEventListener("click", onClose)
+        backdrop.removeEventListener("click", () => toggleLayerSelector(false))
         backdrop.remove()
       }
     }
-  }, [isOpen, onClose])
+  }, [isLayerSelectorOpen, toggleLayerSelector])
 
-  if (!isOpen) return null
+  if (!isLayerSelectorOpen) return null
 
   return (
     <>
-      {isOpen && (
+      {isLayerSelectorOpen && (
         <div
           className="fixed inset-0 z-[1111] bg-black/0"
           onClick={(e) => {
             e.stopPropagation()
-            onClose()
+            toggleLayerSelector(false)
           }}
         />
       )}
@@ -139,7 +142,7 @@ function LayerSelector({ isOpen, onLayerChange, onClose, currentLayer }) {
           <button
             onClick={(e) => {
               e.stopPropagation()
-              onClose()
+              toggleLayerSelector(false)
             }}
             className="text-white hover:text-[#D8C292]"
           >
@@ -163,10 +166,10 @@ function LayerSelector({ isOpen, onLayerChange, onClose, currentLayer }) {
               key={layer.name}
               onClick={(e) => {
                 e.stopPropagation()
-                onLayerChange(layer)
+                changeLayer(layer)
               }}
               className={`cursor-pointer rounded-md overflow-hidden border-2 hover:border-[#D8C292] transition-all ${
-                currentLayer.name === layer.name ? "border-[#D8C292] ring-2 ring-[#D8C292]/50" : "border-gray-200"
+                tileLayer.name === layer.name ? "border-[#D8C292] ring-2 ring-[#D8C292]/50" : "border-gray-200"
               }`}
             >
               <div className="relative">
