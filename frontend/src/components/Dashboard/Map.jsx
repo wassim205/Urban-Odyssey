@@ -11,6 +11,7 @@ import "leaflet/dist/leaflet.css";
 import axios from "axios";
 import Controls from "./Controls";
 import { ArrowLeftCircle, Navigation, MapPin, Info, Building, Map, X, Bookmark } from "lucide-react";
+import { layers } from "./ControlButtons/LayerSelector";
 
 // Custom marker icon
 const customIcon = new L.Icon({
@@ -25,25 +26,30 @@ const customIcon = new L.Icon({
 
 const HERE_API_KEY = "IjZYas33oji9rGIjAPCPcs-HI2AJk9I2r4_KQIgvfqw";
 
-function ClickHandler({ onMapClick }) {
-  useMapEvents({
+function ClickHandler({ onMapClick, isLayerSelectorOpen }) {
+  const map = useMapEvents({
     click(e) {
-      onMapClick(e.latlng);
+      const target = e.originalEvent.target
+      const isControlsClick =
+        target.closest(".bg-black\\/60") ||
+        target.closest(".layer-selector") ||
+        document.getElementById("layer-selector-backdrop")
+
+      if (!isControlsClick && !isLayerSelectorOpen) {
+        onMapClick(e.latlng)
+      }
     },
-  });
-  return null;
+  })
+  return null
 }
 
 export default function EnhancedMap() {
   const [center] = useState([35.1688, -2.9296]);
   const [selectedPlace, setSelectedPlace] = useState(null);
-  const [tileLayer, setTileLayer] = useState({
-    name: "Default",
-    url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-    attribution: "&copy; OpenStreetMap contributors",
-  });
+  const [tileLayer, setTileLayer] = useState(layers[0]);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [sidebarVisible, setSidebarVisible] = useState(false);
+  const [isLayerSelectorOpen, setIsLayerSelectorOpen] = useState(false);
 
   // Handle animations
   useEffect(() => {
@@ -52,7 +58,7 @@ export default function EnhancedMap() {
     } else {
       const timer = setTimeout(() => {
         setSidebarVisible(false);
-      }, 300); // Match this with the CSS transition time
+      }, 300);
       return () => clearTimeout(timer);
     }
   }, [sidebarOpen]);
@@ -131,7 +137,7 @@ export default function EnhancedMap() {
   return (
     <div className="w-full h-full relative flex overflow-hidden">
       {/* Sidebar */}
-      <div 
+      <div
         className={`w-80 bg-[#4B4B4D] text-gray-100 shadow-xl h-full z-20 absolute left-0 transition-transform duration-300 ease-in-out transform ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         }`}
@@ -201,15 +207,15 @@ export default function EnhancedMap() {
 
           {/* Footer Actions */}
           <div className="px-6 py-4 bg-[#3A3A3C] border-t border-[#5C5C5E] space-y-3">
-            <button 
+            <button
               className="w-full bg-[#D8C292] hover:bg-[#E8D2A2] text-[#3A3A3C] font-bebas text-xl py-3 px-4 rounded-lg transition duration-200 flex items-center justify-center shadow-md"
               onClick={saveToFavorites}
             >
               <Bookmark size={20} className="mr-2" />
               SAVE TO FAVORITES
             </button>
-            
-            <button 
+
+            <button
               className="w-full bg-[#5C5C5E] hover:bg-[#6E6E70] text-white font-bebas text-xl py-3 px-4 rounded-lg transition duration-200 flex items-center justify-center shadow-md"
               onClick={handleCloseSidebar}
             >
@@ -219,30 +225,24 @@ export default function EnhancedMap() {
           </div>
         </div>
       </div>
-      
+
       {/* Map Container */}
       <div className="flex-grow h-full transition-all duration-300">
-        <MapContainer 
-          center={center} 
-          zoom={13} 
-          style={{ height: "100%" }}
-          className="z-0"
-        >
+        <MapContainer center={center} zoom={13} style={{ height: "100%" }} className="z-0">
           <TileLayer url={tileLayer.url} attribution={tileLayer.attribution} />
-          <ClickHandler onMapClick={fetchPlaceDetails} />
+          <ClickHandler onMapClick={fetchPlaceDetails} isLayerSelectorOpen={isLayerSelectorOpen} />
           <Controls
             onLocate={fetchLabel}
             onLayerChange={(layer) => {
-              setTileLayer(layer);
+              setTileLayer(layer)
             }}
+            onLayerSelectorToggle={setIsLayerSelectorOpen}
           />
 
-          {selectedPlace && (
-            <Marker position={[selectedPlace.lat, selectedPlace.lng]} icon={customIcon} />
-          )}
+          {selectedPlace && <Marker position={[selectedPlace.lat, selectedPlace.lng]} icon={customIcon} />}
         </MapContainer>
       </div>
-      
+
       {/* Mobile Toggle Button - shows when sidebar is closed */}
       {selectedPlace && !sidebarOpen && (
         <button
@@ -254,5 +254,5 @@ export default function EnhancedMap() {
         </button>
       )}
     </div>
-  );
+  )
 }
