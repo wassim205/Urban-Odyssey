@@ -10,11 +10,6 @@ class Place extends Model
 {
     use HasFactory;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
     protected $fillable = [
         'name',
         'city',
@@ -27,9 +22,6 @@ class Place extends Model
         'category',
     ];
 
-    /**
-     * The users that have favorited this place.
-     */
     public function favoritedBy(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'user_favorites')

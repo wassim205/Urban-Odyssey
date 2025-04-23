@@ -10,28 +10,18 @@ class Favorite extends Model
 {
     use HasFactory;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
+    protected $table = 'user_favorites';
     protected $fillable = [
         'user_id',
         'place_id',
     ];
 
-    /**
-     * Get the user that owns the favorite.
-     */
-    public function user(): BelongsTo
+    public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    /**
-     * Get the place that is favorited.
-     */
-    public function place(): BelongsTo
+    public function place()
     {
         return $this->belongsTo(Place::class);
     }
