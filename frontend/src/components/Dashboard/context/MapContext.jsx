@@ -1,112 +1,109 @@
 import { createContext, useContext, useState, useEffect } from "react"
 import axios from "axios"
+import axiosConfig from "./../../../config/axiosConfig"
 import { layers } from "./../ControlButtons/LayerSelector"
+import { toast } from "sonner"
 
 const HERE_API_KEY = "IjZYas33oji9rGIjAPCPcs-HI2AJk9I2r4_KQIgvfqw"
 const UNSPLASH_ACCESS_KEY = "EnOe8sLfZHxRDJuFRxbkg1cjL2-oy-9lAk4tHFLItp8"
 
-// Create the context
 const MapContext = createContext(null)
 
-// Custom hook to use the map context
 export const useMapContext = () => {
   const context = useContext(MapContext)
-  if (!context) {
-    throw new Error("useMapContext must be used within a MapProvider")
-  }
+  if (!context) throw new Error("useMapContext must be used within a MapProvider")
   return context
 }
 
-// Provider component
 export const MapProvider = ({ children }) => {
-  // Map state
   const [center, setCenter] = useState([35.1688, -2.9296])
   const [selectedPlace, setSelectedPlace] = useState(null)
   const [tileLayer, setTileLayer] = useState(layers[0])
 
-  // UI state
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [sidebarVisible, setSidebarVisible] = useState(false)
   const [isLayerSelectorOpen, setIsLayerSelectorOpen] = useState(false)
 
-  // Handle sidebar animations
   useEffect(() => {
-    if (sidebarOpen) {
-      setSidebarVisible(true)
-    } else {
-      const timer = setTimeout(() => {
-        setSidebarVisible(false)
-      }, 300)
+    if (sidebarOpen) setSidebarVisible(true)
+    else {
+      const timer = setTimeout(() => setSidebarVisible(false), 300)
       return () => clearTimeout(timer)
     }
   }, [sidebarOpen])
 
-  // API functions
+  // Use axios for external third-party APIs
   const fetchPlaceDetails = async ({ lat, lng }) => {
+    setCenter([lat, lng])
     try {
-      // First, update the center to fly to this location
-      setCenter([lat, lng])
-
-      const { data } = await axios.get("https://revgeocode.search.hereapi.com/v1/revgeocode", {
-        params: {
-          at: `${lat},${lng}`,
-          apiKey: HERE_API_KEY,
-        },
-      })
-
-      const place = data.items?.[0]
-
+      const { data } = await axios.get(
+        "https://revgeocode.search.hereapi.com/v1/revgeocode",
+        { params: { at: `${lat},${lng}`, apiKey: HERE_API_KEY } }
+      )
+      const item = data.items?.[0]
       let image = null
-      if (place) {
-        const title = place.title
-        const category = place.categories?.[0]?.name
-
+      if (item) {
+        const title = item.title
+        const category = item.categories?.[0]?.name || ''
         image =
           (await fetchUnsplashImage(`${title} ${category}`)) ||
           (await fetchUnsplashImage(category)) ||
           (await fetchUnsplashImage("city landscape"))
       }
-
-      setSelectedPlace({
-        lat,
-        lng,
-        place: place
-          ? {
-              title: place.title,
-              address: place.address?.label,
-              category: place.categories?.[0]?.name,
-              image,
-            }
-          : null,
-      })
+      const placeInfo = item
+        ? {
+            id: item.id,
+            title: item.title,
+            address: item.address?.label || '',
+            city: item.address?.city || item.address?.county || '',
+            country: item.address?.countryName || '',
+            category: item.categories?.[0]?.name || '',
+            image,
+          }
+        : null
+      setSelectedPlace({ lat, lng, place: placeInfo })
       setSidebarOpen(true)
     } catch (error) {
-      console.error("Reverse geocode error", error)
+      // console.error("Reverse geocode error", error)
       setSelectedPlace({ lat, lng, place: null })
       setSidebarOpen(true)
     }
   }
 
   const fetchLabel = async ({ lat, lng }) => {
+    setCenter([lat, lng])
     try {
-      const { data } = await axios.get("https://nominatim.openstreetmap.org/reverse", {
-        params: {
-          lat,
-          lon: lng,
-          format: "json",
-        },
-        withCredentials: false,
-      })
-
+      const { data } = await axios.get(
+        "https://nominatim.openstreetmap.org/reverse",
+        { params: { lat, lon: lng, format: "json" } }
+      )
       const label = data.display_name || `${lat.toFixed(5)}, ${lng.toFixed(5)}`
-      setSelectedPlace({ lat, lng, place: { title: label } })
-      setSidebarOpen(true)
-    } catch (err) {
-      console.error("Reverse geocoding error:", err)
       setSelectedPlace({
         lat,
         lng,
-        place: { title: `${lat.toFixed(5)}, ${lng.toFixed(5)}` },
+        place: {
+          id: `${lat}-${lng}`,
+          title: label,
+          city: '',
+          country: '',
+          category: '',
+          image: null,
+        },
+      })
+      setSidebarOpen(true)
+    } catch (error) {
+      // console.error("Reverse geocoding error:", error)
+      setSelectedPlace({
+        lat,
+        lng,
+        place: {
+          id: `${lat}-${lng}`,
+          title: `${lat.toFixed(5)}, ${lng.toFixed(5)}`,
+          city: '',
+          country: '',
+          category: '',
+          image: null,
+        },
       })
       setSidebarOpen(true)
     }
@@ -115,68 +112,54 @@ export const MapProvider = ({ children }) => {
   const fetchUnsplashImage = async (query) => {
     try {
       const { data } = await axios.get("https://api.unsplash.com/search/photos", {
-        params: {
-          query,
-          per_page: 1,
-          orientation: "landscape",
-        },
-        headers: {
-          Authorization: `Client-ID ${UNSPLASH_ACCESS_KEY}`,
-        },
+        params: { query, per_page: 1, orientation: "landscape" },
+        headers: { Authorization: `Client-ID ${UNSPLASH_ACCESS_KEY}` },
       })
-
       return data.results?.[0]?.urls?.small || null
-    } catch (err) {
-      console.error("Unsplash fetch error:", err)
+    } catch (error) {
+      // console.error("Unsplash fetch error:", error)
       return null
     }
   }
 
-  // Navigate to a specific location
+  // Use axiosConfig for backend calls (favorites)
+  const saveToFavorites = async () => {
+    if (!selectedPlace?.place) return
+    const { id: external_id, title: name, city, country, address, image: image_url, category, title: description } = selectedPlace.place
+    const payload = { external_id, source: 'HERE', name, city, country, lat: selectedPlace.lat, lng: selectedPlace.lng, address, image_url, category, description }
+    try {
+      const { data } = await axiosConfig.post('favorites', payload)
+      // console.log('Favorited!', data)
+      toast.success('Place saved in favorites')
+    } catch (error) {
+      // console.error('Error saving favorite', error)
+      toast.error(error?.response?.data?.message || 'Could not save favorite')
+    }
+  }
+
   const navigateToLocation = (lat, lng, zoom = 15) => {
     setCenter([lat, lng])
-    // This will be used by the Map component to update the view
     return { lat, lng, zoom }
   }
 
-  // UI actions
-  const handleCloseSidebar = () => {
+  const handleCloseSidebar = () => setSidebarOpen(false)
+  const handleOpenSidebar = () => setSidebarOpen(true)
+  const toggleLayerSelector = () => {
+    setIsLayerSelectorOpen((prev) => !prev)
     setSidebarOpen(false)
   }
-
-  const handleOpenSidebar = () => {
-    setSidebarOpen(true)
-  }
-
-  const toggleLayerSelector = (state) => {
-    const newState = typeof state === "boolean" ? state : !isLayerSelectorOpen
-    setIsLayerSelectorOpen(newState)
-    setSidebarOpen(false)
-  }
-
   const changeLayer = (layer) => {
     setTileLayer(layer)
     setIsLayerSelectorOpen(false)
   }
 
-  const saveToFavorites = () => {
-    console.log("Saving to favorites:", selectedPlace)
-    // Implement saving logic here
-  }
-
-  // The value that will be provided to consumers of this context
   const value = {
-    // Map state
     center,
     selectedPlace,
     tileLayer,
-
-    // UI state
     sidebarOpen,
     sidebarVisible,
     isLayerSelectorOpen,
-
-    // Actions
     fetchPlaceDetails,
     fetchLabel,
     handleCloseSidebar,
@@ -184,8 +167,8 @@ export const MapProvider = ({ children }) => {
     toggleLayerSelector,
     changeLayer,
     saveToFavorites,
-    setSidebarOpen,
     navigateToLocation,
+    setSidebarOpen,
   }
 
   return <MapContext.Provider value={value}>{children}</MapContext.Provider>

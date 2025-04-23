@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Favorite;
+use App\Models\Place;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -37,15 +38,35 @@ class FavoritesController extends Controller
         }
     }
 
-    public function store(Request $request): JsonResponse
+    public function store(Request $request)
     {
         try {
             $request->validate([
-                'place_id' => 'required|exists:places,id',
+                'city'    => 'nullable|string',
+                'country' => 'nullable|string',
+                'name'     => 'required|string',
+                'lat'      => 'required|numeric',
+                'lng'      => 'required|numeric',
             ]);
 
+            $place = Place::firstOrCreate(
+                ['external_id' => $request->external_id],
+                [
+                    'name'        => $request->name,
+                    'city'        => $request->city,
+                    'country'     => $request->country,
+                    'latitude'    => $request->lat,
+                    'longitude'   => $request->lng,
+                    'image_url'   => $request->image_url,
+                    'address'     => $request->address,
+                    'category'    => $request->category,
+                    'description' => $request->description,
+                    'source'      => $request->source,
+                ]
+            );
+
             $existingFavorite = Favorite::where('user_id', Auth::id())
-                ->where('place_id', $request->place_id)
+                ->where('place_id', $place->id)
                 ->first();
 
             if ($existingFavorite) {
@@ -57,7 +78,7 @@ class FavoritesController extends Controller
 
             $favorite = Favorite::create([
                 'user_id'  => Auth::id(),
-                'place_id' => $request->place_id
+                'place_id' => $place->id,
             ]);
 
             return response()->json([
@@ -73,6 +94,7 @@ class FavoritesController extends Controller
             ], 500);
         }
     }
+
 
     public function show($id): JsonResponse
     {

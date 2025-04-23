@@ -65,7 +65,8 @@ export default function Login() {
             const response = await axios.post("login", formData);
             toast.success("Login successful!");
             console.log("Success response:", response.data);
-
+            localStorage.setItem('authToken', response.data.access_token)
+      axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.access_token}`
             setTimeout(() => {
                 navigate("/urban-odyssey");
             }, 3000);
