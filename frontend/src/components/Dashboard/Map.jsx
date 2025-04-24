@@ -11,9 +11,6 @@ import { Toaster } from "sonner"
 import { useLocation } from "react-router-dom"
 import axiosInstance from "../../config/axiosConfig"
 
-// Add CSS for facility markers
-// import "./facility-markers.css" // We'll create this file
-
 const customIcon = new L.Icon({
   iconUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png",
   iconRetinaUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png",
@@ -24,7 +21,6 @@ const customIcon = new L.Icon({
   shadowSize: [41, 41],
 })
 
-// Create a custom icon for facilities
 const facilityIcon = new L.Icon({
   iconUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png",
   iconRetinaUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png",

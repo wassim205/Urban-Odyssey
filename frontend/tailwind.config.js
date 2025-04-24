@@ -13,6 +13,7 @@ export default {
         belgrano: ['Belgrano', 'serif'],
         poppins: ['Poppins', 'sans-serif'],
         poltawski: ['Poltawski Nowy', 'serif'],
+        montaga: ['Montaga', 'serif']
       },
     },
   },

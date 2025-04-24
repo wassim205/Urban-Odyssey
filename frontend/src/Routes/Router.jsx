@@ -8,6 +8,7 @@ import Dashboard from '../components/Dashboard/Dashboard';
 import Home from '../components/HomePage/Home';
 import Logout from '../components/AuthPage/Logout';
 import Favorites from '../components/Favorites/Favorites';
+import Reviews from '../components/Reviews/Reviews';
 
 export const router = createBrowserRouter([
     {
@@ -34,5 +35,9 @@ export const router = createBrowserRouter([
     {
         path: "/favorites",
         element: <Favorites />
+    },
+    {
+        path: "/reviews",
+        element: <Reviews />
     }
 ]);
