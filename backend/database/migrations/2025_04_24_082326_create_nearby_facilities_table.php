@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id('facility_id');
             $table->string('name', 255);
             $table->string('type');
-            $table->float('distance')->nullable();
             $table->decimal('latitude', 10, 7);
             $table->decimal('longitude', 10, 7);
             $table->timestamps();

@@ -1,80 +1,76 @@
-import {
-  MapContainer,
-  TileLayer,
-  Marker,
-  useMapEvents,
-  useMap,
-  Popup,
-  Circle,
-} from "react-leaflet";
-import L from "leaflet";
-import "leaflet/dist/leaflet.css";
-import Controls from "./Controls";
-import {
-  ArrowLeftCircle,
-  Navigation,
-  MapPin,
-  Info,
-  Building,
-  X,
-  Bookmark,
-} from "lucide-react";
-import { useMapContext } from "../Context/MapContext";
-import { useEffect, useRef, useState } from "react";
-import { Toaster } from "sonner";
-import { useLocation } from "react-router-dom";
-import axiosInstance from "../../config/axiosConfig";
+"use client"
+
+import { MapContainer, TileLayer, Marker, useMapEvents, useMap, Popup, Circle } from "react-leaflet"
+import L from "leaflet"
+import "leaflet/dist/leaflet.css"
+import Controls from "./Controls"
+import { ArrowLeftCircle, Navigation, MapPin, Info, Building, X, Bookmark } from "lucide-react"
+import { useMapContext } from "../Context/MapContext"
+import { useEffect, useRef, useState } from "react"
+import { Toaster } from "sonner"
+import { useLocation } from "react-router-dom"
+import axiosInstance from "../../config/axiosConfig"
+
+// Add CSS for facility markers
+// import "./facility-markers.css" // We'll create this file
 
 const customIcon = new L.Icon({
-  iconUrl:
-    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png",
-  iconRetinaUrl:
-    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png",
-  shadowUrl:
-    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
+  iconUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png",
+  iconRetinaUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png",
+  shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
   iconSize: [25, 41],
   iconAnchor: [12, 41],
   popupAnchor: [1, -34],
   shadowSize: [41, 41],
-});
+})
+
+// Create a custom icon for facilities
+const facilityIcon = new L.Icon({
+  iconUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png",
+  iconRetinaUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png",
+  shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41],
+  className: "facility-marker-icon",
+})
+
 const MOROCCO_BOUNDS = [
   [20.0, -18.0],
   [37.0, 1.0],
-];
+]
 
 function MapController() {
-  const { fetchPlaceDetails, isLayerSelectorOpen, center } = useMapContext();
-  const map = useMap();
-  const centerRef = useRef(center);
+  const { fetchPlaceDetails, isLayerSelectorOpen, center } = useMapContext()
+  const map = useMap()
+  const centerRef = useRef(center)
 
   useEffect(() => {
-    if (
-      center &&
-      (center[0] !== centerRef.current[0] || center[1] !== centerRef.current[1])
-    ) {
+    if (center && (center[0] !== centerRef.current[0] || center[1] !== centerRef.current[1])) {
       map.flyTo(center, 15, {
         duration: 1.5,
         easeLinearity: 0.25,
-      });
-      centerRef.current = center;
+      })
+      centerRef.current = center
     }
-  }, [center, map]);
+  }, [center, map])
 
   useMapEvents({
     click(e) {
-      const target = e.originalEvent.target;
+      const target = e.originalEvent.target
       const isControlsClick =
         target.closest(".bg-black\\/60") ||
         target.closest(".layer-selector") ||
-        document.getElementById("layer-selector-backdrop");
+        document.getElementById("layer-selector-backdrop")
 
       if (!isControlsClick && !isLayerSelectorOpen) {
-        fetchPlaceDetails(e.latlng);
+        fetchPlaceDetails(e.latlng)
       }
     },
-  });
+  })
 
-  return null;
+  return null
 }
 
 export default function EnhancedMap() {
@@ -88,16 +84,19 @@ export default function EnhancedMap() {
     handleCloseSidebar,
     setSidebarOpen,
     saveToFavorites,
-  } = useMapContext();
+  } = useMapContext()
 
-  const location = useLocation();
-  const [facilities, setFacilities] = useState([]);
+  const location = useLocation()
+  const [facilities, setFacilities] = useState([])
+  const [showFacilities, setShowFacilities] = useState(true)
 
   useEffect(() => {
     if (location.state?.lat && location.state?.lng) {
-      setCenter([location.state.lat, location.state.lng]);
+      setCenter([location.state.lat, location.state.lng])
     }
-  }, [location.state, setCenter]);
+  }, [location.state, setCenter])
+
+  // Fetch nearby facilities when the center changes
   useEffect(() => {
     if (center) {
       axiosInstance
@@ -109,9 +108,10 @@ export default function EnhancedMap() {
           },
         })
         .then((res) => setFacilities(res.data))
-        .catch((err) => console.error("Failed to fetch facilities:", err));
+        .catch((err) => console.error("Failed to fetch facilities:", err))
     }
-  }, [center]);
+  }, [center])
+
   return (
     <>
       <div className="w-full h-full relative flex overflow-hidden">
@@ -152,13 +152,9 @@ export default function EnhancedMap() {
                   <div className="animate-fadeIn bg-[#5C5C5E] p-4 rounded-lg shadow-md">
                     <div className="flex items-center space-x-2 mb-2">
                       <MapPin size={20} className="text-[#D8C292]" />
-                      <h3 className="font-bebas text-xl text-[#D8C292]">
-                        NAME
-                      </h3>
+                      <h3 className="font-bebas text-xl text-[#D8C292]">NAME</h3>
                     </div>
-                    <p className="text-white text-lg pl-7">
-                      {selectedPlace.place?.title || "Unknown Location"}
-                    </p>
+                    <p className="text-white text-lg pl-7">{selectedPlace.place?.title || "Unknown Location"}</p>
                   </div>
 
                   {/* Category Section */}
@@ -166,13 +162,9 @@ export default function EnhancedMap() {
                     <div className="animate-fadeIn animation-delay-100 bg-[#5C5C5E] p-4 rounded-lg shadow-md">
                       <div className="flex items-center space-x-2 mb-2">
                         <Building size={20} className="text-[#D8C292]" />
-                        <h3 className="font-bebas text-xl text-[#D8C292]">
-                          CATEGORY
-                        </h3>
+                        <h3 className="font-bebas text-xl text-[#D8C292]">CATEGORY</h3>
                       </div>
-                      <p className="text-white text-lg pl-7">
-                        {selectedPlace.place.category}
-                      </p>
+                      <p className="text-white text-lg pl-7">{selectedPlace.place.category}</p>
                     </div>
                   )}
 
@@ -181,13 +173,9 @@ export default function EnhancedMap() {
                     <div className="animate-fadeIn animation-delay-200 bg-[#5C5C5E] p-4 rounded-lg shadow-md">
                       <div className="flex items-center space-x-2 mb-2">
                         <Info size={20} className="text-[#D8C292]" />
-                        <h3 className="font-bebas text-xl text-[#D8C292]">
-                          ADDRESS
-                        </h3>
+                        <h3 className="font-bebas text-xl text-[#D8C292]">ADDRESS</h3>
                       </div>
-                      <p className="text-white text-lg pl-7">
-                        {selectedPlace.place.address}
-                      </p>
+                      <p className="text-white text-lg pl-7">{selectedPlace.place.address}</p>
                     </div>
                   )}
 
@@ -195,13 +183,10 @@ export default function EnhancedMap() {
                   <div className="animate-fadeIn animation-delay-300 bg-[#5C5C5E] p-4 rounded-lg shadow-md">
                     <div className="flex items-center space-x-2 mb-2">
                       <Navigation size={20} className="text-[#D8C292]" />
-                      <h3 className="font-bebas text-xl text-[#D8C292]">
-                        COORDINATES
-                      </h3>
+                      <h3 className="font-bebas text-xl text-[#D8C292]">COORDINATES</h3>
                     </div>
                     <p className="text-white text-lg pl-7">
-                      {selectedPlace.lat.toFixed(6)},{" "}
-                      {selectedPlace.lng.toFixed(6)}
+                      {selectedPlace.lat.toFixed(6)}, {selectedPlace.lng.toFixed(6)}
                     </p>
                   </div>
                 </div>
@@ -242,20 +227,50 @@ export default function EnhancedMap() {
             maxBoundsViscosity={1.0}
             worldCopyJump={false}
           >
-            <TileLayer
-              url={tileLayer.url}
-              attribution={tileLayer.attribution}
-              noWrap={true}
-            />
+            <TileLayer url={tileLayer.url} attribution={tileLayer.attribution} noWrap={true} />
             <MapController />
-            <Controls />
+            <Controls
+              onLocate={() => {}}
+              onLayerChange={() => {}}
+              onLayerSelectorToggle={() => {}}
+              setSidebarOpen={setSidebarOpen}
+            />
 
-            {selectedPlace && (
-              <Marker
-                position={[selectedPlace.lat, selectedPlace.lng]}
-                icon={customIcon}
-              />
-            )}
+            {selectedPlace && <Marker position={[selectedPlace.lat, selectedPlace.lng]} icon={customIcon} />}
+
+            {/* Display nearby facilities */}
+            {showFacilities &&
+              facilities.map((facility) => (
+                <Marker
+                  key={facility.facility_id}
+                  position={[facility.latitude, facility.longitude]}
+                  icon={facilityIcon}
+                >
+                  <Popup>
+                    <div>
+                      <h3 className="font-semibold">{facility.name}</h3>
+                      <p className="text-sm">Type: {facility.type}</p>
+                      <p className="text-sm">Distance: {facility.distance?.toFixed(2)} km</p>
+                    </div>
+                  </Popup>
+                </Marker>
+              ))}
+
+            {/* Display circles around facilities */}
+            {showFacilities &&
+              facilities.map((facility) => (
+                <Circle
+                  key={`circle-${facility.facility_id}`}
+                  center={[facility.latitude, facility.longitude]}
+                  radius={100} // meters
+                  pathOptions={{
+                    color: "#D8C292",
+                    fillColor: "#D8C292",
+                    fillOpacity: 0.2,
+                    weight: 1,
+                  }}
+                />
+              ))}
           </MapContainer>
         </div>
 
@@ -269,31 +284,17 @@ export default function EnhancedMap() {
             <Info size={24} />
           </button>
         )}
-        {facilities.map((facility, index) => (
-          <Circle
-            key={index}
-            center={[facility.latitude, facility.longitude]}
-            radius={100} // meters
-            pathOptions={{
-              color: "#D8C292",
-              fillColor: "#D8C292",
-              fillOpacity: 0.4,
-              weight: 1,
-            }}
-          >
-            <Popup>
-              <div className="text-sm">
-                <strong>{facility.name}</strong>
-                <br />
-                Type: {facility.type}
-                <br />
-                Distance: {facility.distance?.toFixed(2)} km
-              </div>
-            </Popup>
-          </Circle>
-        ))}
+
+        {/* Toggle Facilities Button */}
+        <button
+          onClick={() => setShowFacilities(!showFacilities)}
+          className="absolute bottom-6 right-6 z-10 bg-[#4B4B4D] text-[#D8C292] p-3 rounded-full shadow-lg hover:bg-[#5C5C5E] transition duration-200"
+          aria-label="Toggle facilities"
+        >
+          <Building size={24} />
+        </button>
       </div>
       <Toaster position="top-right" richColors />
     </>
-  );
+  )
 }

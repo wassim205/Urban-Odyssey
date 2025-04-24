@@ -11,3 +11,11 @@
     margin: 12px !important;
   }
   
+  .facility-marker-icon {
+    filter: hue-rotate(120deg);
+  }
+  
+  .facility-popup {
+    min-width: 200px;
+  }
+  

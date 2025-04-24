@@ -5,31 +5,42 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\NearbyFacility;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class NearbyFacilityController extends Controller
 {
     public function index(Request $request)
     {
-        $latitude = $request->input('latitude');
-        $longitude = $request->input('longitude');
-        $radius = $request->input('radius', 3); // default 3km
+        try {
+            $latitude = $request->input('latitude');
+            $longitude = $request->input('longitude');
+            $radius = $request->input('radius', 3); // default 3km
 
-        if (!$latitude || !$longitude) {
-            return response()->json(['error' => 'Latitude and longitude are required.'], 400);
+            if (!$latitude || !$longitude) {
+                return response()->json(['error' => 'Latitude and longitude are required.'], 400);
+            }
+
+            $haversine = "(6371 * acos(cos(radians(?)) 
+                            * cos(radians(latitude)) 
+                            * cos(radians(longitude) - radians(?)) 
+                            + sin(radians(?)) 
+                            * sin(radians(latitude))))";
+
+            $bindings = [$latitude, $longitude, $latitude];
+
+            $facilities = NearbyFacility::select('nearby_facilities.*')
+                ->selectRaw("$haversine AS distance", $bindings)
+                ->whereRaw("$haversine <= ?", array_merge($bindings, [$radius]))
+                ->orderByRaw("$haversine ASC", $bindings)
+                ->get();
+
+            return response()->json($facilities);
+        } catch (\Exception $e) {
+            Log::error('Error fetching nearby facilities: ' . $e->getMessage());
+            return response()->json(['error' => 'An error occurred while fetching nearby facilities.'], 500);
         }
-
-        $haversine = "(6371 * acos(cos(radians($latitude)) 
-                        * cos(radians(latitude)) 
-                        * cos(radians(longitude) - radians($longitude)) 
-                        + sin(radians($latitude)) 
-                        * sin(radians(latitude))))";
-
-        $facilities = NearbyFacility::select('*')
-            ->selectRaw("$haversine AS distance")
-            ->having("distance", "<=", $radius)
-            ->orderBy("distance")
-            ->get();
-
-        return response()->json($facilities);
     }
+    
+    
+    
 }
