@@ -22,7 +22,6 @@ import { useEffect, useRef } from "react";
 import { Toaster } from "sonner";
 import { useLocation } from "react-router-dom";
 
-
 const customIcon = new L.Icon({
   iconUrl:
     "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png",
@@ -35,6 +34,10 @@ const customIcon = new L.Icon({
   popupAnchor: [1, -34],
   shadowSize: [41, 41],
 });
+const MOROCCO_BOUNDS = [
+  [20.0, -18.0],
+  [37.0, 1.0],
+];
 
 function MapController() {
   const { fetchPlaceDetails, isLayerSelectorOpen, center } = useMapContext();
@@ -87,7 +90,6 @@ export default function EnhancedMap() {
   const location = useLocation();
 
   useEffect(() => {
-    
     if (location.state?.lat && location.state?.lng) {
       setCenter([location.state.lat, location.state.lng]);
     }
@@ -214,13 +216,19 @@ export default function EnhancedMap() {
         <div className="flex-grow h-full transition-all duration-300">
           <MapContainer
             center={center}
-            zoom={13}
+            zoom={6}
             style={{ height: "100%" }}
             className="z-0"
+            minZoom={7}
+            maxZoom={20}
+            maxBounds={MOROCCO_BOUNDS}
+            maxBoundsViscosity={1.0}
+            worldCopyJump={false}
           >
             <TileLayer
               url={tileLayer.url}
               attribution={tileLayer.attribution}
+              noWrap={true}
             />
             <MapController />
             <Controls />
