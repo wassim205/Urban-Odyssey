@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, useEffect } from "react"
 import axios from "axios"
-import axiosConfig from "./../../../config/axiosConfig"
-import { layers } from "./../ControlButtons/LayerSelector"
+import axiosConfig from "../../config/axiosConfig"
+import { layers } from "../Dashboard/ControlButtons/LayerSelector"
 import { toast } from "sonner"
 
 const HERE_API_KEY = "IjZYas33oji9rGIjAPCPcs-HI2AJk9I2r4_KQIgvfqw"

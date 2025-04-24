@@ -1,6 +1,6 @@
 import React from "react";
 import Navbar from "../Dashboard/Navbar";
-import { MapProvider } from "../Dashboard/context/MapContext";
+import { MapProvider } from "../Context/MapContext";
 import city from "./../../images/City.png";
 
 import MainContent from "./MainContent";

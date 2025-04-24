@@ -1,5 +1,3 @@
-"use client";
-
 import {
   MapContainer,
   TileLayer,
@@ -19,7 +17,7 @@ import {
   X,
   Bookmark,
 } from "lucide-react";
-import { useMapContext } from "./context/MapContext";
+import { useMapContext } from "../Context/MapContext";
 import { useEffect, useRef } from "react";
 import { Toaster } from "sonner";
 

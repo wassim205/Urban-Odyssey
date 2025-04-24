@@ -35,8 +35,8 @@ function MainContent() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-4xl font-righteous text-[#D8C292] mb-8 text-center">
-        My Favorite Places
+      <h1 className="text-4xl font-bebas text-[#D8C292] mb-8 text-center">
+      mes préférés
       </h1>
 
       {favorites.length === 0 ? (

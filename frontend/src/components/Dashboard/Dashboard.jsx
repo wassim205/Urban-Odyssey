@@ -1,6 +1,6 @@
 import Navbar from "./Navbar";
 import Map from "./Map";
-import { MapProvider } from "./context/MapContext";
+import { MapProvider } from "../Context/MapContext";
 
 function Dashboard() {
   return (
