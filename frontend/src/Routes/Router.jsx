@@ -7,6 +7,7 @@ import Login from '../components/AuthPage/Login';
 import Dashboard from '../components/Dashboard/Dashboard';
 import Home from '../components/HomePage/Home';
 import Logout from '../components/AuthPage/Logout';
+import Favorites from '../components/Favorites/Favorites';
 
 export const router = createBrowserRouter([
     {
@@ -29,5 +30,9 @@ export const router = createBrowserRouter([
     {
         path: "/urban-odyssey",
         element: <Dashboard />
+    },
+    {
+        path: "/favorites",
+        element: <Favorites />
     }
 ]);

@@ -1,18 +1,18 @@
-import Navbar from "./Navbar"
-import Map from "./Map"
-import { MapProvider } from "./context/MapContext"
+import Navbar from "./Navbar";
+import Map from "./Map";
+import { MapProvider } from "../Context/MapContext";
 
 function Dashboard() {
   return (
     <div className="flex flex-col h-screen w-full">
-      <Navbar />
-      <div className="flex-grow">
-        <MapProvider>
+      <MapProvider>
+        <Navbar />
+        <div className="flex-grow">
           <Map />
-        </MapProvider>
-      </div>
+        </div>
+      </MapProvider>
     </div>
-  )
+  );
 }
 
-export default Dashboard
+export default Dashboard;
