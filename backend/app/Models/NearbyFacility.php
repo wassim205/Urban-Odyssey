@@ -16,4 +16,9 @@ class NearbyFacility extends Model
         'latitude',
         'longitude',
     ];
+
+    public function reviews()
+{
+    return $this->hasMany(Review::class, 'facility_id');
+}
 }

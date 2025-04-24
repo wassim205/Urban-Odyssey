@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\API\NearbyFacilityController;
 use App\Http\Controllers\FavoritesController;
+use App\Http\Controllers\ReviewsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -24,3 +25,4 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 Route::get('/nearby-facilities', [NearbyFacilityController::class, 'index']);
+Route::get('/reviews', [ReviewsController::class, 'index']);

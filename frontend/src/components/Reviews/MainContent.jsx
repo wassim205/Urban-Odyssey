@@ -9,8 +9,9 @@ function MainContent() {
           <span className="absolute -bottom-3 left-1/2 transform -translate-x-1/2 w-16 h-1 bg-[#D8C292]/60 rounded-full"></span>
         </h1>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-        <ReviewCard
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+              <ReviewCard />
+        {/* <ReviewCard
           name="Sophie Martin"
           days="2"
           avatar="https://avatar.iran.liara.run/public/girl?username=Lily"
@@ -45,7 +46,7 @@ function MainContent() {
           days="4"
           avatar="https://avatar.iran.liara.run/public/boy?username=Tom"
           review="Un service qui allie esthétique et performance. La prise en main est rapide et l'interface est agréable à utiliser. Le rapport qualité-prix est excellent."
-        />
+        /> */}
       </div>
     </div>
   );
