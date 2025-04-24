@@ -37,11 +37,10 @@ class ReviewsController extends Controller
             return response()->json(['error' => 'An error occurred while creating the review.'], 500);
         }
     }
-    // List reviews for a specific facility
+    
     public function index()
     {
         try {
-            // $facility = NearbyFacility::findOrFail($facilityId);
             $reviews = Review::with(['facility', 'user'])->get();
             return response()->json(['reviews' => $reviews]);
         } catch (\Throwable $e) {
@@ -51,18 +50,4 @@ class ReviewsController extends Controller
             ], 500);
         }
     }
-
-    // Admin or moderator can update review status
-    // public function updateStatus(Request $request, $reviewId)
-    // {
-    //     $validated = $request->validate([
-    //         'status' => [new Enum(ReviewStatus::class)],
-    //     ]);
-
-    //     $review = Review::findOrFail($reviewId);
-    //     $review->status = $validated['status'];
-    //     $review->save();
-
-    //     return response()->json($review);
-    // }
 }

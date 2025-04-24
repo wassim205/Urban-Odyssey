@@ -32,6 +32,12 @@ class NearbyFacilityController extends Controller
                 ->selectRaw("$haversine AS distance", $bindings)
                 ->whereRaw("$haversine <= ?", array_merge($bindings, [$radius]))
                 ->orderByRaw("$haversine ASC", $bindings)
+                ->with([
+                    'reviews' => function ($query) {
+                        $query->where('status', 'approved')
+                            ->latest()->limit(3)->with(['user:id,username']);
+                    }
+                ])
                 ->get();
 
             return response()->json($facilities);
@@ -40,7 +46,4 @@ class NearbyFacilityController extends Controller
             return response()->json(['error' => 'An error occurred while fetching nearby facilities.'], 500);
         }
     }
-    
-    
-    
 }

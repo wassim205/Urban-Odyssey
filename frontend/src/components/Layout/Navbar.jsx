@@ -74,9 +74,9 @@ export default function Navbar() {
 
       {/* Mobile */}
       <div className="lg:hidden flex justify-between items-center px-4 h-16">
-        <h1 className="font-righteous text-[#D8C292] text-3xl drop-shadow-2xl">
+      <a href="/urban-odyssey"> <h1 className="font-righteous text-[#D8C292] text-3xl drop-shadow-2xl">
           URBAN ODYSSEY
-        </h1>
+        </h1></a>
         <div className="flex items-center gap-2">
           {showSearch && (
             <div className="sm:block hidden">

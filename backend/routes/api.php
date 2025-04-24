@@ -26,3 +26,4 @@ Route::middleware('auth:sanctum')->group(function () {
 
 Route::get('/nearby-facilities', [NearbyFacilityController::class, 'index']);
 Route::get('/reviews', [ReviewsController::class, 'index']);
+Route::post('/reviews', [ReviewsController::class, 'store']);
