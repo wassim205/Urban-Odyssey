@@ -20,6 +20,8 @@ import {
 import { useMapContext } from "../Context/MapContext";
 import { useEffect, useRef } from "react";
 import { Toaster } from "sonner";
+import { useLocation } from "react-router-dom";
+
 
 const customIcon = new L.Icon({
   iconUrl:
@@ -72,6 +74,7 @@ function MapController() {
 export default function EnhancedMap() {
   const {
     center,
+    setCenter,
     selectedPlace,
     tileLayer,
     sidebarOpen,
@@ -80,6 +83,15 @@ export default function EnhancedMap() {
     setSidebarOpen,
     saveToFavorites,
   } = useMapContext();
+
+  const location = useLocation();
+
+  useEffect(() => {
+    
+    if (location.state?.lat && location.state?.lng) {
+      setCenter([location.state.lat, location.state.lng]);
+    }
+  }, [location.state, setCenter]);
 
   return (
     <>

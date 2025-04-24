@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Heart } from "lucide-react";
 import axiosConfig from "./../../config/axiosConfig";
 import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
 
 function MainContent() {
   const [favorites, setFavorites] = useState([]);
@@ -71,13 +72,27 @@ function MainContent() {
 }
 
 function FavoriteCard({ location, onRemove }) {
+  const navigate = useNavigate();
+  
+  const handleCardClick = () => {
+    navigate("/urban-odyssey", {
+      state: {
+        lat: location.place.latitude,
+        lng: location.place.longitude,
+      },
+    });
+  };
+
   return (
-    <div className="bg-[#293D36]/80 backdrop-blur-sm rounded-lg overflow-hidden shadow-lg border border-[#D8C292]/30 hover:shadow-xl transition duration-300 transform hover:-translate-y-1">
-      <div className="relative">
+    <div className="bg-[#293D36]/80 backdrop-blur-sm rounded-lg overflow-hidden shadow-lg border
+     border-[#D8C292]/30 hover:shadow-xl transition duration-300 transform hover:-translate-y-1"
+    >
+      
+      <div className="relative" onClick={handleCardClick}>
         <img
           src={location.place.image_url || "/placeholder.svg"}
           alt={`Map of ${location.place.name}`}
-          className="w-full h-48 object-cover"
+          className="w-full h-48 object-cover cursor-pointer" 
         />
         <button className="absolute top-3 right-3 bg-white/20 backdrop-blur-sm p-2 rounded-full hover:bg-white/30 transition">
           <Heart className="h-5 w-5 text-[#D8C292] fill-[#D8C292]" />

@@ -117,7 +117,6 @@ export const MapProvider = ({ children }) => {
       })
       return data.results?.[0]?.urls?.small || null
     } catch (error) {
-      // console.error("Unsplash fetch error:", error)
       return null
     }
   }
@@ -129,10 +128,8 @@ export const MapProvider = ({ children }) => {
     const payload = { external_id, source: 'HERE', name, city, country, lat: selectedPlace.lat, lng: selectedPlace.lng, address, image_url, category, description }
     try {
       const { data } = await axiosConfig.post('favorites', payload)
-      // console.log('Favorited!', data)
       toast.success('Place saved in favorites')
     } catch (error) {
-      // console.error('Error saving favorite', error)
       toast.error(error?.response?.data?.message || 'Could not save favorite')
     }
   }
@@ -155,6 +152,7 @@ export const MapProvider = ({ children }) => {
 
   const value = {
     center,
+    setCenter,
     selectedPlace,
     tileLayer,
     sidebarOpen,

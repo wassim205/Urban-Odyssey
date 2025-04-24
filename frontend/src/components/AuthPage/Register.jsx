@@ -110,8 +110,6 @@ export default function Register() {
         try {
             const response = await axios.post("register", formattedData);
             toast.success("Registration successful!");
-            console.log("Success response:", response.data);
-
             setTimeout(() => {
                 navigate("/urban-odyssey");
             }, 3000);

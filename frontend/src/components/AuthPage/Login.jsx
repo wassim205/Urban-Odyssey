@@ -64,7 +64,6 @@ export default function Login() {
         try {
             const response = await axios.post("login", formData);
             toast.success("Login successful!");
-            console.log("Success response:", response.data);
             localStorage.setItem('authToken', response.data.access_token)
       axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.access_token}`
             setTimeout(() => {
