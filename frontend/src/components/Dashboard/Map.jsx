@@ -4,6 +4,8 @@ import {
   Marker,
   useMapEvents,
   useMap,
+  Popup,
+  Circle,
 } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
@@ -18,9 +20,10 @@ import {
   Bookmark,
 } from "lucide-react";
 import { useMapContext } from "../Context/MapContext";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Toaster } from "sonner";
 import { useLocation } from "react-router-dom";
+import axiosInstance from "../../config/axiosConfig";
 
 const customIcon = new L.Icon({
   iconUrl:
@@ -88,13 +91,27 @@ export default function EnhancedMap() {
   } = useMapContext();
 
   const location = useLocation();
+  const [facilities, setFacilities] = useState([]);
 
   useEffect(() => {
     if (location.state?.lat && location.state?.lng) {
       setCenter([location.state.lat, location.state.lng]);
     }
   }, [location.state, setCenter]);
-
+  useEffect(() => {
+    if (center) {
+      axiosInstance
+        .get(`nearby-facilities`, {
+          params: {
+            latitude: center[0],
+            longitude: center[1],
+            radius: 3,
+          },
+        })
+        .then((res) => setFacilities(res.data))
+        .catch((err) => console.error("Failed to fetch facilities:", err));
+    }
+  }, [center]);
   return (
     <>
       <div className="w-full h-full relative flex overflow-hidden">
@@ -252,6 +269,29 @@ export default function EnhancedMap() {
             <Info size={24} />
           </button>
         )}
+        {facilities.map((facility, index) => (
+          <Circle
+            key={index}
+            center={[facility.latitude, facility.longitude]}
+            radius={100} // meters
+            pathOptions={{
+              color: "#D8C292",
+              fillColor: "#D8C292",
+              fillOpacity: 0.4,
+              weight: 1,
+            }}
+          >
+            <Popup>
+              <div className="text-sm">
+                <strong>{facility.name}</strong>
+                <br />
+                Type: {facility.type}
+                <br />
+                Distance: {facility.distance?.toFixed(2)} km
+              </div>
+            </Popup>
+          </Circle>
+        ))}
       </div>
       <Toaster position="top-right" richColors />
     </>

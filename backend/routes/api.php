@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\API\NearbyFacilityController;
 use App\Http\Controllers\FavoritesController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -21,3 +22,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/favorites/toggle', [FavoritesController::class, 'toggle']);
     Route::get('/favorites/check/{placeId}', [FavoritesController::class, 'checkStatus']);
 });
+
+Route::get('/nearby-facilities', [NearbyFacilityController::class, 'index']);

@@ -1,4 +1,4 @@
-import { useMapContext } from "../../Context/Mapcontext";
+import { useMapContext } from "../../Context/MapContext";
 
 function LayerButton({ isActive }) {
   const { toggleLayerSelector } = useMapContext();

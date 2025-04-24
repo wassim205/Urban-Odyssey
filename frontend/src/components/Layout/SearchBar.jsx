@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react"
 import { Search, MapPin, Building } from "lucide-react"
-import { useMapContext } from "../context/MapContext"
+import { useMapContext } from "../Context/MapContext"
 import axios from "axios"
 
 const HERE_API_KEY = "IjZYas33oji9rGIjAPCPcs-HI2AJk9I2r4_KQIgvfqw"
