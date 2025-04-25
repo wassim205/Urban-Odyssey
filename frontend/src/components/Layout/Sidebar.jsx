@@ -29,7 +29,6 @@ function Sidebar({
   const handleReviewSubmit = async (e) => {
     e.preventDefault();
     if (!reviewText.trim()) return;
-    console.log(selectedPlace);
     setSubmitting(true);
 
     try {
@@ -145,7 +144,7 @@ function Sidebar({
               </p>
             </div>
 
-            {/* Reviews Section - Redesigned */}
+            {/* Reviews Section */}
 
             <div className="animate-fadeIn animation-delay-400 bg-[#5C5C5E] p-4 rounded-lg shadow-md">
               <div className="flex items-center space-x-2 mb-3">
@@ -172,49 +171,51 @@ function Sidebar({
               </div>
 
               {/* Review Form */}
-              <form onSubmit={handleReviewSubmit} className="mt-4 pl-7">
-                <div className="space-y-3">
-                  <label
-                    htmlFor="review"
-                    className="block text-sm font-medium text-gray-200"
-                  >
-                    Share your experience
-                  </label>
-                  <textarea
-                    id="review"
-                    rows="3"
-                    className="w-full px-3 py-2 bg-[#333335] text-white rounded-md border border-[#6E6E70] focus:outline-none focus:ring-1 focus:ring-[#D8C292] focus:border-[#D8C292]"
-                    placeholder="Write your review here..."
-                    value={reviewText}
-                    onChange={(e) => setReviewText(e.target.value)}
-                    required
-                  ></textarea>
+              {selectedPlace?.facility_id && (
+                <form onSubmit={handleReviewSubmit} className="mt-4 pl-7">
+                  <div className="space-y-3">
+                    <label
+                      htmlFor="review"
+                      className="block text-sm font-medium text-gray-200"
+                    >
+                      Share your experience
+                    </label>
+                    <textarea
+                      id="review"
+                      rows="3"
+                      className="w-full px-3 py-2 bg-[#333335] text-white rounded-md border border-[#6E6E70] focus:outline-none focus:ring-1 focus:ring-[#D8C292] focus:border-[#D8C292]"
+                      placeholder="Write your review here..."
+                      value={reviewText}
+                      onChange={(e) => setReviewText(e.target.value)}
+                      required
+                    ></textarea>
 
-                  <div className="flex justify-between items-center">
-                    <span
-                      className={`text-sm ${
-                        submitMessage.includes("success")
-                          ? "text-green-400"
-                          : "text-red-400"
-                      }`}
-                    >
-                      {submitMessage}
-                    </span>
-                    <button
-                      type="submit"
-                      disabled={submitting || !reviewText.trim()}
-                      className={`flex items-center justify-center bg-[#D8C292] hover:bg-[#E8D2A2] text-[#3A3A3C] px-4 py-2 rounded-md transition duration-200 ${
-                        submitting || !reviewText.trim()
-                          ? "opacity-50 cursor-not-allowed"
-                          : ""
-                      }`}
-                    >
-                      <Send size={16} className="mr-1" />
-                      {submitting ? "Submitting..." : "Submit"}
-                    </button>
+                    <div className="flex justify-between items-center">
+                      <span
+                        className={`text-sm ${
+                          submitMessage.includes("success")
+                            ? "text-green-400"
+                            : "text-red-400"
+                        }`}
+                      >
+                        {submitMessage}
+                      </span>
+                      <button
+                        type="submit"
+                        disabled={submitting || !reviewText.trim()}
+                        className={`flex items-center justify-center bg-[#D8C292] hover:bg-[#E8D2A2] text-[#3A3A3C] px-4 py-2 rounded-md transition duration-200 ${
+                          submitting || !reviewText.trim()
+                            ? "opacity-50 cursor-not-allowed"
+                            : ""
+                        }`}
+                      >
+                        <Send size={16} className="mr-1" />
+                        {submitting ? "Submitting..." : "Submit"}
+                      </button>
+                    </div>
                   </div>
-                </div>
-              </form>
+                </form>
+              )}
             </div>
           </div>
         )}

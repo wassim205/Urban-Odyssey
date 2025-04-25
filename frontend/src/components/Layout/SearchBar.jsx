@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react"
 import { Search, MapPin, Building } from "lucide-react"
 import { useMapContext } from "../Context/MapContext"
 import axios from "axios"
+import { toast } from "sonner"
 
 const HERE_API_KEY = "IjZYas33oji9rGIjAPCPcs-HI2AJk9I2r4_KQIgvfqw"
 
@@ -40,7 +41,7 @@ export default function SearchBar() {
       setResults(data.items || [])
       setShowResults(true)
     } catch (error) {
-      console.error("Search error:", error)
+      toast.error("Search Error");
       setResults([])
     } finally {
       setIsLoading(false)

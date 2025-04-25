@@ -125,7 +125,6 @@ export default function EnhancedMap() {
         .catch((err) => console.error("Failed to fetch facilities:", err));
     }
   }, [center]);
-  console.log(facilities);
 
   return (
     <>

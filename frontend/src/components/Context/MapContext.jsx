@@ -64,7 +64,6 @@ export const MapProvider = ({ children }) => {
       setSelectedPlace({ lat, lng, place: placeInfo })
       setSidebarOpen(true)
     } catch (error) {
-      // console.error("Reverse geocode error", error)
       setSelectedPlace({ lat, lng, place: null })
       setSidebarOpen(true)
     }
@@ -156,17 +155,15 @@ export const MapProvider = ({ children }) => {
         rating,
         comment,
       };
-      console.log('Submitting review payload:', payload);
       const { data } = await axiosConfig.post("reviews", payload, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("authToken")}`,
       },
       });
       toast.success("Review submitted successfully!");
+      toast.warning("your comment is pended until an operator approve it, Thanks For Your Time!")
       return data;
     } catch (error) {
-      console.error('Error submitting review:', error.response?.data); // Debugging log
-
       toast.error(
         error?.response?.data?.message || "Failed to submit review. Please try again."
       );
