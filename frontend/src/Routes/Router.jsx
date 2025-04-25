@@ -9,6 +9,7 @@ import Home from '../components/HomePage/Home';
 import Logout from '../components/AuthPage/Logout';
 import Favorites from '../components/Favorites/Favorites';
 import Reviews from '../components/Reviews/Reviews';
+import Contact from '../components/ContactPage/Contact';
 
 export const router = createBrowserRouter([
     {
@@ -39,5 +40,9 @@ export const router = createBrowserRouter([
     {
         path: "/reviews",
         element: <Reviews />
+    },
+    {
+        path: "/contact",
+        element: <Contact />
     }
 ]);
