@@ -14,7 +14,7 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $totalUsers = User::all()->count();
+        $totalUsers = User::where('role_id', 2)->count();
         $totalPlaces = Place::all()->count();
         $totalReviews = Review::all()->count();
         $totalAddedToFavorite = Favorite::all()->count();
@@ -23,13 +23,15 @@ class DashboardController extends Controller
         ->take(5)
         ->get();
 
+        $users = User::all();
 
         return response()->json([
             "total_users" => $totalUsers,
             "total_places" => $totalPlaces,
             "total_reviews" => $totalReviews,
             "total_favorites" => $totalAddedToFavorite,
-            "popular_places" => $popularPlaces
+            "popular_places" => $popularPlaces,
+            "users" => $users
         ]);
     }
 }
