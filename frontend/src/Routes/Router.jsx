@@ -10,6 +10,7 @@ import Logout from '../components/AuthPage/Logout';
 import Favorites from '../components/Favorites/Favorites';
 import Reviews from '../components/Reviews/Reviews';
 import Contact from '../components/ContactPage/Contact';
+import Page from '../components/Admin/page';
 
 export const router = createBrowserRouter([
     {
@@ -44,5 +45,9 @@ export const router = createBrowserRouter([
     {
         path: "/contact",
         element: <Contact />
+    },
+    {
+        path: "/dashboard",
+        element: <Page />
     }
 ]);
