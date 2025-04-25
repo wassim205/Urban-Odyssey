@@ -186,16 +186,13 @@ export default function EnhancedMap() {
                         setSelectedPlace({
                           lat: facility.latitude,
                           lng: facility.longitude,
+                          facility_id: facility.facility_id,
                           place: {
                             title: facility.name,
                             category: facility.type,
                             address: `Lat: ${facility.latitude}, Lng: ${facility.longitude}`,
                           },
-                          reviews: {
-                            text: facility.reviews?.[0]?.comment || "No reviews available",
-                            author: facility.reviews?.[0]?.user.username
-                          
-                          }
+                          reviews: facility.reviews || []
                         });
                         setSidebarOpen(true);
                       }}
@@ -215,7 +212,7 @@ export default function EnhancedMap() {
               ))}
           </MapContainer>
         </div>
-
+       
         {/* Mobile Toggle Button - shows when sidebar is closed */}
         {selectedPlace && !sidebarOpen && (
           <button

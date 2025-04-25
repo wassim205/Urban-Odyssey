@@ -12,8 +12,13 @@ use Illuminate\Support\Facades\Log;
 
 class ReviewsController extends Controller
 {
+    
     public function store(Request $request)
     {
+        if (!Auth::check()) {
+            return response()->json(['error' => 'User not authenticated.'], 401);
+        }
+    
         try {
             $validated = $request->validate([
                 'facility_id' => 'required|exists:nearby_facilities,facility_id',

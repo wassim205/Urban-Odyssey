@@ -14,7 +14,7 @@ class NearbyFacilityController extends Controller
         try {
             $latitude = $request->input('latitude');
             $longitude = $request->input('longitude');
-            $radius = $request->input('radius', 3); // default 3km
+            $radius = $request->input('radius', 3);
 
             if (!$latitude || !$longitude) {
                 return response()->json(['error' => 'Latitude and longitude are required.'], 400);

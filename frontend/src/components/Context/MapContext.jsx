@@ -156,10 +156,17 @@ export const MapProvider = ({ children }) => {
         rating,
         comment,
       };
-      const { data } = await axiosConfig.post("reviews", payload);
+      console.log('Submitting review payload:', payload);
+      const { data } = await axiosConfig.post("reviews", payload, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+      },
+      });
       toast.success("Review submitted successfully!");
       return data;
     } catch (error) {
+      console.error('Error submitting review:', error.response?.data); // Debugging log
+
       toast.error(
         error?.response?.data?.message || "Failed to submit review. Please try again."
       );

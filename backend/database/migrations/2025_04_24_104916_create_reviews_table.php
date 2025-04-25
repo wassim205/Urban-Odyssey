@@ -15,9 +15,9 @@ return new class extends Migration
 
         Schema::create('reviews', function (Blueprint $table) {
             $table->id('review_id');
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('facility_id')->constrained('nearby_facilities', 'facility_id')->onDelete('cascade');
-            $table->unsignedTinyInteger('rating');
+            $table->integer('rating');
             $table->text('comment')->nullable();
             $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
             $table->timestamps();

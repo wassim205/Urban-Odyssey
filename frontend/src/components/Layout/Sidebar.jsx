@@ -29,12 +29,12 @@ function Sidebar({
   const handleReviewSubmit = async (e) => {
     e.preventDefault();
     if (!reviewText.trim()) return;
-
+    console.log(selectedPlace);
     setSubmitting(true);
 
     try {
       await submitReview({
-        facilityId: selectedPlace?.place?.id,
+        facilityId: selectedPlace?.facility_id,
         rating,
         comment: reviewText,
       });
@@ -131,8 +131,13 @@ function Sidebar({
                 </h3>
               </div>
               <p className="text-white text-lg pl-7">
-                {typeof selectedPlace.lat === "string" &&
-                typeof selectedPlace.lng === "string"
+                {typeof selectedPlace.lat === "number" &&
+                typeof selectedPlace.lng === "number"
+                  ? `${selectedPlace.lat.toFixed(
+                      6
+                    )}, ${selectedPlace.lng.toFixed(6)}`
+                  : typeof selectedPlace.lat === "string" &&
+                    typeof selectedPlace.lng === "string"
                   ? `${parseFloat(selectedPlace.lat).toFixed(6)}, ${parseFloat(
                       selectedPlace.lng
                     ).toFixed(6)}`
@@ -141,17 +146,19 @@ function Sidebar({
             </div>
 
             {/* Reviews Section - Redesigned */}
+
             <div className="animate-fadeIn animation-delay-400 bg-[#5C5C5E] p-4 rounded-lg shadow-md">
               <div className="flex items-center space-x-2 mb-3">
                 <MessageSquare size={20} className="text-[#D8C292]" />
                 <h3 className="font-bebas text-xl text-[#D8C292]">REVIEWS</h3>
               </div>
 
-                          <div className="pl-7 space-y-3">
-                {selectedPlace.reviews ? (
+              <div className="pl-7 space-y-3">
+                {Array.isArray(selectedPlace.reviews) &&
+                selectedPlace.reviews.length > 0 ? (
                   selectedPlace.reviews.map((review, index) => (
                     <div key={index} className="bg-[#444446] p-3 rounded-md">
-                      <p className="text-white">{review.text}</p>
+                      <p className="text-white">{review.comment}</p>
                       {review.author && (
                         <p className="text-sm text-gray-300 mt-1">
                           - {review.author}
@@ -160,9 +167,7 @@ function Sidebar({
                     </div>
                   ))
                 ) : (
-                  <p className="text-gray-300 italic">
-                    No reviews yet. Be the first to leave a review!
-                  </p>
+                  <p className="text-gray-300 italic">No reviews available</p>
                 )}
               </div>
 
