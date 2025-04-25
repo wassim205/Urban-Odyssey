@@ -14,10 +14,9 @@ class FavoritesController extends Controller
     {
         try {
             $favorites = Favorite::where('user_id', Auth::id())
-                ->with('place')
-                ->orderBy('created_at', 'desc')
-                ->get();
-
+            ->with('place')
+            ->orderBy('created_at', 'desc')
+            ->get();
             if ($favorites->isEmpty()) {
                 return response()->json([
                     'status' => 'empty',

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\api\admin\DashboardController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\API\NearbyFacilityController;
 use App\Http\Controllers\FavoritesController;
@@ -13,20 +14,21 @@ Route::get('/user', function (Request $request) {
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
-Route::post('/logout', [AuthController::class, 'logout']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/favorites', [FavoritesController::class, 'index']);
     Route::post('/favorites', [FavoritesController::class, 'store']);
     Route::get('/favorites/{id}', [FavoritesController::class, 'show']);
     Route::delete('/favorites/{id}', [FavoritesController::class, 'destroy']);
-    Route::post('/favorites/toggle', [FavoritesController::class, 'toggle']);
-    Route::get('/favorites/check/{placeId}', [FavoritesController::class, 'checkStatus']);
+    // Route::post('/favorites/toggle', [FavoritesController::class, 'toggle']);
+    // Route::get('/favorites/check/{placeId}', [FavoritesController::class, 'checkStatus']);
 });
 
 Route::get('/nearby-facilities', [NearbyFacilityController::class, 'index']);
 
 Route::get('/reviews', [ReviewsController::class, 'index']);
 Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index']);
+    Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/reviews', [ReviewsController::class, 'store']);
 });

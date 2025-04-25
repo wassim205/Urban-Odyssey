@@ -22,9 +22,13 @@ class Place extends Model
         'category',
     ];
 
-    public function favoritedBy(): BelongsToMany
+    public function favoritedBy()
     {
         return $this->belongsToMany(User::class, 'user_favorites')
             ->withTimestamps();
+    }
+    public function favorites()
+    {
+        return $this->hasMany(Favorite::class, 'place_id');
     }
 }
