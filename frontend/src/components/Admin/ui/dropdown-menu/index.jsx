@@ -1,34 +1,49 @@
-import  React ,{ useState, useRef, useEffect } from "react";
+import React, { useState, useContext, createContext, useRef, useEffect } from "react";
+
+const DropdownMenuContext = createContext();
 
 export function DropdownMenu({ children }) {
-  return <div className="relative">{children}</div>;
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleDropdown = () => setIsOpen((prev) => !prev);
+  const closeDropdown = () => setIsOpen(false);
+
+  return (
+    <DropdownMenuContext.Provider value={{ isOpen, toggleDropdown, closeDropdown }}>
+      <div className="relative">{children}</div>
+    </DropdownMenuContext.Provider>
+  );
 }
 
 export function DropdownMenuTrigger({ asChild, children, ...props }) {
-  if (asChild) {
-    return React.cloneElement(children, props);
-  }
-  return <button {...props}>{children}</button>;
+  const { toggleDropdown } = useContext(DropdownMenuContext);
+
+  const handleClick = (e) => {
+    e.stopPropagation();
+    toggleDropdown();
+    if (props.onClick) props.onClick(e);
+  };
+
+  return React.cloneElement(children, {
+    ...props,
+    onClick: handleClick,
+  });
 }
 
 export function DropdownMenuContent({ className, align = "center", children, ...props }) {
-  const [isOpen, setIsOpen] = useState(false);
+  const { isOpen, closeDropdown } = useContext(DropdownMenuContext);
   const ref = useRef(null);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (ref.current && !ref.current.contains(event.target)) {
-        setIsOpen(false);
+        closeDropdown();
       }
     };
 
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-
-  useEffect(() => {
-    setIsOpen(true);
-  }, []);
+  }, [closeDropdown]);
 
   if (!isOpen) return null;
 
@@ -41,7 +56,7 @@ export function DropdownMenuContent({ className, align = "center", children, ...
   return (
     <div
       ref={ref}
-      className={`absolute z-50 mt-2 min-w-[8rem] overflow-hidden rounded-md border bg-white p-1 shadow-md ${alignClasses[align]} ${className}`}
+      className={`absolute z-[1000] mt-2 min-w-[8rem] overflow-hidden rounded-md border bg-white p-1 shadow-md ${alignClasses[align]} ${className}`}
       {...props}
     >
       {children}

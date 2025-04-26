@@ -29,6 +29,7 @@ Route::get('/nearby-facilities', [NearbyFacilityController::class, 'index']);
 Route::get('/reviews', [ReviewsController::class, 'index']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index']);
+    Route::delete('dashboard/users/{id}', [DashboardController::class, 'destroyUser']);
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/reviews', [ReviewsController::class, 'store']);
 });

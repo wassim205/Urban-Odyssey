@@ -6,7 +6,7 @@ export function Button({ className, variant = "default", children, ...props }) {
       case "ghost":
         return "hover:bg-gray-100 text-gray-700"
       case "icon":
-        return "bg-transparent hover:bg-gray-100 text-gray-700"
+        return "bg-transparent hover:bg-gray-100 text-gray-700 p-1 h-8 w-8 rounded-full"
       case "":
         return "bg-transparent hover:bg-gray-100 text-gray-700"
       default:
