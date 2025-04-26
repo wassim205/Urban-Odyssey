@@ -41,5 +41,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('dashboard/users/{id}', [UsersController::class, 'update']);
     
     Route::get('/places', [PlacesController::class, 'index']);
-
+    Route::post('/places', [PlacesController::class, 'store']);
+    Route::put('/places/{id}', [PlacesController::class, 'update']);
+    Route::delete('/places/{id}', [PlacesController::class, 'destroy']);
 });

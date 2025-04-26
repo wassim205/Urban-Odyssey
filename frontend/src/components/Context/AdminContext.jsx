@@ -11,6 +11,7 @@ export const AdminProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isPlaceModalOpen, setIsPlaceModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editUser, setEditUser] = useState({
     id: null,
@@ -20,8 +21,11 @@ export const AdminProvider = ({ children }) => {
     email: "",
     role_id: 2,
   });
-  
-    // Fetch users
+  const [placeToEdit, setPlaceToEdit] = useState(null);
+  const [editPlace, setEditPlace] = useState(placeToEdit);
+  const [isEditPlaceModalOpen, setIsEditPlaceModalOpen] = useState(false);
+
+  // Fetch users
   const getUsers = useCallback(async () => {
     setLoading(true);
     setError(null);
@@ -77,6 +81,43 @@ export const AdminProvider = ({ children }) => {
     );
   };
 
+  const handleDeletePlace = async (placeId) => {
+    toast(
+      (t) => (
+        <div>
+          <p>Are you sure you want to delete this place?</p>
+          <div className="flex justify-end space-x-2 mt-2">
+            <button
+              className="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded"
+              onClick={() => toast.dismiss(t)}
+            >
+              Cancel
+            </button>
+            <button
+              className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded"
+              onClick={async () => {
+                toast.dismiss(t);
+                try {
+                  await axios.delete(`places/${placeId}`);
+                  setPlaces((prevPlaces) =>
+                    prevPlaces.filter((place) => place.id !== placeId)
+                  );
+                  toast.success("Place deleted successfully");
+                } catch (error) {
+                  console.error("Error deleting place:", error);
+                  toast.error("Failed to delete place. Please try again.");
+                }
+              }}
+            >
+              Delete
+            </button>
+          </div>
+        </div>
+      ),
+      { duration: Infinity }
+    );
+  };
+
   // Fetch places
   const fetchPlaces = useCallback(async () => {
     setLoading(true);
@@ -101,6 +142,10 @@ export const AdminProvider = ({ children }) => {
     setEditUser(user);
     setIsEditModalOpen(true);
   };
+  const handleEditPlace = (place) => {
+    setEditPlace(place);
+    setIsEditPlaceModalOpen(true);
+  };
 
   return (
     <AdminContext.Provider
@@ -121,6 +166,16 @@ export const AdminProvider = ({ children }) => {
         setIsEditModalOpen,
         getUsers,
         handleDeleteUser,
+        editPlace,
+        setEditPlace,
+        isEditPlaceModalOpen,
+        setIsEditPlaceModalOpen,
+        placeToEdit,
+        setPlaceToEdit,
+        handleDeletePlace,
+        setIsPlaceModalOpen,
+        isPlaceModalOpen,
+        handleEditPlace,
       }}
     >
       {children}

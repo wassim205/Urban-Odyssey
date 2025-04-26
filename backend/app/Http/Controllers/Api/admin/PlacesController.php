@@ -13,7 +13,7 @@ class PlacesController
     {
         try {
             $places = Place::all();
-    
+
             return response()->json(['places' => $places], 200);
         } catch (\Exception $e) {
             return response()->json([
@@ -22,83 +22,74 @@ class PlacesController
             ], 500);
         }
     }
-   
 
-    // public function store(Request $request)
-    // {
-    //     try {
-    //         $validated = $request->validate([
-    //             'username' => 'required|string|unique:users',
-    //             'firstname' => 'required|string',
-    //             'lastname' => 'required|string',
-    //             'email' => 'required|email|unique:users',
-    //             'password' => 'required|min:6',
-    //             'role_id' => 'required|integer|exists:roles,id',
-    //         ]);
 
-    //         $user = User::create([
-    //             'username' => $validated['username'],
-    //             'firstname' => $validated['firstname'],
-    //             'lastname' => $validated['lastname'],
-    //             'email' => $validated['email'],
-    //             'password' => bcrypt($validated['password']),
-    //             'role_id' => $validated['role_id'],
-    //         ]);
+    public function store(Request $request)
+    {
+        try {
+            $validated = $request->validate([
+                'name' => 'required|string',
+                'city' => 'nullable|string',
+                'country' => 'nullable|string',
+                'description' => 'nullable|string',
+                'latitude' => 'nullable|numeric',
+                'longitude' => 'nullable|numeric',
+                'image_url' => 'nullable|url',
+                'address' => 'nullable|string',
+                'category' => 'nullable|string',
+            ]);
 
-    //         return response()->json(['user' => $user], 201);
-    //     } catch (\Exception $e) {
-    //         return response()->json([
-    //             'message' => 'An error occurred while creating the user.',
-    //             'error' => $e->getMessage()
-    //         ], 500);
-    //     }
-    // }
+            $place = Place::create($validated);
 
-    // public function update(Request $request, $id)
-    // {
-    //     try {
-    //         $user = User::find($id);
+            return response()->json(['place' => $place], 201);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'An error occurred while creating the place.',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
 
-    //         if (!$user) {
-    //             return response()->json(['message' => 'User not found'], 404);
-    //         }
+    public function update(Request $request, $id)
+    {
+        try {
+            $place = Place::findOrFail($id);
 
-    //         $validated = $request->validate([
-    //             'username' => 'required|string|unique:users,username,' . $id,
-    //             'firstname' => 'required|string',
-    //             'lastname' => 'required|string',
-    //             'email' => 'required|email|unique:users,email,' . $id,
-    //             'role_id' => 'required|integer|exists:roles,id',
-    //         ]);
+            $validated = $request->validate([
+                'name' => 'required|string',
+                'city' => 'nullable|string',
+                'country' => 'nullable|string',
+                'description' => 'nullable|string',
+                'latitude' => 'nullable|numeric',
+                'longitude' => 'nullable|numeric',
+                'image_url' => 'nullable|url',
+                'address' => 'nullable|string',
+                'category' => 'nullable|string',
+            ]);
 
-    //         $user->update($validated);
+            $place->update($validated);
 
-    //         return response()->json(['user' => $user], 200);
-    //     } catch (\Exception $e) {
-    //         return response()->json([
-    //             'message' => 'An error occurred while updating the user.',
-    //             'error' => $e->getMessage()
-    //         ], 500);
-    //     }
-    // }
+            return response()->json(['place' => $place], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'An error occurred while updating the place.',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
 
-    // public function destroy($id)
-    // {
-    //     try {
-    //         $user = User::find($id);
+    public function destroy($id)
+    {
+        try {
+            $place = Place::findOrFail($id);
+            $place->delete();
 
-    //         if (!$user) {
-    //             return response()->json(['message' => 'User not found'], 404);
-    //         }
-
-    //         $user->delete();
-
-    //         return response()->json(['message' => 'User deleted successfully'], 200);
-    //     } catch (\Exception $e) {
-    //         return response()->json([
-    //             'message' => 'An error occurred while deleting the user.',
-    //             'error' => $e->getMessage()
-    //         ], 500);
-    //     }
-    // }
+            return response()->json(['message' => 'Place deleted successfully'], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'An error occurred while deleting the place.',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
 }
