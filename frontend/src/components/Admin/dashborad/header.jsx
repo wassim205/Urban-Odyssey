@@ -6,7 +6,7 @@ export default function Header() {
 
   return (
     <header className="bg-white border-b border-gray-200 shadow-sm">
-      <div className="flex items-center justify-between p-4">
+      <div className="flex items-center justify-end p-4">
         <div className="flex items-center md:hidden">
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -16,18 +16,6 @@ export default function Header() {
           </button>
         </div>
 
-        <div className="hidden md:flex items-center flex-1 px-4">
-          <div className="relative w-full max-w-md">
-            <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-              <Search className="h-5 w-5 text-gray-400" />
-            </div>
-            <input
-              type="search"
-              className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg bg-gray-50 focus:ring-emerald-500 focus:border-emerald-500"
-              placeholder="Search..."
-            />
-          </div>
-        </div>
 
         <div className="flex items-center space-x-4">
           <button className="p-2 rounded-full text-gray-500 hover:text-gray-600 hover:bg-gray-100 relative">

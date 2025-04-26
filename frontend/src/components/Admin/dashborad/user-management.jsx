@@ -68,9 +68,9 @@ export default function UserManagement() {
     setLoading(true);
     setError(null);
     try {
-      const response = await axios.get("dashboard");
+      const response = await axios.get("dashboard/users");
       setUsers(response.data.users);
-      console.log(response.data.users);
+      console.log("users", response.data.users);
     } catch (err) {
       console.error("Error fetching users:", err);
       setError("Failed to fetch users. Please try again later.");
