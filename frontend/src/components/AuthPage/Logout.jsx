@@ -27,7 +27,7 @@ const Logout = () => {
         console.log("Logout failed:", error);
       } finally {
         localStorage.removeItem("authToken");
-        localStorage.removeItem("user");
+        localStorage.removeItem("userRole");
         navigate("/login");
       }
     };

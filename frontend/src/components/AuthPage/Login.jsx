@@ -65,7 +65,13 @@ export default function Login() {
       const response = await axios.post("login", formData);
       toast.success("Login successful!");
       localStorage.setItem("authToken", response.data.access_token);
-      // console.log(response);
+      if (response.data.user.role_id === 1) {
+        localStorage.setItem("userRole", "admin");
+      } else {
+        localStorage.setItem("userRole", "user");
+      }
+        
+      // console.log(response.data.user.role_id);
 
       axios.defaults.headers.common[
         "Authorization"
