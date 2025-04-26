@@ -1,5 +1,11 @@
-import Dashboard from "./dashborad/dashboard"
+import React from "react";
+import { AdminProvider } from "../Context/AdminContext";
+import Dashboard from "./dashborad/dashboard";
 
 export default function Home() {
-  return <Dashboard />
+  return (
+    <AdminProvider>
+      <Dashboard />
+    </AdminProvider>
+  );
 }
