@@ -56,4 +56,6 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::put('/{facility}', [NearbyFacilityController::class, 'update']);
         Route::delete('/{facility}', [NearbyFacilityController::class, 'destroy']);
     });
+
+    Route::get('/auth/user', [AuthController::class, 'authUser']);
 });

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Favorite;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -19,10 +20,10 @@ class AuthController extends Controller
             'email'     => 'required|email|unique:users',
             'password'  => 'required|min:6',
         ]);
-    
+
         // Check if there are no users yet
         $role_id = (User::count() === 0) ? 1 : 2;
-    
+
         $user = User::create([
             'username'  => $validated['username'],
             'firstname' => $validated['firstname'],
@@ -31,9 +32,9 @@ class AuthController extends Controller
             'password'  => bcrypt($validated['password']),
             'role_id'   => $role_id,
         ]);
-    
+
         $token = $user->createToken('auth_token')->plainTextToken;
-    
+
         return response()->json([
             'user'         => $user,
             'access_token' => $token,
@@ -67,17 +68,17 @@ class AuthController extends Controller
     {
         try {
             $user = Auth::user();
-    
+
             if (!$user) {
                 return response()->json([
                     'status' => 'error',
                     'message' => 'No authenticated user found.'
                 ], 401);
             }
-    
+
             // Revoke all tokens for the user
             $user->tokens()->delete();
-    
+
             return response()->json([
                 'status' => 'success',
                 'message' => 'Logged out successfully.'
@@ -90,4 +91,28 @@ class AuthController extends Controller
             ], 500);
         }
     }
+
+    public function authUser()
+    {
+        $user = Auth::user();
+    
+        if (!$user) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'No authenticated user found.'
+            ], 401);
+        }
+    
+        $favorites = Favorite::where('user_id', $user->id)
+            ->with('place')
+            ->orderBy('created_at', 'desc')
+            ->get();
+    
+        return response()->json([
+            'status' => 'success',
+            'user'   => $user,
+            'favorites' => $favorites->isEmpty() ? [] : $favorites
+        ]);
+    }
+    
 }
