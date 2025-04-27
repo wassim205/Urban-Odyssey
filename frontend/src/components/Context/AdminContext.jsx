@@ -1,4 +1,10 @@
-import React, { createContext, useState, useEffect, useCallback } from "react";
+import React, {
+  createContext,
+  useState,
+  useEffect,
+  useCallback,
+  useContext,
+} from "react";
 import axios from "./../../config/axiosConfig";
 import { toast } from "sonner";
 import { Button } from "./../Admin/ui/button/index";
@@ -27,10 +33,67 @@ export const AdminProvider = ({ children }) => {
   const [isEditPlaceModalOpen, setIsEditPlaceModalOpen] = useState(false);
   const [reviews, setReviews] = useState([]);
   const [selectedReview, setSelectedReview] = useState(null);
+  const [facilities, setFacilities] = useState([]);
+  const [isFacilityModalOpen, setIsFacilityModalOpen] = useState(false);
+  const [isEditFacilityModalOpen, setIsEditFacilityModalOpen] = useState(false);
+  const [editFacility, setEditFacility] = useState(null);
+
+
 
   const handleViewFullReview = (review) => {
     setSelectedReview(review);
   };
+  const fetchFacilities = async () => {
+    setLoading(true);
+    try {
+      const response = await axios.get("/dashboard/facilities");
+      setFacilities(response.data.facilities);
+      setError(null);
+    } catch (err) {
+      setError("Failed to fetch facilities.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const addFacility = async (facility) => {
+    try {
+      const response = await axios.post("/dashboard/facilities", facility);
+      setFacilities((prev) => [...prev, response.data.facility]);
+    } catch (err) {
+      console.error("Error adding facility:", err);
+    }
+  };
+
+  // const handleEditFacility = async (facility) => {
+  //   try {
+  //     const response = await axios.put(
+  //       `/dashboard/facilities/${facility.facility_id}`,
+  //       facility
+  //     );
+  //     setFacilities((prev) =>
+  //       prev.map((f) =>
+  //         f.facility_id === facility.facility_id ? response.data.facility : f
+  //       )
+  //     );
+  //   } catch (err) {
+  //     console.error("Error editing facility:", err);
+  //   }
+  //   // setIsEditFacilityModalOpen(true);
+  // };
+
+  const handleDeleteFacility = async (facilityId) => {
+    try {
+      await axios.delete(`/dashboard/facilities/${facilityId}`);
+      setFacilities((prev) => prev.filter((f) => f.facility_id !== facilityId));
+    } catch (err) {
+      console.error("Error deleting facility:", err);
+    }
+  };
+
+  useEffect(() => {
+    fetchFacilities();
+  }, []);
 
   // Fetch users
   const getUsers = useCallback(async () => {
@@ -185,6 +248,11 @@ export const AdminProvider = ({ children }) => {
     setEditPlace(place);
     setIsEditPlaceModalOpen(true);
   };
+  const handleEditFacility = (facility) => {
+    setEditFacility(facility);
+    setIsEditFacilityModalOpen(true);
+  };
+ 
 
   const renderStars = (rating) => {
     return Array(5)
@@ -204,7 +272,9 @@ export const AdminProvider = ({ children }) => {
       await axios.put(`/reviews/${reviewId}/approve`);
       setReviews((prevReviews) =>
         prevReviews.map((review) =>
-          review.review_id === reviewId ? { ...review, status: "approved" } : review
+          review.review_id === reviewId
+            ? { ...review, status: "approved" }
+            : review
         )
       );
       toast.success("Review approved successfully.");
@@ -213,13 +283,15 @@ export const AdminProvider = ({ children }) => {
       toast.error("Failed to approve review.");
     }
   };
-  
+
   const handleRejectReview = async (reviewId) => {
     try {
       await axios.put(`/reviews/${reviewId}/reject`);
       setReviews((prevReviews) =>
         prevReviews.map((review) =>
-          review.review_id === reviewId ? { ...review, status: "rejected" } : review
+          review.review_id === reviewId
+            ? { ...review, status: "rejected" }
+            : review
         )
       );
       toast.success("Review rejected successfully.");
@@ -228,7 +300,7 @@ export const AdminProvider = ({ children }) => {
       toast.error("Failed to reject review.");
     }
   };
-  
+
   const handleDeleteReview = async (reviewId) => {
     try {
       await axios.delete(`/reviews/${reviewId}`);
@@ -248,6 +320,8 @@ export const AdminProvider = ({ children }) => {
         users,
         places,
         reviews,
+        facilities,
+        setFacilities,
         loading,
         error,
         editUser,
@@ -277,12 +351,21 @@ export const AdminProvider = ({ children }) => {
         renderStars,
         getStatusColor,
         handleApproveReview,
-    handleRejectReview,
-    handleDeleteReview,
-    handleViewFullReview,
-    selectedReview,
-    setSelectedReview,
-  
+        handleRejectReview,
+        handleDeleteReview,
+        handleViewFullReview,
+        selectedReview,
+        setSelectedReview,
+        addFacility,
+        editFacility,
+        setEditFacility,
+        handleEditFacility,
+        handleDeleteFacility,
+        isFacilityModalOpen,
+        setIsFacilityModalOpen,
+        isEditFacilityModalOpen,
+        setIsEditFacilityModalOpen,
+
       }}
     >
       {children}

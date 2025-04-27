@@ -49,4 +49,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/reviews/{id}/approve', [ReviewsController::class, 'approve']);
     Route::put('/reviews/{id}/reject', [ReviewsController::class, 'reject']);
     Route::delete('/reviews/{id}', [ReviewsController::class, 'destroy']);
+
+    Route::prefix('/dashboard/facilities')->group(function () {
+        Route::get('/', [NearbyFacilityController::class, 'adminIndex']);
+        Route::post('/', [NearbyFacilityController::class, 'store']);
+        Route::put('/{facility}', [NearbyFacilityController::class, 'update']);
+        Route::delete('/{facility}', [NearbyFacilityController::class, 'destroy']);
+    });
 });

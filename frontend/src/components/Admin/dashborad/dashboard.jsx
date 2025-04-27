@@ -6,6 +6,7 @@ import UserManagement from "./user-management"
 import PlaceManagement from "./place-management"
 import ReviewManagement from "./review-management"
 import Analytics from "./analytics"
+import FacilitiesManagement from "./FacilitiesManagement"
 
 export default function Dashboard() {
   const [activeTab, setActiveTab] = useState("dashboard")
@@ -19,6 +20,7 @@ export default function Dashboard() {
           {activeTab === "dashboard" && <DashboardStats />}
           {activeTab === "users" && <UserManagement />}
           {activeTab === "places" && <PlaceManagement />}
+          {activeTab === "facilitiesManagement" && <FacilitiesManagement />}
           {activeTab === "reviews" && <ReviewManagement />}
           {activeTab === "analytics" && <Analytics />}
         </main>

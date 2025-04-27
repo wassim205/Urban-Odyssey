@@ -1,4 +1,4 @@
-import { Home, Users, MapPin, MessageSquare, BarChart2, Settings, LogOut } from "lucide-react"
+import { Home, Users, MapPin, MessageSquare, BarChart2, Settings, LogOut, LandPlot } from "lucide-react"
 import { cn } from "./../../../lib/utils"
 
 export default function Sidebar({ activeTab, setActiveTab }) {
@@ -6,6 +6,7 @@ export default function Sidebar({ activeTab, setActiveTab }) {
     { id: "dashboard", label: "Dashboard", icon: Home },
     { id: "users", label: "Users", icon: Users },
     { id: "places", label: "Places", icon: MapPin },
+    { id: "facilitiesManagement", label: "Nearby Facilities", icon: LandPlot },
     { id: "reviews", label: "Reviews", icon: MessageSquare },
     { id: "analytics", label: "Analytics", icon: BarChart2 },
     { id: "settings", label: "Settings", icon: Settings },
