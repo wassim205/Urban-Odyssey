@@ -12,6 +12,7 @@ import Reviews from "../components/Reviews/Reviews";
 import Contact from "../components/ContactPage/Contact";
 import Page from "../components/Admin/page";
 import ProtectedRoute from "./ProtectedRoute";
+import About from "../components/About/About"
 
 export const router = createBrowserRouter([
   {
@@ -54,4 +55,8 @@ export const router = createBrowserRouter([
       </ProtectedRoute>
     ),
   },
+  {
+    path: "/about",
+    element: <About />,
+  }
 ]);
