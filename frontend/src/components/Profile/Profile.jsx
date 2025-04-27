@@ -11,25 +11,6 @@ import {
 } from "lucide-react";
 import axios from "../../config/axiosConfig";
 
-// Mock data for the static profile
-// const userData = {
-//   id: 1,
-//   username: "johndoe",
-//   firstname: "John",
-//   lastname: "Doe",
-//   email: "john.doe@example.com",
-//   email_verified_at: "2024-01-15T09:30:00",
-//   role_id: 2,
-//   role_name: "Member",
-//   preferred_categories: ["Technology", "Travel", "Food"],
-//   created_at: "2023-10-10T14:22:00",
-//   favorite_places: [
-//     { id: 1, name: "Central Park, New York", visited: "2023-12-15" },
-//     { id: 2, name: "Eiffel Tower, Paris", visited: "2023-08-20" },
-//     { id: 3, name: "Kyoto Gardens, Japan", visited: "2024-02-05" }
-//   ]
-// };
-
 export default function Profile() {
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -39,10 +20,9 @@ export default function Profile() {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-          const response = await axios.get("auth/user");
-          
-          setUserData(response.data);
-          console.log(response.data);
+        const response = await axios.get("auth/user");
+
+        setUserData(response.data);
       } catch (err) {
         console.error("Error fetching user data:", err);
         setError("Failed to load user data.");
@@ -158,7 +138,9 @@ export default function Profile() {
                       <div>
                         <p className="text-sm text-gray-500">Member Since</p>
                         <p className="text-gray-900">
-                          {new Date(userData.user.created_at).toLocaleDateString()}
+                          {new Date(
+                            userData.user.created_at
+                          ).toLocaleDateString()}
                         </p>
                       </div>
                     </div>
@@ -174,16 +156,18 @@ export default function Profile() {
                         Preferred Categories
                       </p>
                       <div className="flex flex-wrap gap-2 mt-2">
-                        {userData.user.preferred_categories && userData.user.preferred_categories.map(
-                          (category, index) => (
-                            <span
-                              key={index}
-                              className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm"
-                            >
-                              {category}
-                            </span>
-                          )
-                        ) || 'no preferred categories'}
+                        {(userData.user.preferred_categories &&
+                          userData.user.preferred_categories.map(
+                            (category, index) => (
+                              <span
+                                key={index}
+                                className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm"
+                              >
+                                {category}
+                              </span>
+                            )
+                          )) ||
+                          "no preferred categories"}
                       </div>
                     </div>
                   </div>
@@ -207,7 +191,9 @@ export default function Profile() {
                     </div>
                     <div>
                       <p className="text-sm text-gray-500">Account Role</p>
-                      <p className="text-gray-900">{(userData.user.role_id ?? 1) === 1 ? 'admin' : 'user'}</p>
+                      <p className="text-gray-900">
+                        {(userData.user.role_id ?? 1) === 1 ? "admin" : "user"}
+                      </p>
                     </div>
                     <div>
                       <p className="text-sm text-gray-500">
@@ -268,18 +254,14 @@ export default function Profile() {
                         </h4>
                         <p className="text-sm text-gray-500 mt-1 flex items-center gap-1">
                           <Calendar size={14} /> Saved on{" "}
-                          {new Date(place.place.updated_at).toLocaleDateString()}
+                          {new Date(
+                            place.place.updated_at
+                          ).toLocaleDateString()}
                         </p>
                       </div>
                     </div>
                   ))}
                 </div>
-
-                {/* <div className="mt-6 text-center">
-                  <button className="inline-flex items-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg transition-colors">
-                    <Bookmark size={16} /> Add New Favorite Place
-                  </button>
-                </div> */}
               </div>
             )}
 
