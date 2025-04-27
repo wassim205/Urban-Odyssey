@@ -9,7 +9,6 @@ function ReviewCard() {
     const fetchReviews = async () => {
       try {
         const { data } = await axiosInstance.get("reviews");
-        console.log("Fetched reviews:", data);
         setReviews(data.reviews);
       } catch (err) {
         console.error("Failed to fetch reviews:", err);

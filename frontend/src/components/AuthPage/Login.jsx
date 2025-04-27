@@ -71,7 +71,6 @@ export default function Login() {
         localStorage.setItem("userRole", "user");
       }
         
-      // console.log(response.data.user.role_id);
 
       axios.defaults.headers.common[
         "Authorization"

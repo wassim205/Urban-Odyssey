@@ -18,13 +18,13 @@ export default function Header() {
 
 
         <div className="flex items-center space-x-4">
-          <button className="p-2 rounded-full text-gray-500 hover:text-gray-600 hover:bg-gray-100 relative">
+          {/* <button className="p-2 rounded-full text-gray-500 hover:text-gray-600 hover:bg-gray-100 relative">
             <Bell className="h-6 w-6" />
             <span className="absolute top-1 right-1 h-2 w-2 bg-red-500 rounded-full"></span>
-          </button>
+          </button> */}
 
           <div className="flex items-center">
-            <img className="h-8 w-8 rounded-full" src="/placeholder.svg?height=32&width=32" alt="Admin" />
+            <img className="h-8 w-8 rounded-full" src="https://api.dicebear.com/9.x/adventurer/svg?seed=Emery" alt="Admin" />
             <div className="ml-3 hidden md:block">
               <p className="text-sm font-medium text-gray-700">Admin User</p>
               <p className="text-xs text-gray-500">admin@urbanodyssey.com</p>

@@ -31,7 +31,7 @@ export const AdminProvider = ({ children }) => {
   const handleViewFullReview = (review) => {
     setSelectedReview(review);
   };
-  
+
   // Fetch users
   const getUsers = useCallback(async () => {
     setLoading(true);
@@ -56,7 +56,6 @@ export const AdminProvider = ({ children }) => {
     setError(null);
     try {
       const response = await axios.get("reviews");
-      console.log(response);
 
       setReviews(response.data.reviews);
     } catch (err) {

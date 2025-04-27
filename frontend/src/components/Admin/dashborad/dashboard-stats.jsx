@@ -8,46 +8,10 @@ import { useState, useEffect } from "react";
 
 export default function DashboardStats() {
   const [stats, setStats] = useState([]);
-  // Static data for demonstration
-  // const stats = [
-  //   {
-  //     title: "Total Users",
-  //     value: "2,856",
-  //     icon: Users,
-  //     change: "+12%",
-  //     trend: "up",
-  //     description: "from last month",
-  //   },
-  //   {
-  //     title: "Places",
-  //     value: "1,245",
-  //     icon: MapPin,
-  //     change: "+23%",
-  //     trend: "up",
-  //     description: "from last month",
-  //   },
-  //   {
-  //     title: "Reviews",
-  //     value: "5,432",
-  //     icon: MessageSquare,
-  //     change: "+18%",
-  //     trend: "up",
-  //     description: "from last month",
-  //   },
-  //   {
-  //     title: "Visits",
-  //     value: "18.6K",
-  //     icon: TrendingUp,
-  //     change: "+28%",
-  //     trend: "up",
-  //     description: "from last month",
-  //   },
-  // ]
-
+ 
   const fetchStatistique = async () => {
     try {
       const response = await axiosConfig.get("dashboard");
-      // console.log(response);
       const data = response.data;
 
       const formattedStats = [
