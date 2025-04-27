@@ -31,17 +31,22 @@ Route::get('/nearby-facilities', [NearbyFacilityController::class, 'index']);
 Route::get('/reviews', [ReviewsController::class, 'index']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
-    Route::post('/reviews', [ReviewsController::class, 'store']);
-
+    
     Route::get('/dashboard', [DashboardController::class, 'index']);
     
     Route::get('/dashboard/users', [UsersController::class, 'index']);
     Route::delete('dashboard/users/{id}', [UsersController::class, 'destroy']);
     Route::post('dashboard/users', [UsersController::class, 'store']);
     Route::put('dashboard/users/{id}', [UsersController::class, 'update']);
-    
+
     Route::get('/places', [PlacesController::class, 'index']);
     Route::post('/places', [PlacesController::class, 'store']);
     Route::put('/places/{id}', [PlacesController::class, 'update']);
     Route::delete('/places/{id}', [PlacesController::class, 'destroy']);
+    
+    Route::get('/reviews', [ReviewsController::class, 'index']);
+    Route::post('/reviews', [ReviewsController::class, 'store']);
+    Route::put('/reviews/{id}/approve', [ReviewsController::class, 'approve']);
+    Route::put('/reviews/{id}/reject', [ReviewsController::class, 'reject']);
+    Route::delete('/reviews/{id}', [ReviewsController::class, 'destroy']);
 });

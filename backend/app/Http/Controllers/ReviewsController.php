@@ -12,13 +12,13 @@ use Illuminate\Support\Facades\Log;
 
 class ReviewsController extends Controller
 {
-    
+
     public function store(Request $request)
     {
         if (!Auth::check()) {
             return response()->json(['error' => 'User not authenticated.'], 401);
         }
-    
+
         try {
             $validated = $request->validate([
                 'facility_id' => 'required|exists:nearby_facilities,facility_id',
@@ -42,7 +42,7 @@ class ReviewsController extends Controller
             return response()->json(['error' => 'An error occurred while creating the review.'], 500);
         }
     }
-    
+
     public function index()
     {
         try {
@@ -54,5 +54,30 @@ class ReviewsController extends Controller
                 'message' => $e->getMessage()
             ], 500);
         }
+    }
+    public function approve($id)
+    {
+        $review = Review::findOrFail($id);
+        $review->status = 'approved';
+        $review->save();
+
+        return response()->json(['message' => 'Review approved successfully.']);
+    }
+
+    public function reject($id)
+    {
+        $review = Review::findOrFail($id);
+        $review->status = 'rejected';
+        $review->save();
+
+        return response()->json(['message' => 'Review rejected successfully.']);
+    }
+
+    public function destroy($id)
+    {
+        $review = Review::findOrFail($id);
+        $review->delete();
+
+        return response()->json(['message' => 'Review deleted successfully.']);
     }
 }

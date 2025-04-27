@@ -2,6 +2,7 @@ import React, { createContext, useState, useEffect, useCallback } from "react";
 import axios from "./../../config/axiosConfig";
 import { toast } from "sonner";
 import { Button } from "./../Admin/ui/button/index";
+import { Star } from "lucide-react";
 
 export const AdminContext = createContext();
 
@@ -24,7 +25,13 @@ export const AdminProvider = ({ children }) => {
   const [placeToEdit, setPlaceToEdit] = useState(null);
   const [editPlace, setEditPlace] = useState(placeToEdit);
   const [isEditPlaceModalOpen, setIsEditPlaceModalOpen] = useState(false);
+  const [reviews, setReviews] = useState([]);
+  const [selectedReview, setSelectedReview] = useState(null);
 
+  const handleViewFullReview = (review) => {
+    setSelectedReview(review);
+  };
+  
   // Fetch users
   const getUsers = useCallback(async () => {
     setLoading(true);
@@ -43,6 +50,39 @@ export const AdminProvider = ({ children }) => {
   useEffect(() => {
     getUsers();
   }, [getUsers]);
+
+  const fetchReviews = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const response = await axios.get("reviews");
+      console.log(response);
+
+      setReviews(response.data.reviews);
+    } catch (err) {
+      console.error("Error fetching reviews:", err);
+      setError("Failed to fetch reviews.");
+      toast.error("error:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+    fetchReviews();
+  }, []);
+
+  const getStatusColor = (status) => {
+    switch (status) {
+      case "approved":
+        return "bg-green-100 text-green-800";
+      case "pending":
+        return "bg-yellow-100 text-yellow-800";
+      case "rejected":
+        return "bg-red-100 text-red-800";
+      default:
+        return "bg-gray-100 text-gray-800";
+    }
+  };
 
   const handleDeleteUser = async (userId) => {
     toast(
@@ -147,35 +187,103 @@ export const AdminProvider = ({ children }) => {
     setIsEditPlaceModalOpen(true);
   };
 
+  const renderStars = (rating) => {
+    return Array(5)
+      .fill(0)
+      .map((_, i) => (
+        <Star
+          key={i}
+          className={`h-4 w-4 ${
+            i < rating ? "text-yellow-400 fill-yellow-400" : "text-gray-300"
+          }`}
+        />
+      ));
+  };
+
+  const handleApproveReview = async (reviewId) => {
+    try {
+      await axios.put(`/reviews/${reviewId}/approve`);
+      setReviews((prevReviews) =>
+        prevReviews.map((review) =>
+          review.review_id === reviewId ? { ...review, status: "approved" } : review
+        )
+      );
+      toast.success("Review approved successfully.");
+    } catch (err) {
+      console.error("Error approving review:", err);
+      toast.error("Failed to approve review.");
+    }
+  };
+  
+  const handleRejectReview = async (reviewId) => {
+    try {
+      await axios.put(`/reviews/${reviewId}/reject`);
+      setReviews((prevReviews) =>
+        prevReviews.map((review) =>
+          review.review_id === reviewId ? { ...review, status: "rejected" } : review
+        )
+      );
+      toast.success("Review rejected successfully.");
+    } catch (err) {
+      console.error("Error rejecting review:", err);
+      toast.error("Failed to reject review.");
+    }
+  };
+  
+  const handleDeleteReview = async (reviewId) => {
+    try {
+      await axios.delete(`/reviews/${reviewId}`);
+      setReviews((prevReviews) =>
+        prevReviews.filter((review) => review.review_id !== reviewId)
+      );
+      toast.success("Review deleted successfully.");
+    } catch (err) {
+      console.error("Error deleting review:", err);
+      toast.error("Failed to delete review.");
+    }
+  };
+
   return (
     <AdminContext.Provider
       value={{
         users,
-        setUsers,
         places,
-        setPlaces,
+        reviews,
         loading,
         error,
-        fetchPlaces,
-        handleEditUser,
         editUser,
-        setEditUser,
+        editPlace,
+        placeToEdit,
         isModalOpen,
-        setIsModalOpen,
         isEditModalOpen,
+        isEditPlaceModalOpen,
+        isPlaceModalOpen,
+        setUsers,
+        setPlaces,
+        setReviews,
+        setEditUser,
+        fetchPlaces,
+        fetchReviews,
+        handleEditUser,
+        setIsModalOpen,
         setIsEditModalOpen,
         getUsers,
         handleDeleteUser,
-        editPlace,
         setEditPlace,
-        isEditPlaceModalOpen,
         setIsEditPlaceModalOpen,
-        placeToEdit,
         setPlaceToEdit,
         handleDeletePlace,
         setIsPlaceModalOpen,
-        isPlaceModalOpen,
         handleEditPlace,
+        renderStars,
+        getStatusColor,
+        handleApproveReview,
+    handleRejectReview,
+    handleDeleteReview,
+    handleViewFullReview,
+    selectedReview,
+    setSelectedReview,
+  
       }}
     >
       {children}
