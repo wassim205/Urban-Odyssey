@@ -64,7 +64,6 @@ export const MapProvider = ({ children }) => {
       setSelectedPlace({ lat, lng, place: placeInfo })
       setSidebarOpen(true)
     } catch (error) {
-      // console.error("Reverse geocode error", error)
       setSelectedPlace({ lat, lng, place: null })
       setSidebarOpen(true)
     }
@@ -92,7 +91,6 @@ export const MapProvider = ({ children }) => {
       })
       setSidebarOpen(true)
     } catch (error) {
-      // console.error("Reverse geocoding error:", error)
       setSelectedPlace({
         lat,
         lng,
@@ -150,10 +148,34 @@ export const MapProvider = ({ children }) => {
     setIsLayerSelectorOpen(false)
   }
 
+  const submitReview = async ({ facilityId, rating, comment }) => {
+    try {
+      const payload = {
+        facility_id: facilityId,
+        rating,
+        comment,
+      };
+      const { data } = await axiosConfig.post("reviews", payload, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+      },
+      });
+      toast.success("Review submitted successfully!");
+      toast.warning("your comment is pended until an operator approve it, Thanks For Your Time!")
+      return data;
+    } catch (error) {
+      toast.error(
+        error?.response?.data?.message || "Failed to submit review. Please try again."
+      );
+      throw error;
+    }
+  };
+
   const value = {
     center,
     setCenter,
     selectedPlace,
+    setSelectedPlace,
     tileLayer,
     sidebarOpen,
     sidebarVisible,
@@ -167,6 +189,7 @@ export const MapProvider = ({ children }) => {
     saveToFavorites,
     navigateToLocation,
     setSidebarOpen,
+    submitReview,
   }
 
   return <MapContext.Provider value={value}>{children}</MapContext.Provider>

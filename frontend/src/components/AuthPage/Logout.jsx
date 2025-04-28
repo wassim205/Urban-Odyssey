@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 // import api from "./config/axiosConfig";
 import api from './../../config/axiosConfig';
+import { toast } from "sonner";
 // import { toast } from "./NotificationProvider";
 
 const Logout = () => {
@@ -20,10 +21,13 @@ const Logout = () => {
           }
         );
         toast.success("Logged out successfully.");
+        // localStorage.clear();
       } catch (error) {
         toast.error("Logout failed. Please try again.");
+        console.log("Logout failed:", error);
       } finally {
-        localStorage.removeItem("token");
+        localStorage.removeItem("authToken");
+        localStorage.removeItem("userRole");
         navigate("/login");
       }
     };

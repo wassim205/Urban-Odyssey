@@ -1,6 +1,6 @@
 
 import { useRef, useEffect } from "react"
-import { useMapContext } from "../../Context/Mapcontext"
+import { useMapContext } from "../../Context/MapContext"
 
 const layers = [
   {

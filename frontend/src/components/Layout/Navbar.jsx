@@ -14,10 +14,26 @@ export default function Navbar() {
 
   const navLinks = [
     { href: "/about", icon: "/src/assets/icons/ask.svg", text: "ABOUT" },
-    { href: "/favorites", icon: "/src/assets/icons/bookmark.svg", text: "FAVORITES" },
-    { href: "/reviews", icon: "/src/assets/icons/reviews.svg", text: "REVIEWS" },
-    { href: "/contact", icon: "/src/assets/icons/contact-us.svg", text: "CONTACT" },
-    { href: "/profile", icon: "/src/assets/icons/account.svg", text: "PROFILE" },
+    {
+      href: "/favorites",
+      icon: "/src/assets/icons/bookmark.svg",
+      text: "FAVORITES",
+    },
+    {
+      href: "/reviews",
+      icon: "/src/assets/icons/reviews.svg",
+      text: "REVIEWS",
+    },
+    {
+      href: "/contact",
+      icon: "/src/assets/icons/contact-us.svg",
+      text: "CONTACT",
+    },
+    {
+      href: "/profile",
+      icon: "/src/assets/icons/account.svg",
+      text: "PROFILE",
+    },
     { href: "/logout", icon: "/src/assets/icons/logout.svg", text: "LOG OUT" },
   ];
 
@@ -35,9 +51,11 @@ export default function Navbar() {
         )}
 
         {/* Center */}
-        <h1 className="justify-self-center font-righteous text-[#D8C292] text-4xl drop-shadow-2xl whitespace-nowrap">
-          URBAN ODYSSEY
-        </h1>
+        <a href="/urban-odyssey">
+          <h1 className="justify-self-center font-righteous text-[#D8C292] text-4xl drop-shadow-2xl whitespace-nowrap">
+            URBAN ODYSSEY
+          </h1>
+        </a>
 
         {/* Right */}
         <div className="flex justify-end items-center space-x-4 font-bebas text-[#9D9D9D] text-2xl pr-4">
@@ -56,9 +74,9 @@ export default function Navbar() {
 
       {/* Mobile */}
       <div className="lg:hidden flex justify-between items-center px-4 h-16">
-        <h1 className="font-righteous text-[#D8C292] text-3xl drop-shadow-2xl">
+      <a href="/urban-odyssey"> <h1 className="font-righteous text-[#D8C292] text-3xl drop-shadow-2xl">
           URBAN ODYSSEY
-        </h1>
+        </h1></a>
         <div className="flex items-center gap-2">
           {showSearch && (
             <div className="sm:block hidden">

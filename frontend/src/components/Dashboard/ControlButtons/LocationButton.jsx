@@ -1,5 +1,5 @@
 import { useMap } from "react-leaflet"
-import { useMapContext } from "../../Context/Mapcontext"
+import { useMapContext } from "../../Context/MapContext"
 
 function LocationButton() {
   const map = useMap()
