@@ -13,8 +13,9 @@ import Contact from "../components/ContactPage/Contact";
 import Page from "../components/Admin/page";
 import ProtectedRoute from "./ProtectedRoute";
 import About from "../components/About/About";
-import Profile from "../components/Profile/Profile";
 import Navbar from "../components/Layout/Navbar";
+import ProfilePage from "../components/Profile/ProfilePage";
+
 
 export const router = createBrowserRouter([
   {
@@ -66,7 +67,7 @@ export const router = createBrowserRouter([
     element: (
       <>
         <Navbar />
-        <Profile />
+        <ProfilePage />
       </>
     ),
   },

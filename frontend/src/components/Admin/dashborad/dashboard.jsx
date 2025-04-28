@@ -7,7 +7,7 @@ import PlaceManagement from "./place-management"
 import ReviewManagement from "./review-management"
 import Analytics from "./analytics"
 import FacilitiesManagement from "./FacilitiesManagement"
-import Profile from "../../Profile/Profile"
+import ProfilePage from "../../Profile/ProfilePage"
 
 export default function Dashboard() {
   const [activeTab, setActiveTab] = useState("dashboard")
@@ -24,7 +24,7 @@ export default function Dashboard() {
           {activeTab === "facilitiesManagement" && <FacilitiesManagement />}
           {activeTab === "reviews" && <ReviewManagement />}
           {activeTab === "analytics" && <Analytics />}
-          {activeTab === "settings" && <Profile />}
+          {activeTab === "settings" && <ProfilePage />}
         </main>
       </div>
     </div>

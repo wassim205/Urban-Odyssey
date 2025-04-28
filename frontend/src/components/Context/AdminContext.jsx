@@ -3,7 +3,6 @@ import React, {
   useState,
   useEffect,
   useCallback,
-  useContext,
 } from "react";
 import axios from "./../../config/axiosConfig";
 import { toast } from "sonner";
