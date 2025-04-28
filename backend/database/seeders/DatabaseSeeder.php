@@ -17,16 +17,16 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-       $this->call(RoleSeeder::class);
-        User::create([
-            'username' => 'testuser',
-            'firstname' => 'Test',
-            'lastname' => 'User',
-            'email' => 'test@example.com',
-            'email_verified_at' => now(),
-            'password' => bcrypt('password'),
-            'role_id' => 1,
-            'preferred_categories' => json_encode(['Tech', 'Gaming']),
-        ]);
+       $this->call(CategorySeeder::class);
+        // User::create([
+        //     'username' => 'testuser',
+        //     'firstname' => 'Test',
+        //     'lastname' => 'User',
+        //     'email' => 'test@example.com',
+        //     'email_verified_at' => now(),
+        //     'password' => bcrypt('password'),
+        //     'role_id' => 1,
+        //     'preferred_categories' => json_encode(['Tech', 'Gaming']),
+        // ]);
     }
 }

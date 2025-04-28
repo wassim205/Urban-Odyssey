@@ -31,4 +31,9 @@ class Place extends Model
     {
         return $this->hasMany(Favorite::class, 'place_id');
     }
+
+    public function categories()
+    {
+        return $this->belongsToMany(Category::class, 'place_category');
+    }
 }

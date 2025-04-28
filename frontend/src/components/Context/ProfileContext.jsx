@@ -19,16 +19,22 @@ export const ProfileProvider = ({ children }) => {
   });
   const [showPasswordForm, setShowPasswordForm] = useState(false);
   const [showCategoriesForm, setShowCategoriesForm] = useState(false);
-  const [availableCategories] = useState([
-    "Restaurants",
-    "Parks",
-    "Museums",
-    "Shopping",
-    "Entertainment",
-    "Sports",
-  ]);
+  const [categories, setCategories] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.get("categories");
+        setCategories(response.data.categories);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
 
   const fetchUserData = async () => {
     try {
@@ -42,7 +48,13 @@ export const ProfileProvider = ({ children }) => {
         username: response.data.user.username || "",
       });
 
-      setSelectedCategories(response.data.user.preferred_categories || []);
+      const preferredCategories = Array.isArray(
+        response.data.user.preferred_categories
+      )
+        ? response.data.user.preferred_categories
+        : JSON.parse(response.data.user.preferred_categories || "[]");
+
+      setSelectedCategories(preferredCategories.map((cat) => cat.name || cat));
     } catch (err) {
       console.error("Error fetching user data:", err);
       setError("Failed to load user data.");
@@ -128,11 +140,11 @@ export const ProfileProvider = ({ children }) => {
     }
   };
 
-  const handleCategoryToggle = (category) => {
+  const handleCategoryToggle = (categoryName) => {
     setSelectedCategories((prev) =>
-      prev.includes(category)
-        ? prev.filter((cat) => cat !== category)
-        : [...prev, category]
+      prev.includes(categoryName)
+        ? prev.filter((cat) => cat !== categoryName)
+        : [...prev, categoryName]
     );
   };
 
@@ -212,13 +224,14 @@ export const ProfileProvider = ({ children }) => {
         loading,
         error,
         activeTab,
+        categories,
         setActiveTab,
         editMode,
         formData,
         passwordData,
         showPasswordForm,
         showCategoriesForm,
-        availableCategories,
+
         selectedCategories,
         handleInputChange,
         handlePasswordChange,

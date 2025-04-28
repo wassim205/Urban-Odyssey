@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\admin\CategoriesController;
 use App\Http\Controllers\api\admin\DashboardController;
 use App\Http\Controllers\api\admin\PlacesController;
 use App\Http\Controllers\api\admin\UsersController;
@@ -62,4 +63,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/auth/change-password', [AuthController::class, 'changePassword']);
     Route::put('/auth/user/preferences', [AuthController::class, 'updatePreferredCategories']);
     Route::delete('/auth/user', [AuthController::class, 'deleteAccount']);
+    
+    Route::get('/categories', [CategoriesController::class, 'index']);
+    
 });

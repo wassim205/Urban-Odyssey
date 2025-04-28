@@ -20,7 +20,7 @@ function SettingsTab() {
     handleCategoryToggle,
     setSelectedCategories,
     handleDeleteAccount,
-    availableCategories,
+    categories,
     selectedCategories,
   } = useContext(ProfileContext)
 
@@ -134,15 +134,15 @@ function SettingsTab() {
           ) : (
             <div className="mt-4">
               <div className="flex flex-wrap gap-2">
-                {availableCategories.map((category) => (
+                {categories.map((category) => (
                   <button
-                    key={category}
+                    key={category.id}
                     className={`px-3 py-1 rounded-full text-sm ${
-                      selectedCategories.includes(category) ? "bg-blue-500 text-white" : "bg-gray-200 text-gray-800"
+                      selectedCategories.includes(category.name) ? "bg-blue-500 text-white" : "bg-gray-200 text-gray-800"
                     }`}
-                    onClick={() => handleCategoryToggle(category)}
+                    onClick={() => handleCategoryToggle(category.name)}
                   >
-                    {category}
+                    {category.name}
                   </button>
                 ))}
               </div>
