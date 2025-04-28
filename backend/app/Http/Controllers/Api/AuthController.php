@@ -160,18 +160,21 @@ class AuthController extends Controller
     public function updatePreferredCategories(Request $request)
     {
         $user = Auth::user();
-
+    
         if (!$user) {
             return response()->json(['message' => 'Unauthorized'], 401);
         }
-
+    
         $validated = $request->validate([
             'preferred_categories' => 'required|array',
         ]);
 
         $user->update(['preferred_categories' => json_encode($validated['preferred_categories'])]);
-
-        return response()->json(['message' => 'Preferred categories updated successfully', 'preferred_categories' => $validated['preferred_categories']]);
+    
+        return response()->json([
+            'message' => 'Preferred categories updated successfully',
+            'preferred_categories' => $validated['preferred_categories'], // Return as array
+        ]);
     }
 
     public function deleteAccount()
