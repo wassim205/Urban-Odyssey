@@ -1,0 +1,35 @@
+@import url("https://fonts.googleapis.com/css2?family=Righteous&family=Bebas+Neue&family=Montserrat:wght@300;400;500;700&family=Belgrano&family=Poppins:wght@300;400;500;600;700&family=Poltawski+Nowy:wght@300;400;500;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Montaga&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Gentium+Plus&display=swap");
+
+@font-face {
+  font-family: "Gentium Book Basic";
+  src: url("./assets/fonts/GenBkBasR.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+/* @font-face {
+  font-family: "Gentium Book Basic BI";
+  src: url("./assets/fonts/GenBkBasBI.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+} */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.custom-popup .leaflet-popup-content-wrapper {
+  max-height: 400px;
+  overflow-y: auto;
+}
+.leaflet-popup-content {
+  margin: 12px !important;
+}
+
+.facility-marker-icon {
+  filter: hue-rotate(120deg);
+}
+
+.facility-popup {
+  min-width: 200px;
+}
