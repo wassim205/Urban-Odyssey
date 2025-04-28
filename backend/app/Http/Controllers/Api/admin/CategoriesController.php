@@ -20,4 +20,28 @@ class CategoriesController
             ], 500);
         }
     }
+
+    public function getPlaceCategoriesAnalytics()
+    {
+        try {
+            $categories = Category::withCount('places')
+                ->orderBy('places_count', 'desc')
+                ->take(5)
+                ->get();
+
+            $data = $categories->map(function ($category) {
+                return [
+                    'name' => $category->name,
+                    'place_count' => $category->places_count,
+                ];
+            });
+
+            return response()->json($data, 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Error fetching place categories analytics.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
 }

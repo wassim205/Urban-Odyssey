@@ -65,5 +65,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/auth/user', [AuthController::class, 'deleteAccount']);
     
     Route::get('/categories', [CategoriesController::class, 'index']);
-    
+    Route::get('/analytics/place-categories', [CategoriesController::class, 'getPlaceCategoriesAnalytics']);
+    Route::get('/analytics/monthly-visits', [DashboardController::class, 'getMonthlyVisitsAnalytics']);
 });
