@@ -58,4 +58,8 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     Route::get('/auth/user', [AuthController::class, 'authUser']);
+    Route::put('/auth/user', [AuthController::class, 'updateProfile']);
+    Route::put('/auth/change-password', [AuthController::class, 'changePassword']);
+    Route::put('/auth/user/preferences', [AuthController::class, 'updatePreferredCategories']);
+    Route::delete('/auth/user', [AuthController::class, 'deleteAccount']);
 });

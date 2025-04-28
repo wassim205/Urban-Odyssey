@@ -95,24 +95,95 @@ class AuthController extends Controller
     public function authUser()
     {
         $user = Auth::user();
-    
+
         if (!$user) {
             return response()->json([
                 'status' => 'error',
                 'message' => 'No authenticated user found.'
             ], 401);
         }
-    
+
         $favorites = Favorite::where('user_id', $user->id)
             ->with('place')
             ->orderBy('created_at', 'desc')
             ->get();
-    
+
         return response()->json([
             'status' => 'success',
             'user'   => $user,
             'favorites' => $favorites->isEmpty() ? [] : $favorites
         ]);
     }
-    
+
+    public function updateProfile(Request $request)
+    {
+        $user = Auth::user();
+
+        if (!$user) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
+
+        $validated = $request->validate([
+            'firstname' => 'required|string|max:255',
+            'lastname' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,' . $user->id,
+            'username' => 'required|string|unique:users,username,' . $user->id,
+        ]);
+
+        $user->update($validated);
+
+        return response()->json(['message' => 'Profile updated successfully', 'user' => $user]);
+    }
+
+    public function changePassword(Request $request)
+    {
+        $user = Auth::user();
+
+        if (!$user) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
+
+        $validated = $request->validate([
+            'currentPassword' => 'required',
+            'newPassword' => 'required|min:6|confirmed',
+        ]);
+
+        if (!Hash::check($validated['currentPassword'], $user->password)) {
+            return response()->json(['message' => 'Current password is incorrect'], 400);
+        }
+
+        $user->update(['password' => Hash::make($validated['newPassword'])]);
+
+        return response()->json(['message' => 'Password changed successfully']);
+    }
+
+    public function updatePreferredCategories(Request $request)
+    {
+        $user = Auth::user();
+
+        if (!$user) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
+
+        $validated = $request->validate([
+            'preferred_categories' => 'required|array',
+        ]);
+
+        $user->update(['preferred_categories' => json_encode($validated['preferred_categories'])]);
+
+        return response()->json(['message' => 'Preferred categories updated successfully', 'preferred_categories' => $validated['preferred_categories']]);
+    }
+
+    public function deleteAccount()
+    {
+        $user = Auth::user();
+
+        if (!$user) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
+
+        $user->delete();
+
+        return response()->json(['message' => 'Account deleted successfully']);
+    }
 }
