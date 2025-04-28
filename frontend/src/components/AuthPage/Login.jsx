@@ -3,10 +3,14 @@ import { motion } from "framer-motion";
 import { Toaster, toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import axios from "./../../config/axiosConfig";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, Import } from "lucide-react";
 import planetEarth from "../../../public/images/planet-earth.png";
 import googleIcon from "../../../public/images/google.png";
 import InputField from "./InputDiv";
+import { Link } from "react-router-dom";
+
+
+const MotionLink = motion(Link);
 
 export default function Login() {
   const navigate = useNavigate();
@@ -113,9 +117,9 @@ export default function Login() {
       <div className="absolute inset-0 bg-[#293D36] bg-opacity-60"></div>
 
       <div className="relative z-10 container mx-auto px-4 py-8">
-        <h1 className="text-center text-4xl md:text-5xl lg:text-6xl font-bebas text-[#D8C292] mb-8">
+       <Link to="/"> <h1 className="text-center text-4xl md:text-5xl lg:text-6xl font-bebas text-[#D8C292] mb-8">
           URBAN ODYSSEY
-        </h1>
+        </h1></Link>
 
         <motion.div
           initial={{ scale: 0.9 }}
@@ -199,12 +203,12 @@ export default function Login() {
                 </motion.button>
                 <div className="text-center text-[#313131] font-Poppins text-xl font-medium mt-4">
                   <span>Don't have an account? </span>
-                  <a
-                    href="/register"
+                  <MotionLink
+                    to="/register"
                     className="text-[#0F3DDE] hover:underline"
                   >
                     Sign Up
-                  </a>
+                  </MotionLink>
                 </div>
               </div>
 

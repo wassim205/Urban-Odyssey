@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useLocation } from "react-router-dom";
 import SearchBar from "./SearchBar";
 import { Menu, X } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -13,28 +14,28 @@ export default function Navbar() {
   const toggleMenu = () => setIsMenuOpen((open) => !open);
 
   const navLinks = [
-    { href: "/about", icon: "/src/assets/icons/ask.svg", text: "ABOUT" },
+    { to: "/about", icon: "/src/assets/icons/ask.svg", text: "ABOUT" },
     {
-      href: "/favorites",
+      to: "/favorites",
       icon: "/src/assets/icons/bookmark.svg",
       text: "FAVORITES",
     },
     {
-      href: "/reviews",
+      to: "/reviews",
       icon: "/src/assets/icons/reviews.svg",
       text: "REVIEWS",
     },
     {
-      href: "/contact",
+      to: "/contact",
       icon: "/src/assets/icons/contact-us.svg",
       text: "CONTACT",
     },
     {
-      href: "/profile",
+      to: "/profile",
       icon: "/src/assets/icons/account.svg",
       text: "PROFILE",
     },
-    { href: "/logout", icon: "/src/assets/icons/logout.svg", text: "LOG OUT" },
+    { to: "/logout", icon: "/src/assets/icons/logout.svg", text: "LOG OUT" },
   ];
 
   return (
@@ -51,32 +52,32 @@ export default function Navbar() {
         )}
 
         {/* Center */}
-        <a href="/urban-odyssey">
+        <Link to="/urban-odyssey">
           <h1 className="justify-self-center font-righteous text-[#D8C292] text-4xl drop-shadow-2xl whitespace-nowrap">
             URBAN ODYSSEY
           </h1>
-        </a>
+        </Link>
 
         {/* Right */}
         <div className="flex justify-end items-center space-x-4 font-bebas text-[#9D9D9D] text-2xl pr-4">
           {navLinks.map((link, idx) => (
-            <a
+            <Link
               key={idx}
-              href={link.href}
+              to={link.to}
               className="flex items-center hover:text-white transition"
             >
               <img src={link.icon} className="w-5 h-5 mr-1" alt={link.text} />
               <span className="hidden xl:inline">{link.text}</span>
-            </a>
+            </Link>
           ))}
         </div>
       </div>
 
       {/* Mobile */}
       <div className="lg:hidden flex justify-between items-center px-4 h-16">
-      <a href="/urban-odyssey"> <h1 className="font-righteous text-[#D8C292] text-3xl drop-shadow-2xl">
+      <Link to="/urban-odyssey"> <h1 className="font-righteous text-[#D8C292] text-3xl drop-shadow-2xl">
           URBAN ODYSSEY
-        </h1></a>
+        </h1></Link>
         <div className="flex items-center gap-2">
           {showSearch && (
             <div className="sm:block hidden">
@@ -103,14 +104,14 @@ export default function Navbar() {
           )}
           <div className="flex flex-col space-y-4 font-bebas text-[#9D9D9D] text-xl">
             {navLinks.map((link, idx) => (
-              <a
+              <Link
                 key={idx}
-                href={link.href}
+                to={link.to}
                 className="flex items-center hover:text-white transition py-2 px-1 hover:bg-[#5a5a5c] rounded-md"
               >
                 <img src={link.icon} className="w-6 h-6 mr-3" alt={link.text} />
                 {link.text}
-              </a>
+              </Link>
             ))}
           </div>
         </div>
