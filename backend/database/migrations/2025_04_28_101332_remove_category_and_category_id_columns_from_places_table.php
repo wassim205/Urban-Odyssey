@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::table('places', function (Blueprint $table) {
             $table->dropColumn('category');
             $table->dropForeign(['category_id']);
-            $table->dropColumn('category_id');        });
+            $table->dropColumn('category_id');
+        });
     }
 
     /**

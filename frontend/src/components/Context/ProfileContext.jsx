@@ -19,22 +19,8 @@ export const ProfileProvider = ({ children }) => {
   });
   const [showPasswordForm, setShowPasswordForm] = useState(false);
   const [showCategoriesForm, setShowCategoriesForm] = useState(false);
-  const [categories, setCategories] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const response = await axios.get("categories");
-        setCategories(response.data.categories);
-      } catch (error) {
-        console.error("Error fetching categories:", error);
-      }
-    };
-
-    fetchCategories();
-  }, []);
 
   const fetchUserData = async () => {
     try {
@@ -224,7 +210,6 @@ export const ProfileProvider = ({ children }) => {
         loading,
         error,
         activeTab,
-        categories,
         setActiveTab,
         editMode,
         formData,

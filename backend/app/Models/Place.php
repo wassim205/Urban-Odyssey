@@ -19,7 +19,6 @@ class Place extends Model
         'longitude',
         'image_url',
         'address',
-        'category',
     ];
 
     public function favoritedBy()
@@ -32,8 +31,4 @@ class Place extends Model
         return $this->hasMany(Favorite::class, 'place_id');
     }
 
-    public function categories()
-    {
-        return $this->belongsToMany(Category::class, 'place_category');
-    }
 }

@@ -111,16 +111,6 @@ export default function EditPlaceModal() {
             }
             className="w-full border rounded p-2"
           />
-          <input
-            type="text"
-            name="category"
-            placeholder="Category"
-            value={editPlace.category}
-            onChange={(e) =>
-              setEditPlace({ ...editPlace, category: e.target.value })
-            }
-            className="w-full border rounded p-2"
-          />
           <div className="flex justify-end space-x-2">
             <button
               type="button"

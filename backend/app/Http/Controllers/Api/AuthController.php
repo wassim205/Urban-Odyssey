@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Favorite;
 use App\Models\User;
+use App\Models\Visits;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -35,6 +36,15 @@ class AuthController extends Controller
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
+
+        Visits::create([
+            'user_id' => $user->id,
+            'ip_address' => $request->ip(),
+            'visit_date' => now(),
+            'user_agent' => $request->header('User-Agent'),
+            'session_id' => session()->getId(),
+        ]);
+
         return response()->json([
             'user'         => $user,
             'access_token' => $token,
@@ -56,6 +66,15 @@ class AuthController extends Controller
 
         $user = Auth::user();
         $token = $user->createToken('auth_token')->plainTextToken;
+
+
+        Visits::create([
+            'user_id' => $user->id,
+            'ip_address' => $request->ip(),
+            'visit_date' => now(),
+            'user_agent' => $request->header('User-Agent'),
+            'session_id' => session()->getId(),
+        ]);
 
         return response()->json([
             'user' => $user,
@@ -160,17 +179,17 @@ class AuthController extends Controller
     public function updatePreferredCategories(Request $request)
     {
         $user = Auth::user();
-    
+
         if (!$user) {
             return response()->json(['message' => 'Unauthorized'], 401);
         }
-    
+
         $validated = $request->validate([
             'preferred_categories' => 'required|array',
         ]);
 
         $user->update(['preferred_categories' => json_encode($validated['preferred_categories'])]);
-    
+
         return response()->json([
             'message' => 'Preferred categories updated successfully',
             'preferred_categories' => $validated['preferred_categories'], // Return as array

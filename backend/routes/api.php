@@ -63,8 +63,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/auth/change-password', [AuthController::class, 'changePassword']);
     Route::put('/auth/user/preferences', [AuthController::class, 'updatePreferredCategories']);
     Route::delete('/auth/user', [AuthController::class, 'deleteAccount']);
+  
     
-    Route::get('/categories', [CategoriesController::class, 'index']);
-    Route::get('/analytics/place-categories', [CategoriesController::class, 'getPlaceCategoriesAnalytics']);
     Route::get('/analytics/monthly-visits', [DashboardController::class, 'getMonthlyVisitsAnalytics']);
 });

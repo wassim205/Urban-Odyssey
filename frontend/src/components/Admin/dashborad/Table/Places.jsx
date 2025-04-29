@@ -30,7 +30,7 @@ function Places() {
           <TableRow>
             <TableHead>Image</TableHead>
             <TableHead>Name</TableHead>
-            <TableHead>Category</TableHead>
+            {/* <TableHead>Category</TableHead> */}
             <TableHead>Address</TableHead>
             <TableHead>City</TableHead>
             <TableHead>Country</TableHead>
@@ -53,7 +53,6 @@ function Places() {
                 )}
               </TableCell>
               <TableCell className="font-medium">{place.name || "-"}</TableCell>
-              <TableCell>{place.category || "-"}</TableCell>
               <TableCell>{place.address || "-"}</TableCell>
               <TableCell>{place.city || "-"}</TableCell>
               <TableCell>{place.country || "-"}</TableCell>
