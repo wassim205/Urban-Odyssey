@@ -25,6 +25,7 @@ function Sidebar({
   const [rating, setRating] = useState(5);
   const [submitting, setSubmitting] = useState(false);
   const [submitMessage, setSubmitMessage] = useState("");
+  const isAuth = localStorage.getItem("authToken");
 
   const handleReviewSubmit = async (e) => {
     e.preventDefault();
@@ -145,7 +146,7 @@ function Sidebar({
             </div>
 
             {/* Reviews Section */}
-
+                    {isAuth &&
             <div className="animate-fadeIn animation-delay-400 bg-[#5C5C5E] p-4 rounded-lg shadow-md">
               <div className="flex items-center space-x-2 mb-3">
                 <MessageSquare size={20} className="text-[#D8C292]" />
@@ -216,7 +217,7 @@ function Sidebar({
                   </div>
                 </form>
               )}
-            </div>
+            </div>}
           </div>
         )}
 

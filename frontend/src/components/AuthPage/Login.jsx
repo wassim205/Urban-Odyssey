@@ -9,7 +9,6 @@ import googleIcon from "../../../public/images/google.png";
 import InputField from "./InputDiv";
 import { Link } from "react-router-dom";
 
-
 const MotionLink = motion(Link);
 
 export default function Login() {
@@ -74,7 +73,6 @@ export default function Login() {
       } else {
         localStorage.setItem("userRole", "user");
       }
-        
 
       axios.defaults.headers.common[
         "Authorization"
@@ -82,10 +80,9 @@ export default function Login() {
       setTimeout(() => {
         if (response.data.user.role_id === 1) {
           navigate("/dashboard");
+        } else {
+          navigate("/urban-odyssey");
         }
-        else {
-            navigate("/urban-odyssey")
-          }
       }, 3000);
     } catch (err) {
       if (err.response && err.response.status === 422) {
@@ -117,9 +114,12 @@ export default function Login() {
       <div className="absolute inset-0 bg-[#293D36] bg-opacity-60"></div>
 
       <div className="relative z-10 container mx-auto px-4 py-8">
-       <Link to="/"> <h1 className="text-center text-4xl md:text-5xl lg:text-6xl font-bebas text-[#D8C292] mb-8">
-          URBAN ODYSSEY
-        </h1></Link>
+        <Link to="/">
+          {" "}
+          <h1 className="text-center text-4xl md:text-5xl lg:text-6xl font-bebas text-[#D8C292] mb-8">
+            URBAN ODYSSEY
+          </h1>
+        </Link>
 
         <motion.div
           initial={{ scale: 0.9 }}
