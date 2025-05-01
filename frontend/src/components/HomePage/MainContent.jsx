@@ -1,15 +1,23 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 
 import path from "../../../public/images/Vector 1.svg";
 import map from "../../../public/images/map.png";
+import { toast, Toaster } from "sonner";
 
 // Create a motion-enabled Link for animated navigation
 const MotionLink = motion(Link);
 
 export default function MainContent({ data }) {
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.state?.unauthorized) {
+      toast.error("You are not authorized to access this page.");
+    }
+  }, [location.state]);
   return (
     <div className="flex flex-col lg:flex-row relative">
       {/* Main Content Container */}
@@ -117,6 +125,8 @@ export default function MainContent({ data }) {
       <div className="hidden lg:block absolute right-0 w-3/12">
         <img src={path} alt="Decorative Vector" className="w-full" />
       </div>
+      <Toaster position="top-right" richColors />
+
     </div>
   );
 }
