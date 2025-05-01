@@ -2,8 +2,10 @@ import React from "react";
 import NavBar from "./NavBar";
 import MainContent from "./MainContent";
 import city from "./../../images/City.png"
+import { Toaster } from "sonner";
 
 const Home = () => (
+    
     <div 
         className="relative min-h-screen bg-cover bg-center overflow-hidden w-full"
         style={{ backgroundImage: `url(${city})` }}
@@ -16,6 +18,7 @@ const Home = () => (
             <NavBar />
             <MainContent />
         </div>
+
     </div>
 );
 

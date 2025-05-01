@@ -1,6 +1,13 @@
 <?php
 
+use App\Http\Controllers\Api\admin\CategoriesController;
+use App\Http\Controllers\api\admin\DashboardController;
+use App\Http\Controllers\api\admin\PlacesController;
+use App\Http\Controllers\api\admin\UsersController;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\API\NearbyFacilityController;
+use App\Http\Controllers\FavoritesController;
+use App\Http\Controllers\ReviewsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -10,4 +17,53 @@ Route::get('/user', function (Request $request) {
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
-Route::post('/logout', [AuthController::class, 'logout']);
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/favorites', [FavoritesController::class, 'index']);
+    Route::post('/favorites', [FavoritesController::class, 'store']);
+    Route::get('/favorites/{id}', [FavoritesController::class, 'show']);
+    Route::delete('/favorites/{id}', [FavoritesController::class, 'destroy']);
+    // Route::post('/favorites/toggle', [FavoritesController::class, 'toggle']);
+    // Route::get('/favorites/check/{placeId}', [FavoritesController::class, 'checkStatus']);
+});
+
+Route::get('/nearby-facilities', [NearbyFacilityController::class, 'index']);
+
+Route::get('/reviews', [ReviewsController::class, 'index']);
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/logout', [AuthController::class, 'logout']);
+    
+    Route::get('/dashboard', [DashboardController::class, 'index']);
+    
+    Route::get('/dashboard/users', [UsersController::class, 'index']);
+    Route::delete('dashboard/users/{id}', [UsersController::class, 'destroy']);
+    Route::post('dashboard/users', [UsersController::class, 'store']);
+    Route::put('dashboard/users/{id}', [UsersController::class, 'update']);
+
+    Route::get('/places', [PlacesController::class, 'index']);
+    Route::post('/places', [PlacesController::class, 'store']);
+    Route::put('/places/{id}', [PlacesController::class, 'update']);
+    Route::delete('/places/{id}', [PlacesController::class, 'destroy']);
+    
+    Route::get('/reviews', [ReviewsController::class, 'index']);
+    Route::post('/reviews', [ReviewsController::class, 'store']);
+    Route::put('/reviews/{id}/approve', [ReviewsController::class, 'approve']);
+    Route::put('/reviews/{id}/reject', [ReviewsController::class, 'reject']);
+    Route::delete('/reviews/{id}', [ReviewsController::class, 'destroy']);
+
+    Route::prefix('/dashboard/facilities')->group(function () {
+        Route::get('/', [NearbyFacilityController::class, 'adminIndex']);
+        Route::post('/', [NearbyFacilityController::class, 'store']);
+        Route::put('/{facility}', [NearbyFacilityController::class, 'update']);
+        Route::delete('/{facility}', [NearbyFacilityController::class, 'destroy']);
+    });
+
+    Route::get('/auth/user', [AuthController::class, 'authUser']);
+    Route::put('/auth/user', [AuthController::class, 'updateProfile']);
+    Route::put('/auth/change-password', [AuthController::class, 'changePassword']);
+    Route::put('/auth/user/preferences', [AuthController::class, 'updatePreferredCategories']);
+    Route::delete('/auth/user', [AuthController::class, 'deleteAccount']);
+  
+    
+    Route::get('/analytics/monthly-visits', [DashboardController::class, 'getMonthlyVisitsAnalytics']);
+});

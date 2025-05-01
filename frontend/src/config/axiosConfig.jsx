@@ -12,14 +12,12 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   (config) => {
-    // Attach CSRF token to headers if available
     const csrfToken = document
       .querySelector('meta[name="csrf-token"]')
       ?.getAttribute("content");
     if (csrfToken) {
       config.headers["X-CSRF-TOKEN"] = csrfToken;
     }
-    // Attach auth token if available
     const authToken = localStorage.getItem("authToken");
     if (authToken) {
       config.headers["Authorization"] = `Bearer ${authToken}`;
@@ -32,13 +30,11 @@ axiosInstance.interceptors.request.use(
   }
 );
 
-// Add a response interceptor
 axiosInstance.interceptors.response.use(
   (response) => {
     return response;
   },
   (error) => {
-    // Handle errors globally
     if (error.response && error.response.status === 401) {
       console.error("Unauthorized. Redirecting to login...");
       window.location.href = "/login";

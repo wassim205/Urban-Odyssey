@@ -3,6 +3,9 @@ import { motion } from "framer-motion";
 import { Eye, EyeOff } from "lucide-react";
 import InputField from "./InputDiv";
 import googleIcon from "../../../public/images/google.png";
+import { Link } from "react-router-dom";
+
+const MotionLink = motion(Link);
 
 const RegisterForm = ({
     formData,
@@ -179,12 +182,12 @@ const RegisterForm = ({
                     </motion.button>
                     <div className="text-center text-[#313131] font-Poppins text-xl font-medium mt-4">
                         <span>Have an account? </span>
-                        <a
-                            href="/login"
+                        <MotionLink
+                            to="/login"
                             className="text-[#0F3DDE] hover:underline"
                         >
                             Log In
-                        </a>
+                        </MotionLink>
                     </div>
                 </div>
                 <div className="text-center px-22 flex flex-col items-center">

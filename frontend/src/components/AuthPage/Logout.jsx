@@ -1,7 +1,8 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 // import api from "./config/axiosConfig";
-import api from './../../config/axiosConfig';
+import api from "./../../config/axiosConfig";
+import { toast } from "sonner";
 // import { toast } from "./NotificationProvider";
 
 const Logout = () => {
@@ -11,20 +12,21 @@ const Logout = () => {
     const logout = async () => {
       try {
         await api.post(
-          "v1/admin/logout",
+          "logout",
           {},
           {
             headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
+              Authorization: `Bearer ${localStorage.getItem("authToken")}`,
             },
           }
         );
         toast.success("Logged out successfully.");
       } catch (error) {
         toast.error("Logout failed. Please try again.");
+        console.log("Logout failed:", error);
       } finally {
-        localStorage.removeItem("token");
-        navigate("/login");
+        localStorage.clear();
+        navigate("/login", { replace: true });
       }
     };
 
