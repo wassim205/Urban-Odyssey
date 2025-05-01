@@ -12,7 +12,7 @@ function FavoritePlacesTab() {
   return (
     <div>
       <h3 className="text-lg font-medium text-gray-900 flex items-center gap-2 mb-4">
-        <MapPin size={18} className="text-blue-500" />
+        <MapPin size={18} className="text-[#D8C292]" />
         Favorite Places
       </h3>
 
@@ -42,7 +42,7 @@ function FavoritePlacesTab() {
                   {new Date(place.place.updated_at).toLocaleDateString()}
                 </p>
                 <button
-                  className="mt-2 text-sm text-red-600 hover:text-red-800 transition-colors flex items-center gap-1"
+                  className="mt-2 text-sm text-[#A67C52] hover:text-[#8A5A30] transition-colors flex items-center gap-1"
                   onClick={() => handleRemoveFavoritePlace(place)}
                 >
                   Remove

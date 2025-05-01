@@ -27,13 +27,9 @@ function ContactForm() {
     e.preventDefault();
     setFormStatus({ isSubmitting: true, isSubmitted: false, error: null });
     
-    // Simulate form submission
     try {
-      // In a real implementation, you'd send the data to your backend
-      // const response = await axios.post('/api/contact', formData);
       await new Promise(resolve => setTimeout(resolve, 1000));
       
-      // Clear the form after successful submission
       setFormData({ name: '', email: '', subject: '', message: '' });
       setFormStatus({
         isSubmitting: false,
@@ -41,7 +37,6 @@ function ContactForm() {
         error: null
       });
       
-      // Reset status after 5 seconds
       setTimeout(() => {
         setFormStatus(prev => ({ ...prev, isSubmitted: false }));
       }, 5000);

@@ -12,7 +12,7 @@ const NavigationTabs = () => {
             onClick={() => setActiveTab("overview")}
             className={`px-4 py-3 text-sm font-medium whitespace-nowrap ${
               activeTab === "overview"
-                ? "border-b-2 border-blue-500 text-blue-600"
+                ? "border-b-2 border-[#D8C292] text-[#D8C292]"
                 : "text-gray-500 hover:text-gray-700"
             }`}
           >
@@ -22,7 +22,7 @@ const NavigationTabs = () => {
             onClick={() => setActiveTab("places")}
             className={`px-4 py-3 text-sm font-medium whitespace-nowrap ${
               activeTab === "places"
-                ? "border-b-2 border-blue-500 text-blue-600"
+                ? "border-b-2 border-[#D8C292] text-[#D8C292]"
                 : "text-gray-500 hover:text-gray-700"
             }`}
           >
@@ -32,7 +32,7 @@ const NavigationTabs = () => {
             onClick={() => setActiveTab("settings")}
             className={`px-4 py-3 text-sm font-medium whitespace-nowrap ${
               activeTab === "settings"
-                ? "border-b-2 border-blue-500 text-blue-600"
+                ? "border-b-2 border-[#D8C292] text-[#D8C292]"
                 : "text-gray-500 hover:text-gray-700"
             }`}
           >

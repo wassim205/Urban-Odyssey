@@ -24,9 +24,6 @@ function Contact() {
           <div className="flex-grow">
             <ContactContent />
           </div>
-          <footer className="text-center py-4 text-[#D8C292]/70 text-sm">
-            <p>© {new Date().getFullYear()} - Tous droits réservés</p>
-          </footer>
         </MapProvider>
       </div>
     </div>

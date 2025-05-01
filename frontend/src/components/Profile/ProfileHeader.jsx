@@ -14,10 +14,10 @@ const ProfileHeader = () => {
 
   return (
     <div className="bg-white rounded-xl shadow-md overflow-hidden">
-      <div className="h-48 bg-gradient-to-r from-blue-500 to-indigo-600 relative">
+      <div className="h-48 bg-gradient-to-r from-[#4B4B4D] to-[#6D6A61] relative">
         <button
           onClick={handleEditToggle}
-          className="absolute top-4 right-4 bg-white/20 backdrop-blur-sm p-2 rounded-full hover:bg-white/30 transition-colors"
+          className="absolute top-4 right-4 bg-white/20 backdrop-blur-sm p-2 rounded-full hover:bg-[#D8C292]/30 transition-colors"
         >
           {editMode ? <X size={16} className="text-white" /> : <Edit size={16} className="text-white" />}
         </button>
@@ -91,7 +91,7 @@ const ProfileHeader = () => {
                 <div className="flex space-x-3">
                   <button
                     onClick={handleUpdateProfile}
-                    className="bg-blue-600 text-white px-4 py-2 rounded-lg shadow-sm hover:bg-blue-700 transition-colors flex items-center gap-2"
+                    className="bg-[#D8C292] text-gray-800 px-4 py-2 rounded-lg shadow-sm hover:bg-[#C4AF7F] transition-colors flex items-center gap-2"
                   >
                     <Save size={16} /> Save Changes
                   </button>
@@ -108,7 +108,7 @@ const ProfileHeader = () => {
                 <h1 className="text-2xl font-bold text-gray-900">
                   {userData.user.firstname} {userData.user.lastname}
                 </h1>
-                <p className="text-gray-500 flex items-center gap-1">
+                <p className="text-[#8A8778] flex items-center gap-1">
                   <User size={14} /> @{userData.user.username}
                 </p>
               </div>
@@ -118,7 +118,7 @@ const ProfileHeader = () => {
               <div className="mt-4 md:mt-0">
                 <button
                   onClick={handleEditToggle}
-                  className="bg-blue-600 text-white px-4 py-2 rounded-lg shadow-sm hover:bg-blue-700 transition-colors flex items-center gap-2"
+                  className="bg-[#D8C292] text-gray-800 px-4 py-2 rounded-lg shadow-sm hover:bg-[#C4AF7F] transition-colors flex items-center gap-2"
                 >
                   <Edit size={16} /> Edit Profile
                 </button>
