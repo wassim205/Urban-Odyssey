@@ -1,6 +1,7 @@
 import { useState, useEffect, createContext } from "react";
 import axios from "../../config/axiosConfig";
 import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
 
 export const ProfileContext = createContext();
 
@@ -18,22 +19,14 @@ export const ProfileProvider = ({ children }) => {
   });
   const [showPasswordForm, setShowPasswordForm] = useState(false);
   const [showCategoriesForm, setShowCategoriesForm] = useState(false);
-  const [availableCategories] = useState([
-    "Restaurants",
-    "Parks",
-    "Museums",
-    "Shopping",
-    "Entertainment",
-    "Sports",
-  ]);
   const [selectedCategories, setSelectedCategories] = useState([]);
+  const navigate = useNavigate();
 
   const fetchUserData = async () => {
     try {
       const response = await axios.get("auth/user");
       setUserData(response.data);
 
-      // Initialize form data with current user data
       setFormData({
         firstname: response.data.user.firstname || "",
         lastname: response.data.user.lastname || "",
@@ -41,8 +34,13 @@ export const ProfileProvider = ({ children }) => {
         username: response.data.user.username || "",
       });
 
-      // Initialize selected categories
-      setSelectedCategories(response.data.user.preferred_categories || []);
+      const preferredCategories = Array.isArray(
+        response.data.user.preferred_categories
+      )
+        ? response.data.user.preferred_categories
+        : JSON.parse(response.data.user.preferred_categories || "[]");
+
+      setSelectedCategories(preferredCategories.map((cat) => cat.name || cat));
     } catch (err) {
       console.error("Error fetching user data:", err);
       setError("Failed to load user data.");
@@ -67,7 +65,6 @@ export const ProfileProvider = ({ children }) => {
 
   const handleEditToggle = () => {
     if (editMode && userData) {
-      // Discard changes
       setFormData({
         firstname: userData.user.firstname || "",
         lastname: userData.user.lastname || "",
@@ -82,7 +79,6 @@ export const ProfileProvider = ({ children }) => {
     try {
       await axios.put("auth/user", formData);
 
-      // Update the local user data
       setUserData((prev) => ({
         ...prev,
         user: {
@@ -112,7 +108,6 @@ export const ProfileProvider = ({ children }) => {
     try {
       await axios.put("auth/change-password", passwordData);
 
-      // Reset the password form
       setPasswordData({
         currentPassword: "",
         newPassword: "",
@@ -131,11 +126,11 @@ export const ProfileProvider = ({ children }) => {
     }
   };
 
-  const handleCategoryToggle = (category) => {
+  const handleCategoryToggle = (categoryName) => {
     setSelectedCategories((prev) =>
-      prev.includes(category)
-        ? prev.filter((cat) => cat !== category)
-        : [...prev, category]
+      prev.includes(categoryName)
+        ? prev.filter((cat) => cat !== categoryName)
+        : [...prev, categoryName]
     );
   };
 
@@ -177,7 +172,7 @@ export const ProfileProvider = ({ children }) => {
             try {
               await axios.delete("/auth/user");
               toast.success("Account deleted successfully!");
-              window.location.href = "/";
+              navigate("/");
             } catch (err) {
               toast.error(
                 `Failed to delete account: ${
@@ -198,7 +193,7 @@ export const ProfileProvider = ({ children }) => {
     if (confirm("Remove this place from favorites?")) {
       try {
         await axios.delete(`/favorites/${place.place.id}`);
-        // Update favorites list
+
         fetchUserData();
         toast.success("Place removed from favorites!");
       } catch (err) {
@@ -221,7 +216,7 @@ export const ProfileProvider = ({ children }) => {
         passwordData,
         showPasswordForm,
         showCategoriesForm,
-        availableCategories,
+
         selectedCategories,
         handleInputChange,
         handlePasswordChange,

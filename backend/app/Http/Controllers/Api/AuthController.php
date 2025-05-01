@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Favorite;
 use App\Models\User;
+use App\Models\Visits;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -35,6 +36,15 @@ class AuthController extends Controller
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
+
+        Visits::create([
+            'user_id' => $user->id,
+            'ip_address' => $request->ip(),
+            'visit_date' => now(),
+            'user_agent' => $request->header('User-Agent'),
+            'session_id' => session()->getId(),
+        ]);
+
         return response()->json([
             'user'         => $user,
             'access_token' => $token,
@@ -57,6 +67,15 @@ class AuthController extends Controller
         $user = Auth::user();
         $token = $user->createToken('auth_token')->plainTextToken;
 
+
+        Visits::create([
+            'user_id' => $user->id,
+            'ip_address' => $request->ip(),
+            'visit_date' => now(),
+            'user_agent' => $request->header('User-Agent'),
+            'session_id' => session()->getId(),
+        ]);
+
         return response()->json([
             'user' => $user,
             'access_token' => $token,
@@ -75,8 +94,7 @@ class AuthController extends Controller
                     'message' => 'No authenticated user found.'
                 ], 401);
             }
-
-            // Revoke all tokens for the user
+            
             $user->tokens()->delete();
 
             return response()->json([
@@ -171,7 +189,10 @@ class AuthController extends Controller
 
         $user->update(['preferred_categories' => json_encode($validated['preferred_categories'])]);
 
-        return response()->json(['message' => 'Preferred categories updated successfully', 'preferred_categories' => $validated['preferred_categories']]);
+        return response()->json([
+            'message' => 'Preferred categories updated successfully',
+            'preferred_categories' => $validated['preferred_categories'], // Return as array
+        ]);
     }
 
     public function deleteAccount()

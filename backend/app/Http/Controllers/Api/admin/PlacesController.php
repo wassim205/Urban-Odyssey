@@ -36,10 +36,11 @@ class PlacesController
                 'longitude' => 'nullable|numeric',
                 'image_url' => 'nullable|url',
                 'address' => 'nullable|string',
-                'category' => 'nullable|string',
             ]);
 
             $place = Place::create($validated);
+
+            // $place->update(['category_id' => $validated['category_id']]);
 
             return response()->json(['place' => $place], 201);
         } catch (\Exception $e) {
@@ -64,10 +65,11 @@ class PlacesController
                 'longitude' => 'nullable|numeric',
                 'image_url' => 'nullable|url',
                 'address' => 'nullable|string',
-                'category' => 'nullable|string',
             ]);
 
             $place->update($validated);
+            // $place->update(['category_id' => $validated['category_id']]);
+
 
             return response()->json(['place' => $place], 200);
         } catch (\Exception $e) {

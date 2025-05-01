@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "./../../config/axiosConfig";
 import planetEarth from "../../../public/images/planet-earth.png";
 import RegisterForm from "./RegisterForm";
+import { Link } from "react-router-dom";
 
 export default function Register() {
   const navigate = useNavigate();
@@ -149,9 +150,9 @@ export default function Register() {
       <div className="absolute inset-0 bg-[#293D36] bg-opacity-60"></div>
 
       <div className="relative z-10 container mx-auto px-4 py-8">
-        <h1 className="text-center text-4xl md:text-5xl lg:text-6xl font-bebas text-[#D8C292] mb-8">
+      <Link to="/"> <h1 className="text-center text-4xl md:text-5xl lg:text-6xl font-bebas text-[#D8C292] mb-8">
           URBAN ODYSSEY
-        </h1>
+        </h1></Link>
 
         <motion.div
           initial={{ scale: 0.9 }}

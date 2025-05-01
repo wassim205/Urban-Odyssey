@@ -58,7 +58,6 @@ class FavoritesController extends Controller
                     'longitude'   => $request->lng,
                     'image_url'   => $request->image_url,
                     'address'     => $request->address,
-                    'category'    => $request->category,
                     'description' => $request->description,
                     'source'      => $request->source,
                 ]

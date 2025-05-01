@@ -16,7 +16,6 @@ export default function AddPlaceModal() {
     longitude: "",
     image_url: "",
     address: "",
-    category: "",
   });
   const handleAddPlace = async (e) => {
     e.preventDefault();
@@ -34,7 +33,6 @@ export default function AddPlaceModal() {
         longitude: "",
         image_url: "",
         address: "",
-        category: "",
       });
     } catch (error) {
       console.error("Error adding place:", error);
@@ -123,16 +121,6 @@ export default function AddPlaceModal() {
             value={newPlace.address}
             onChange={(e) =>
               setNewPlace({ ...newPlace, address: e.target.value })
-            }
-            className="w-full border rounded p-2"
-          />
-          <input
-            type="text"
-            name="category"
-            placeholder="Category"
-            value={newPlace.category}
-            onChange={(e) =>
-              setNewPlace({ ...newPlace, category: e.target.value })
             }
             className="w-full border rounded p-2"
           />

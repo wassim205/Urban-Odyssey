@@ -16,7 +16,6 @@ import About from "../components/About/About";
 import Navbar from "../components/Layout/Navbar";
 import ProfilePage from "../components/Profile/ProfilePage";
 
-
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -32,7 +31,11 @@ export const router = createBrowserRouter([
   },
   {
     path: "/logout",
-    element: <Logout />,
+    element: (
+      <ProtectedRoute allowedRoles={["user", "admin"]}>
+        <Logout />
+      </ProtectedRoute>
+    ),
   },
   {
     path: "/urban-odyssey",
@@ -40,15 +43,28 @@ export const router = createBrowserRouter([
   },
   {
     path: "/favorites",
-    element: <Favorites />,
+    element: (
+      <ProtectedRoute allowedRoles={["user"]}>
+        <Favorites />
+      </ProtectedRoute>
+    ),
   },
   {
     path: "/reviews",
-    element: <Reviews />,
+    element: (
+      <ProtectedRoute allowedRoles={["user"]}>
+        {" "}
+        <Reviews />
+      </ProtectedRoute>
+    ),
   },
   {
     path: "/contact",
-    element: <Contact />,
+    element: (
+      <ProtectedRoute allowedRoles={["user"]}>
+        <Contact />
+      </ProtectedRoute>
+    ),
   },
   {
     path: "/dashboard",
@@ -67,7 +83,9 @@ export const router = createBrowserRouter([
     element: (
       <>
         <Navbar />
-        <ProfilePage />
+        <ProtectedRoute allowedRoles={["user", "admin"]}>
+          <ProfilePage />
+        </ProtectedRoute>
       </>
     ),
   },

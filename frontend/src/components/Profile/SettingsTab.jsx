@@ -1,8 +1,8 @@
-"use client"
+"use client";
 
-import { useContext } from "react"
-import { Settings } from "lucide-react"
-import { ProfileContext } from "../Context/ProfileContext"
+import { useContext } from "react";
+import { Settings } from "lucide-react";
+import { ProfileContext } from "../Context/ProfileContext";
 
 function SettingsTab() {
   const {
@@ -20,12 +20,23 @@ function SettingsTab() {
     handleCategoryToggle,
     setSelectedCategories,
     handleDeleteAccount,
-    availableCategories,
     selectedCategories,
-  } = useContext(ProfileContext)
+  } = useContext(ProfileContext);
+
+  
+  const categories = ([
+    "Technology",
+    "Travel",
+    "Food",
+    "Fitness",
+    "Education",
+    "Entertainment",
+    "Health",
+    "Finance",
+  ]);
 
   if (!userData) {
-    return <div className="text-center py-8">Loading...</div>
+    return <div className="text-center py-8">Loading...</div>;
   }
 
   return (
@@ -39,7 +50,9 @@ function SettingsTab() {
         {/* Profile Information */}
         <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
           <h4 className="font-medium text-gray-900">Profile Information</h4>
-          <p className="text-sm text-gray-500 mt-1">Update your account's profile information and email address.</p>
+          <p className="text-sm text-gray-500 mt-1">
+            Update your account's profile information and email address.
+          </p>
           <button
             className="mt-3 bg-blue-600 text-white px-3 py-1.5 text-sm rounded hover:bg-blue-700 transition-colors"
             onClick={handleEditToggle}
@@ -65,7 +78,9 @@ function SettingsTab() {
           ) : (
             <div className="mt-4 space-y-3">
               <div>
-                <label className="block text-sm text-gray-500">Current Password</label>
+                <label className="block text-sm text-gray-500">
+                  Current Password
+                </label>
                 <input
                   type="password"
                   name="currentPassword"
@@ -75,7 +90,9 @@ function SettingsTab() {
                 />
               </div>
               <div>
-                <label className="block text-sm text-gray-500">New Password</label>
+                <label className="block text-sm text-gray-500">
+                  New Password
+                </label>
                 <input
                   type="password"
                   name="newPassword"
@@ -85,7 +102,9 @@ function SettingsTab() {
                 />
               </div>
               <div>
-                <label className="block text-sm text-gray-500">Confirm New Password</label>
+                <label className="block text-sm text-gray-500">
+                  Confirm New Password
+                </label>
                 <input
                   type="password"
                   name="newPassword_confirmation"
@@ -104,12 +123,12 @@ function SettingsTab() {
                 <button
                   className="bg-gray-200 text-gray-800 px-3 py-1.5 text-sm rounded hover:bg-gray-300 transition-colors"
                   onClick={() => {
-                    setShowPasswordForm(false)
+                    setShowPasswordForm(false);
                     setPasswordData({
                       currentPassword: "",
                       newPassword: "",
                       newPassword_confirmation: "",
-                    })
+                    });
                   }}
                 >
                   Cancel
@@ -122,7 +141,9 @@ function SettingsTab() {
         {/* Preferred Categories */}
         <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
           <h4 className="font-medium text-gray-900">Preferred Categories</h4>
-          <p className="text-sm text-gray-500 mt-1">Update your interests and preferred content categories.</p>
+          <p className="text-sm text-gray-500 mt-1">
+            Update your interests and preferred content categories.
+          </p>
 
           {!showCategoriesForm ? (
             <button
@@ -134,11 +155,13 @@ function SettingsTab() {
           ) : (
             <div className="mt-4">
               <div className="flex flex-wrap gap-2">
-                {availableCategories.map((category) => (
+                {categories.map((category) => (
                   <button
                     key={category}
                     className={`px-3 py-1 rounded-full text-sm ${
-                      selectedCategories.includes(category) ? "bg-blue-500 text-white" : "bg-gray-200 text-gray-800"
+                      selectedCategories.includes(category)
+                        ? "bg-blue-500 text-white"
+                        : "bg-gray-200 text-gray-800"
                     }`}
                     onClick={() => handleCategoryToggle(category)}
                   >
@@ -156,8 +179,10 @@ function SettingsTab() {
                 <button
                   className="bg-gray-200 text-gray-800 px-3 py-1.5 text-sm rounded hover:bg-gray-300 transition-colors"
                   onClick={() => {
-                    setShowCategoriesForm(false)
-                    setSelectedCategories(userData.user.preferred_categories || [])
+                    setShowCategoriesForm(false);
+                    setSelectedCategories(
+                      userData.user.preferred_categories || []
+                    );
                   }}
                 >
                   Cancel
@@ -171,7 +196,8 @@ function SettingsTab() {
         <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
           <h4 className="font-medium text-red-600">Delete Account</h4>
           <p className="text-sm text-gray-500 mt-1">
-            Permanently delete your account and all associated data. This action cannot be undone.
+            Permanently delete your account and all associated data. This action
+            cannot be undone.
           </p>
           <button
             className="mt-3 bg-red-600 text-white px-3 py-1.5 text-sm rounded hover:bg-red-700 transition-colors"
@@ -182,7 +208,7 @@ function SettingsTab() {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default SettingsTab
+export default SettingsTab;
