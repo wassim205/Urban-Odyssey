@@ -12,13 +12,7 @@ const Logout = () => {
     const logout = async () => {
       try {
         await api.post(
-          "logout",
-          {},
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-            },
-          }
+          "logout"
         );
         toast.success("Logged out successfully.");
       } catch (error) {
@@ -26,12 +20,11 @@ const Logout = () => {
         console.log("Logout failed:", error);
       } finally {
         localStorage.clear();
-        navigate("/login", { replace: true });
       }
     };
 
     logout();
-  }, [navigate]);
+  }, []);
 
   return (
     <p className="text-center mt-10 text-red-600 dark:text-red-800">
